@@ -123,7 +123,7 @@ sidebar:
   offset: 12
 
 # Sidebar Avatar
-avatar:
+avatar: /images/avatar.png
   # Replace the default image and set the url here.
   # If true, the avatar will be dispalyed in circle.
   rounded: false
