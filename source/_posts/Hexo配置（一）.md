@@ -6,4 +6,20 @@ categories: [Hexo]
 tags: [hexo, blog, configuration]
 ---
 
-# Hexo配置（一）
+# Github Configuration
+
+
+
+
+
+
+
+# create a hexo server
+
+```shell
+$ hexo init <folder>
+$ cd <folder>
+$ npm install
+$ 
+```
+
