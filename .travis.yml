@@ -6,6 +6,9 @@ cache: npm
 branches:
   only:
     - writer # build master branch only
+before_script: ## 根据你所用的主题和自定义的不同，这里会有所不同
+  - git clone https://github.com/theme-next/hexo-theme-next themes/next #从 Github 上拉取 Suka 主题
+  - cp _config.next.yml themes/next/_config.yml # 将主题的配置文件放回原处    
 script:
   - hexo generate # generate static files
 deploy:
