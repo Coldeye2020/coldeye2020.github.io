@@ -21,7 +21,7 @@ minify: false
 custom_file_path:
   #head: source/_data/head.njk
   #header: source/_data/header.njk
-  #sidebar: source/_data/sidebar.njk
+  sidebar: source/_data/sidebar.njk
   #postMeta: source/_data/post-meta.njk
   #postBodyEnd: source/_data/post-body-end.njk
   #footer: source/_data/footer.njk
@@ -127,7 +127,7 @@ avatar:
   # Replace the default image and set the url here.
   # If true, the avatar will be dispalyed in circle.
   url: /images/avatar.png
-  rounded: false
+  rounded: True
   # If true, the avatar will be rotated with the cursor.
   rotated: false
 
