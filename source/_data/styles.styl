@@ -6,19 +6,40 @@ body {
   width:100%;
   background-repeat:repeat-x;
   background-attachment:fixed;
-  background-size:100% 100%;
+  background-size:50% 50%;
 }
 
-// page-opacity
-.content-wrap {
-  opacity: 0.85;
+// 主页文章添加阴影效果 
+.post { 
+	margin-top: 60px;
+	margin-bottom: 60px;
+	padding: 25px;
+	-webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);
+	-moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5); 
 }
-.sidebar {
-  opacity: 0.85;
+
+
+// 标题栏背景 
+.site-meta { 
+	padding: 20px 0; 
+	color: #fff; 
+	background-image: url(/images/95033e2a5404c30e2ab560e72b157a0a.jpg); 
+	background-repeat: no-repeat; 
+	background-attachment: fixed; 
+	background-position: center; 
+	background-size: 100% 100%; 
 }
-.header-inner {
-  background: rgba(255,255,255,0.85);
+
+// 修改主体透明度
+.main-inner{
+    background: #fff;
+    opacity: 0.85;
 }
-.popup {
-  opacity: 0.9;
+
+// 修改菜单栏透明度，会引起本地搜索菜单bug 
+.header-inner { 
+	// opacity: 0.95; 
+	border-radius: 30px 30px 30px 30px; //菜单栏椭圆化 
+	box-shadow: rgba(0,0,0,0.1) 0px 15px 35px 0px, rgba(0,0,0,0.31) 6px 6px 10px 0px; 
 }
+
