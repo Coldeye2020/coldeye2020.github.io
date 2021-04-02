@@ -360,8 +360,8 @@ codeblock:
     light: default
     dark: tomorrow-night
   prism:
-    light: prism-tomorrow
-    dark: prism-tomorrow
+    light: prism-atom-dark
+    dark: prism-atom-dark
   # Add copy button on codeblock
   copy_button:
     enable: true
