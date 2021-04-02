@@ -452,7 +452,7 @@ font:
   codes:
     external: true
     family: Roboto Mono
-    size: 0.8
+    size: 16
 
 
 # ---------------------------------------------------------------
