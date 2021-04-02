@@ -4,9 +4,9 @@ body {
   background-image:url(../images/background.jpg);
   height:100%;
   width:100%;
-  background-repeat:repeat-x;
-  background-attachment:fixed;
-  background-size:50% 50%;
+  background-repeat:no-repeat;
+  background-attachment:scroll;
+  background-size:100% 100%;
 }
 
 // 主页文章添加阴影效果 
@@ -30,16 +30,22 @@ body {
 	background-size: 100% 100%; 
 }
 
-// 修改主体透明度
-.main-inner{
-    background: #fff;
-    opacity: 0.85;
+// page-opacity
+
+.content-wrap {
+  opacity: 0.85;
 }
 
-// 修改菜单栏透明度，会引起本地搜索菜单bug 
-.header-inner { 
-	// opacity: 0.95; 
-	border-radius: 30px 30px 30px 30px; //菜单栏椭圆化 
-	box-shadow: rgba(0,0,0,0.1) 0px 15px 35px 0px, rgba(0,0,0,0.31) 6px 6px 10px 0px; 
+.sidebar {
+  opacity: 0.85;
+}
+
+.header-inner {
+  background: rgba(255,255,255,0.85);
+  border-radius: 30px 30px 30px 30px; //菜单栏椭圆化 
+}
+
+.popup {
+  opacity: 0.9;
 }
 
