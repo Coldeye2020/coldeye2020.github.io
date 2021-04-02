@@ -129,7 +129,7 @@ avatar:
   url: /images/avatar.png
   rounded: True
   # If true, the avatar will be rotated with the cursor.
-  rotated: false
+  rotated: True
 
 # Posts / Categories / Tags in sidebar.
 site_state: true
