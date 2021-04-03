@@ -616,9 +616,9 @@ livere_uid: # <your_uid>
 gitalk:
   enable: true
   github_id: coldeye2020# GitHub repo owner
-  repo: Blog_Demo# Repository name to store issues
-  client_id: 59de82d31c6a3af7b604# GitHub Application Client ID
-  client_secret: 8486edb7e3fc81ae23520fae718bfb296d95c8f5 # GitHub Application Client Secret
+  repo: coldeye2020.github.io# Repository name to store issues
+  client_id: 828703cb78903f39385e# GitHub Application Client ID
+  client_secret: 5e04991fdd615c879defaa7b90feaa4ec86378f8 # GitHub Application Client Secret
   admin_user: coldeye2020# GitHub repo owner and collaborators, only these guys can initialize gitHub issues
   distraction_free_mode: true # Facebook-like distraction free mode
   # When the official proxy is not available, you can change it to your own proxy address
