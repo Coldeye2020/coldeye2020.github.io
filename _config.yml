@@ -143,3 +143,20 @@ valine:
   visitor: true # leancloud-counter-security is not supported for now. When visitor is set to be true, appid and appkey are recommended to be the same as leancloud_visitors' for counter compatibility. Article reading statistic https://valine.js.org/visitor.html
   comment_count: true # If false, comment count will only be displayed in post page, not in home page
   recordIP: false # Whether to record the commenter IP
+
+# live2d
+live2d:
+  enable: true
+  pluginModelPath: assets/
+  model:
+    #模板目录，在node_modules里
+    use: live2d-widget-model-koharu 
+  display:
+    position: right
+    width: 300 
+    height: 450
+  mobile:
+    # 在手机端显示
+    show: false   
+  rect:
+    opacity:0.5
