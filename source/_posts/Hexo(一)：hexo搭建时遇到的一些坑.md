@@ -26,11 +26,11 @@ can not read a block mapping entry; a multiline key may not be an implicit key
 # 错误案例
 # Google Webmaster tools verification.
 # See: https://developers.google.com/search
-google_site_verification:vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k
+google_site_verification:vBZBS_Ucyk1uWpkEaY8fasdfasdfasoSATSjHr-k
 
 # Bing Webmaster tools verification.
 # See: https://www.bing.com/webmasters
-bing_site_verification:0A53450D60EE95103C2117D5737EA0C7 
+bing_site_verification:0A53asdfassdf5103C2117Ddf5737EA0C7 
 
 # Yandex Webmaster tools verification.
 # See: https://webmaster.yandex.ru
@@ -39,7 +39,7 @@ yandex_site_verification:
 # 正确案例
 # Baidu Webmaster tools verification.
 # See: https://ziyuan.baidu.com/site
-baidu_site_verification: code-snl66xrgB7
+baidu_site_verification: code-snlfasdfgB7
 ```
 
 ## 令人感到绝望的评论系统建立
