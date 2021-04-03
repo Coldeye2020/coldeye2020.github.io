@@ -128,3 +128,12 @@ baidu_url_submit:
   host: https://coldeye2020.github.io 
   token: sVWI9jMvOP6j7I7i  
   path: baidu_urls.txt 
+
+leancloud_counter_security:
+  enable_sync: true
+  app_id: KjaDopzg92OipIWJ14GfbzLN-gzGzoHsz
+  app_key: Ufm8MFmkuVEUtjWNdD3JO3m7
+  server_url: https://leancloud.cn # Required for apps from CN region, e.g. https://leancloud.cn
+  username: coldeye2020# Will be asked while deploying if is left blank
+  password: 123456 # Recommmended to be left blank. Will be asked while deploying if is left blank
+
