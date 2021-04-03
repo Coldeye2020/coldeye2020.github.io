@@ -16,7 +16,7 @@ tags: [Hexo, Yaml, Configuration]
 can not read a block mapping entry; a multiline key may not be an implicit key
 ```
 
-<!------more------>
+<!--more-->
 
 #### 我犯的错误：
 

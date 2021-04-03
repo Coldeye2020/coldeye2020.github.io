@@ -105,6 +105,13 @@ deploy:
 - type: baidu_url_submitter
 
 
+# Local search
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
+
 nofollow:
   enable: true
   field: site
