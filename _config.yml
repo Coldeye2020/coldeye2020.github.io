@@ -102,7 +102,7 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+- type: baidu_url_submitter
 
 
 nofollow:
@@ -115,3 +115,9 @@ sitemap:
   path: sitemap.xml
 baidusitemap:
   path: baidusitemap.xml
+
+baidu_url_submit:
+  count: 3
+  host: https://coldeye2020.github.io 
+  token: sVWI9jMvOP6j7I7i  
+  path: baidu_urls.txt 
