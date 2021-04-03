@@ -129,11 +129,17 @@ baidu_url_submit:
   token: sVWI9jMvOP6j7I7i  
   path: baidu_urls.txt 
 
-leancloud_counter_security:
-  enable_sync: true
-  app_id: KjaDopzg92OipIWJ14GfbzLN-gzGzoHsz
-  app_key: Ufm8MFmkuVEUtjWNdD3JO3m7
-  server_url: https://leancloud.cn # Required for apps from CN region, e.g. https://leancloud.cn
-  username: coldeye2020# Will be asked while deploying if is left blank
-  password: 123456 # Recommmended to be left blank. Will be asked while deploying if is left blank
-
+# Valine
+# For more information: https://valine.js.org, https://github.com/xCss/Valine
+valine:
+  enable: true
+  appId: 'q4IgQXj9pOfTNNGeRgkW7nkm-gzGzoHsz'# your leancloud application appid
+  appKey: 'wcTfoQKRj8qC9wSqg03elMPW'# your leancloud application appkey
+  serverURLs: # When the custom domain name is enabled, fill it in here
+  placeholder: Just go go # comment box placeholder
+  avatar: mm # gravatar style
+  meta: [nick, mail, link] # Custom comment header
+  pageSize: 10 # pagination size
+  visitor: true # leancloud-counter-security is not supported for now. When visitor is set to be true, appid and appkey are recommended to be the same as leancloud_visitors' for counter compatibility. Article reading statistic https://valine.js.org/visitor.html
+  comment_count: true # If false, comment count will only be displayed in post page, not in home page
+  recordIP: false # Whether to record the commenter IP

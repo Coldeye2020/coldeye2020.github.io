@@ -568,7 +568,7 @@ comments:
   style: tabs
   # Choose a comment system to be displayed by default.
   # Available values: disqus | disqusjs | changyan | livere | gitalk | utterances
-  active: gitalk
+  active: 
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Lazyload all comment systems.
@@ -614,19 +614,19 @@ livere_uid: # <your_uid>
 # Gitalk
 # For more information: https://gitalk.github.io
 gitalk:
-  enable: true
+  enable: false
   github_id: coldeye2020# GitHub repo owner
   repo: coldeye2020.github.io# Repository name to store issues
   client_id: 828703cb78903f39385e# GitHub Application Client ID
-  client_secret: 5e04991fdd615c879defaa7b90feaa4ec86378f8 # GitHub Application Client Secret
+  client_secret: 45c69a22db1eba2903df2fc3df60b949b7365222# GitHub Application Client Secret
   admin_user: coldeye2020# GitHub repo owner and collaborators, only these guys can initialize gitHub issues
-  distraction_free_mode: true # Facebook-like distraction free mode
+  distraction_free_mode: false # Facebook-like distraction free mode
   # When the official proxy is not available, you can change it to your own proxy address
   proxy: https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token # This is official proxy adress
   # Gitalk's display language depends on user's browser or system environment
   # If you want everyone visiting your site to see a uniform language, you can set a force language value
   # Available values: en | es-ES | fr | ru | zh-CN | zh-TW
-  language:
+  language: en
 
 # Utterances
 # For more information: https://utteranc.es
@@ -641,7 +641,6 @@ utterances:
 # Isso
 # For more information: https://posativ.org/isso/
 isso: # <data_isso>
-
 
 # ---------------------------------------------------------------
 # Post Widgets & Content Sharing Services
@@ -688,7 +687,7 @@ cloudflare_analytics:
 # Show number of visitors of each article.
 # You can visit https://www.leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
-  enable: true
+  enable: false
   app_id: KjaDopzg92OipIWJ14GfbzLN-gzGzoHsz # <your app id>
   app_key: Ufm8MFmkuVEUtjWNdD3JO3m7 # <your app key>
   # Required for apps from CN region
@@ -696,7 +695,7 @@ leancloud_visitors:
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
   # If you don't care about security in leancloud counter and just want to use it directly
   # (without hexo-leancloud-counter-security plugin), set `security` to `false`.
-  security: true
+  security: false
 
 # Another tool to show number of visitors to each article.
 # Visit https://console.firebase.google.com/u/0/ to get apiKey and projectId.
