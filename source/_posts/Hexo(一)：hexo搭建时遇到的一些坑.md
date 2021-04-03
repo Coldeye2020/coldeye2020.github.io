@@ -1,3 +1,11 @@
+---
+title: Hexo踩坑(一)
+urlname: Hexo(1)
+date: 2021-4-3 13:20:00
+categories: [Hexo]
+tags: [Hexo, Yaml, Configuration]
+---
+
 ## 1. yaml配置文件
 
 一定要注意：yaml配置文件也是有其固定格式的，特别是要注意空格。
@@ -7,6 +15,8 @@
 ```
 can not read a block mapping entry; a multiline key may not be an implicit key
 ```
+
+<!------more------>
 
 #### 我犯的错误：
 
