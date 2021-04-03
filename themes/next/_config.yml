@@ -688,8 +688,8 @@ cloudflare_analytics:
 # You can visit https://www.leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
   enable: false
-  app_id: KjaDopzg92OipIWJ14GfbzLN-gzGzoHsz # <your app id>
-  app_key: Ufm8MFmkuVEUtjWNdD3JO3m7 # <your app key>
+  app_id:  # <your app id>
+  app_key: # <your app key>
   # Required for apps from CN region
   server_url: https://leancloud.cn # <your server url>
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security

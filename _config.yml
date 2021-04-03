@@ -133,8 +133,8 @@ baidu_url_submit:
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
 valine:
   enable: true
-  appId: 'q4IgQXj9pOfTNNGeRgkW7nkm-gzGzoHsz'# your leancloud application appid
-  appKey: 'wcTfoQKRj8qC9wSqg03elMPW'# your leancloud application appkey
+  appId: 09tInux3xJRlMs2A008PDeuP-MdYXbMMI # your leancloud application appid
+  appKey: PIFdCFbjTxC8EPP53JdDhrKO # your leancloud application appkey
   serverURLs: # When the custom domain name is enabled, fill it in here
   placeholder: Just go go # comment box placeholder
   avatar: mm # gravatar style
