@@ -146,18 +146,56 @@ valine:
   recordIP: false # Whether to record the commenter IP
 
 # live2d
+#live2d:
+  #enable: true
+  #pluginModelPath: assets/
+  #model:
+    #模板目录，在node_modules里
+    #use: live2d-widget-model-koharu 
+  #display:
+    #position: right
+    #width: 300 
+    #height: 450
+  #mobile:
+    # 在手机端显示
+    #show: false   
+  #rect:
+    #opacity:0.5
+
+# Live2D
+## https://github.com/xiazeyu/live2d-widget.js
+## https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init
 live2d:
   enable: true
-  pluginModelPath: assets/
+  # enable: false
+  scriptFrom: local # 默认
+  pluginRootPath: live2dw/ # 插件在站点上的根目录(相对路径)
+  pluginJsPath: lib/ # 脚本文件相对与插件根目录路径
+  pluginModelPath: assets/ # 模型文件相对与插件根目录路径
+  # scriptFrom: jsdelivr # jsdelivr CDN
+  # scriptFrom: unpkg # unpkg CDN
+  # scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url
+  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中
+  debug: false # 调试, 是否在控制台输出日志
   model:
-    #模板目录，在node_modules里
-    use: live2d-widget-model-koharu 
+    use: live2d-widget-model-koharu # npm-module package name
+    # use: wanko # 博客根目录/live2d_models/ 下的目录名
+    # use: ./wives/wanko # 相对于博客根目录的路径
+    # use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url
+    scale: 1
+    hHeadPos: 0.5
+    vHeadPos: 0.618
   display:
-    position: right
-    width: 300 
+    superSample: 2
+    width: 300
     height: 450
+    position: right
+    hOffset: 0
+    vOffset: -20
   mobile:
-    # 在手机端显示
-    show: false   
-  rect:
-    opacity:0.5
+    show: true
+    scale: 0.5
+  react:
+    opacityDefault: 0.7
+    opacityOnHover: 0.2
+

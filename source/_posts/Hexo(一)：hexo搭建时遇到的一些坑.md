@@ -18,9 +18,13 @@ can not read a block mapping entry; a multiline key may not be an implicit key
 
 <!--more-->
 
+### 报错原因：
+
+由于yaml文件配置时，配置项的冒号与值之间未加上空格。
+
 ### 我犯的错误：
 
-在配置SEO，修改 `theme/next/_config.yml`
+在配置SEO，修改`根目录配置文件` `theme/next/_config.yml`时
 
 ```yaml
 # 错误案例
@@ -41,6 +45,106 @@ yandex_site_verification:
 # See: https://ziyuan.baidu.com/site
 baidu_site_verification: code-snlfasdfgB7
 ```
+
+
+
+### 经典报错：
+
+```yaml
+YAMLException: duplicated mapping key
+```
+
+### 报错原因：
+
+一个yaml文件中，配置项出现重复。
+
+### 我犯的错误：
+
+在配置Live2d时，修改站点配置文件`_config.yml`时
+
+```yaml
+# 错误案例
+# Live2D
+## https://github.com/xiazeyu/live2d-widget.js
+## https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init
+live2d:
+   enable: true
+   # enable: false
+   scriptFrom: local # 默认
+   pluginRootPath: live2dw/ # 插件在站点上的根目录(相对路径)
+   pluginJsPath: lib/ # 脚本文件相对与插件根目录路径
+   pluginModelPath: assets/ # 模型文件相对与插件根目录路径
+   # scriptFrom: jsdelivr # jsdelivr CDN
+   # scriptFrom: unpkg # unpkg CDN
+   # scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url
+   tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中
+   debug: false # 调试, 是否在控制台输出日志
+   model:
+     use: live2d-widget-model-koharu # npm-module package name
+     # use: wanko # 博客根目录/live2d_models/ 下的目录名
+     # use: ./wives/wanko # 相对于博客根目录的路径
+     # use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url
+   model:
+     scale: 1
+     hHeadPos: 0.5
+     vHeadPos: 0.618
+   display:
+     superSample: 2
+     width: 300
+     height: 450
+     position: right
+     hOffset: 0
+     vOffset: -20
+   mobile:
+     show: true
+     scale: 0.5
+   react:
+     opacityDefault: 0.7
+     opacityOnHover: 0.2
+
+# 正确示范
+# Live2D
+## https://github.com/xiazeyu/live2d-widget.js
+## https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init
+live2d:
+   enable: true
+   # enable: false
+   scriptFrom: local # 默认
+   pluginRootPath: live2dw/ # 插件在站点上的根目录(相对路径)
+   pluginJsPath: lib/ # 脚本文件相对与插件根目录路径
+   pluginModelPath: assets/ # 模型文件相对与插件根目录路径
+   # scriptFrom: jsdelivr # jsdelivr CDN
+   # scriptFrom: unpkg # unpkg CDN
+   # scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url
+   tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中
+   debug: false # 调试, 是否在控制台输出日志
+   model:
+     use: live2d-widget-model-koharu # npm-module package name
+     # use: wanko # 博客根目录/live2d_models/ 下的目录名
+     # use: ./wives/wanko # 相对于博客根目录的路径
+     # use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url
+     scale: 1
+     hHeadPos: 0.5
+     vHeadPos: 0.618
+     
+   display:
+     superSample: 2
+     width: 300
+     height: 450
+     position: right
+     hOffset: 0
+     vOffset: -20
+   mobile:
+     show: true
+     scale: 0.5
+   react:
+     opacityDefault: 0.7
+     opacityOnHover: 0.2
+```
+
+
+
+
 
 ## 令人感到绝望的评论系统建立
 
@@ -67,8 +171,3 @@ baidu_site_verification: code-snlfasdfgB7
 ### 后续：
 
 当然，由于潜在的安全隐患，这个博客肯定不会长期使用`valine`作为comment system，等`waline`与`hexo`适配的插件出来后，我应该会考虑使用`waline`。
-
-
-
-
-

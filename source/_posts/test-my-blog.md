@@ -6,9 +6,11 @@ urlname: test_my_blog
 tags: [test]
 ---
 
-$$
-h(x)=\sum_{i=1}^{5}(i)=?
-$$
 
+$$
+\begin{equation} \label{eq1}
+e=mc^2
+\end{equation}
+$$
 <!--more-->
 
