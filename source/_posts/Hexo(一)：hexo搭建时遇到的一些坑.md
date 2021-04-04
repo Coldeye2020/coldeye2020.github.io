@@ -150,7 +150,7 @@ live2d:
 
 ### 流程：
 
-1. 首先打算使用`gitalk`，根据官方文档给出的配置一步一步进行，但最后总是提示`bad credentials`，不解，于是查看原仓库`issue`，发现也有类似的案例，但是他们都是通过“重新更新了`clientSecret`之后再输入一次来解决的，我尝试多次未果后，选择在google上找解决方案，但是根据他们的博客内容，大体也同样是刷新一次就解决了，还有一个是通过加单引号解决的（可能也是通过更新，只是博主并未意识到），所以在经历了长达2h的鏖战未果后，我无奈选择了放弃使用`gitalk`作为comment system。
+1. 首先打算使用`gitalk`，根据官方文档[Comment Systems](https://theme-next.js.org/docs/third-party-services/comments.html)给出的配置一步一步进行，但最后总是提示`bad credentials`，不解，于是查看原仓库`issue`，发现也有类似的案例，但是他们都是通过“重新更新了`clientSecret`之后再输入一次来解决的，我尝试多次未果后，选择在google上找解决方案，但是根据他们的博客内容，大体也同样是刷新一次就解决了，还有一个是通过加单引号解决的（可能也是通过更新，只是博主并未意识到），所以在经历了长达2h的鏖战未果后，我无奈选择了放弃使用`gitalk`作为comment system。
 
 2. 然后我开始查找好用的评论系统，发现很多人都推荐了`valine`，所以我开始了漫长的配置之旅
 
@@ -171,3 +171,39 @@ live2d:
 ### 后续：
 
 当然，由于潜在的安全隐患，这个博客肯定不会长期使用`valine`作为comment system，等`waline`与`hexo`适配的插件出来后，我应该会考虑使用`waline`。
+
+## 退而求其次的公式渲染器：
+
+### 流程：
+
+1. next官方文档是表明了支持两种公式渲染的插件，即`MathJax`以及`KaTex`，一开始我上网搜了一下两个渲染器的差别，基本都写道`KaTex`相较于`MathJax`支持更少的公式效果，但是渲染速度十分的快，鉴于此我决定采用`KaTex`来作为博客的数学公式渲染器
+
+2. 官方文档[Math Equations](https://theme-next.js.org/docs/third-party-services/math-equations.html)是提供了两种安装方案，即[hexo-renderer-markdown-it-plus](https://github.com/CHENXCHEN/hexo-renderer-markdown-it-plus)，以及[hexo-renderer-markdown-it](https://github.com/hexojs/hexo-renderer-markdown-it)，我稍微看了下两个插件的区别，无非是前者plus版安装更为简洁，相当于对后者进行了一次封装。所以我果断选择了前者，但是配置好后发现公式的渲染效果差强人意，（就像是用正常的字体写的公式，而不是一般我们看到的像意大利斜体的公式），果然还是不如老大哥`MathJax`，所以我卸载了这个插件
+
+3. 在安装`MathJax`时，需要安装渲染器[hexo-renderer-pandoc](https://github.com/wzpan/hexo-renderer-pandoc)，这和之前使用`KaTex`的安装步骤差不多，但是要命的来了，就是他需要`pandoc`本身作为dependency，我是使用的manjaro，发现是预装了这款软件的，所以我可以很轻易的就利用`MathJax`对markdown中的公式进行渲染，但是部署到github上时，我发现好像并没有效果，并且正常的markdown渲染都出了问题，所以我猜测可能是因为我使用了`CI`的原因（我并不是直接将渲染好了的文件通过`hexo d`部署到github，而是在`CI`中进行的渲染并部署的，而`CI`的虚拟机中没有预装`pandoc`所以才导致了这样的结果），于是我google了一下解决方案，貌似大家都没有使用`CI`，并没有人遇到类似的问题，我只是看到`pandoc`官方文档中写道，`github actions`支持`pandoc`，所以我推测`CI`是一定有办法使用到`pandoc`的，我稍微看看了使用案例，但考虑到还是太麻烦了，所以退而求其次，我重新回到`KaTex`的怀抱中。
+
+4. 然后又又又出了点小问题，因为`next`主题是提供了两种方式开启公式渲染器的嘛，即每个文章都进行渲染，或者使用`front matter`的方式指定文章是否进行公式渲染，想必只要是一个真心想把博客做好的同学都会选择后者的吧，毕竟每篇都进行公式渲染的话，posts少的时候还好，但是如果posts多起来了，可能会大量增加渲染的时间，所以我使用了后者，具体的配置如下
+
+   ```yaml
+   math:
+      # Default (false) will load mathjax / katex script on demand.
+      # That is it only render those page which has `mathjax: true` in front-matter.
+      # If you set it to true, it will load mathjax / katex srcipt EVERY PAGE.
+      every_page: false
+   
+      mathjax:
+        enable: false
+        # Available values: none | ams | all
+        tags: none
+   
+      katex:
+        enable: true
+        # See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex
+        copy_tex: false
+   ```
+
+5. 其实在配置文件中已经说明的很清楚了，需要在想要进行公式渲染的文章`front-matter`部分加入`mathjax: true`即可，但是我以为如果要使用`KaTex`的话就要把配置项改为`katex: true`，真是不做死就不会死，于是成功的又让我陷入了沉思，还好我看到了一篇文章 [ 《hexo+next公式支持---采用Katex》](https://lingr7.github.io/2019/10/03/hexo+next%E5%85%AC%E5%BC%8F%E6%94%AF%E6%8C%81---%E9%87%87%E7%94%A8Katex.html)，里面谈到即使是使用`KaTex`也要将配置想设置为`mathjax: true`才可以，至此安装和使用的基本问题解决，鉴于`katex`有特别多的限制，以后有时间可能会再写一篇来介绍，或者在这篇博文下面补充。
+
+### 后续：
+
+因为我现在对于公式渲染的要求还不大，然后其实`KaTex`本身除了渲染的效果丑一点以外，速度还是杠杠的，所以暂时应该会继续使用`KaTex`作为公式渲染器了，以后如果有机会学习了`github actions`可能会重装`MathJax`练练手。

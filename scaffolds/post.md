@@ -3,7 +3,7 @@ title: {{ title }}
 date: {{ date }}
 categories:
 tags:
-katex:
+mathjax:
 urlname:
 keywords:
 description:
