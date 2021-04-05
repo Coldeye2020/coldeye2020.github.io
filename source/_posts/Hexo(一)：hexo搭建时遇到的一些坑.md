@@ -207,3 +207,69 @@ live2d:
 ### 后续：
 
 因为我现在对于公式渲染的要求还不大，然后其实`KaTex`本身除了渲染的效果丑一点以外，速度还是杠杠的，所以暂时应该会继续使用`KaTex`作为公式渲染器了，以后如果有机会学习了`github actions`可能会重装`MathJax`练练手。
+
+## 关于移动端适配的问题
+
+其实就是响应式布局，直接把教程链接放在这吧
+
+[Hexo博客Next主题如何在移动端上设置不同的背景](http://seikasahara.com/p/1578.html)
+
+```css
+# 电脑 + 移动端适配
+body{
+    background:url(/images/bg.jpg);
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center;  
+}
+
+@media only screen and (max-width: 1000px) {
+  body{
+    background:url(/images/bg2.jpg);
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center;  
+  }
+}
+
+# 移动端 + safari适配（对第二段进行一下修改即可）
+@media only screen and (max-width: 1000px) {
+  body:before{
+  content:"";
+  display:block;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom: 0;
+  z-index:-1;
+  width:100%;
+  height:100vh;
+  background:url(/images/bg2.png) center 0 no-repeat;
+  background-size:cover;
+  }
+}
+
+# 主要是safari识别不了
+# background-attachment:fixed;
+# background-position:center;  
+# 这两项
+
+
+# 当然如果考虑到像ipad这样的大屏幕，我们也需要将body部分做一些修改
+body:before{
+   content:"";
+   display:block;
+   position:fixed;
+   top:0;
+   left:0;
+   bottom: 0;
+   z-index:-1;
+   width:100%;
+   height:100vh;
+   background:url(../images/background.jpg) center 0 no-repeat;
+   background-size:cover;
+}
+```
+
