@@ -104,7 +104,7 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
 - type: git
-  repo: git@github.com:github.com/Coldeye2020/coldeye2020.github.io
+  repo: https://github.com/Coldeye2020/coldeye2020.github.io.git
   branch: main
   message: "deployment"
   
