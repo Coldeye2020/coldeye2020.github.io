@@ -484,14 +484,18 @@ code block in note tag
 {% endnote %}
 ```
 
+{% raw %}
 {% note success %}
+
 #### Codeblock in note
+
 {% code %}
 code block in note tag
 code block in note tag
 code block in note tag
 {% endcode %}
 {% endnote %}
+{% endraw %}
 
 ##### List in note
 
@@ -548,3 +552,42 @@ code block in note tag
 | 5    | 6    |
 | 7    | 8    |
 {% endnote %}
+
+
+
+
+
+## PDF
+
+### 设置：
+
+在主题配置文件`next/_config.yml`
+
+```markdown
+pdf:
+  enable: true
+  # Default height
+  height: 500px
+```
+
+### 作用：
+
+将链接封装在一个button中以提高互动性和美观程度。
+
+### 用法：
+
+```markdown
+{% button url, text, icon [class], [title] %}
+<!-- Tag Alias -->
+{% btn url, text, icon [class], [title] %}
+```
+
++ `url`: 绝对路径或者相对路径，当然也可以是网络地址
++ `text`: Button中的文字内容. （和icon两者任选其一即可，也可以同时使用两者）
++ `icon`: Button中的Awesome Icon （和text两者任选其一）
++ `[class]`: 可选项，icon的size(es): fa-fw | fa-lg | fa-2x | fa-3x | fa-4x | fa-5x（从小到大）
++ `[title]`:可选项， 鼠标悬停时的提示文字.
+
+### 示例：
+
+#### Button with text
