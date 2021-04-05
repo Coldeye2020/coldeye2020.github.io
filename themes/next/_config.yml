@@ -471,7 +471,7 @@ exturl_icon: true
 
 # Google Webmaster tools verification.
 # See: https://developers.google.com/search
-google_site_verification: vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k
+google_site_verification: ["vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k", "286uoSTGbsV4UGnLuDWOLY32M2tJ3BIO2VGyhtvsEdY"]
 
 # Bing Webmaster tools verification.
 # See: https://www.bing.com/webmasters

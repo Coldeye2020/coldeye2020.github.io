@@ -11,5 +11,5 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: https://coldeye2020.github.io/sitemap.xml
-Sitemap: https://coldeye2020.github.io/baidusitemap.xml
+Sitemap: https://coldeye2020.monster/sitemap.xml
+Sitemap: https://coldeye2020.monster/baidusitemap.xml
