@@ -235,7 +235,316 @@ Duis aute irure dolor in reprehenderit in voluptate ~~{% label default @velit %}
 
 
 
-# Link Grid
+## Link Grid
+
+### 作用：
+
+动态的`link grid`，增加互动性
+
+### 用法：
+
+```css
+{% linkgrid [image] [delimiter] [comment] %}{% endlinkgrid %}
+<!-- Tag Alias -->
+{% lg [image] [delimiter] [comment] %}{% endlg %}
+```
+
++ `[image]` : 可选项， 图片的URL地址.
++ `[delimiter]` : 可选项，如果不给出分隔符的话默认分隔符为`|`，可以在此项指定分隔符.
++ `[comment]` : 可选项，如果不给出的注释参数的话默认分隔符为`%`，可以在此项指定注释参数.
+
+### 示例：
+
+#### 使用方式1
+
+```
+{% linkgrid %}
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+% Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+{% endlinkgrid %}
+```
+
+{% linkgrid %}
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+% Theme NexT | https://theme-next.js.org/ | Stay Simple. Stay NexT. | https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+{% endlinkgrid %}
+
+#### 使用方式2
+
+```
+{% lg /images/apple-touch-icon-next.png , %}
+Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+% Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+{% endlg %}
+```
+
+{% lg /images/apple-touch-icon-next.png , %}
+Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+% Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. ,https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png
+{% endlg %}
 
 
 
+
+
+
+
+## Note
+
+### 作用：
+
+动态的`link grid`，增加互动性
+
+### 设置：
+
+打开主题配置文件`next/_config.yml`
+
+```
+note:
+  # Note tag style values:
+  #  - simple    bs-callout old alert style. Default.
+  #  - modern    bs-callout new (v2-v3) alert style.
+  #  - flat      flat callout style with background, like on Mozilla or StackOverflow.
+  #  - disabled  disable all CSS styles import of note tag.
+  style: simple
+  icons: false
+  # Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).
+  # Offset also applied to label tag variables. This option can work with disabled note tag.
+  light_bg_offset: 0
+```
+
+
+
+### 用法：
+
+```css
+{% note [class] [no-icon] [summary] %}
+Any content (support inline tags too).
+{% endnote %}
+```
+
++ `[class]` : 可选项，支持的值有: default | primary | success | info | warning | danger.
++ `[no-icon]` : 可选项，取消icon.
++ `[summary]` : 可选项，总结note.
+
+### 示例：
+
+#### Each Class Presentation
+
+```css
+{% note %}
+#### Header
+(without define class style)
+{% endnote %}
+```
+
+{% note %}
+#### Header
+(without define class style)
+{% endnote %}
+
+```markdown
+{% note default %}
+#### Default Header
+Welcome to [Hexo!](https://hexo.io)
+{% endnote %}
+```
+
+{% note default %}
+#### Default Header
+Welcome to [Hexo!](https://hexo.io)
+{% endnote %}
+
+```markdown
+{% note primary %}
+#### Primary Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+```
+
+{% note primary %}
+#### Primary Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+
+```markdown
+{% note info %}
+#### Info Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+```
+
+{% note info %}
+#### Info Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+
+```markdown
+{% note success %}
+#### Success Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+```
+
+{% note success %}
+#### Success Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+
+```markdown
+{% note warning %}
+#### Warning Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+```
+
+{% note warning %}
+#### Warning Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+
+```markdown
+{% note danger %}
+#### Danger Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+```
+
+{% note danger %}
+#### Danger Header
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+
+
+
+#### Advanced Usage Presentation
+
+##### No icon note
+
+```markdown
+{% note info no-icon %}
+#### No icon note
+Note **without** icon: `note info no-icon`
+{% endnote %}
+```
+
+{% note info no-icon %}
+#### No icon note
+Note **without** icon: `note info no-icon`
+{% endnote %}
+
+##### Note with summary
+
+```markdown
+{% note primary This is a summary %}
+#### Details and summary
+Note with summary: `note primary This is a summary`
+{% endnote %}
+```
+
+{% note primary This is a summary %}
+#### Details and summary
+Note with summary: `note primary This is a summary`
+{% endnote %}
+
+##### No icon with Summary
+
+```markdown
+{% note info no-icon This is a summary %}
+#### Details and summary (No icon)
+Note with summary: `note info no-icon This is a summary`
+{% endnote %}
+```
+
+{% note info no-icon This is a summary %}
+#### Details and summary (No icon)
+Note with summary: `note info no-icon This is a summary`
+{% endnote %}
+
+#### Codeblock in note
+
+```markdown
+{% note success %}
+#### Codeblock in note
+{% code %}
+code block in note tag
+code block in note tag
+code block in note tag
+{% endcode %}
+{% endnote %}
+```
+
+{% note success %}
+#### Codeblock in note
+{% code %}
+code block in note tag
+code block in note tag
+code block in note tag
+{% endcode %}
+{% endnote %}
+
+##### List in note
+
+```markdown
+{% note default %}
+#### Lists in note
+* ul
+* ul
+    * ul
+    * ul
+* ul
+
+1. ol
+2. ol
+    1. ol
+    2. ol
+3. ol
+{% endnote %}
+```
+
+{% **note** default %}
+\#### Lists in note
+\* ul
+\* ul
+    \* ul
+    \* ul
+\* ul
+
+\1. ol
+\2. ol
+    \1. ol
+    \2. ol
+\3. ol
+{% **endnote** %}
+
+##### Table in note
+
+```markdown
+#### Table in Note
+{% note default %}
+| 1 | 2 |
+| - | - |
+| 3 | 4 |
+| 5 | 6 |
+| 7 | 8 |
+{% endnote %}
+```
+
+#### Table in Note
+{% note default %}
+| 1    | 2    |
+| ---- | ---- |
+| 3    | 4    |
+| 5    | 6    |
+| 7    | 8    |
+{% endnote %}
