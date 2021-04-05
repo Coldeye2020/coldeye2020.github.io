@@ -309,7 +309,7 @@ Theme NexT , https://theme-next.js.org/ , Stay Simple. Stay NexT. , https://picg
 
 打开主题配置文件`next/_config.yml`
 
-```
+```yaml
 note:
   # Note tag style values:
   #  - simple    bs-callout old alert style. Default.
@@ -525,7 +525,7 @@ code block in note tag
     \1. ol
     \2. ol
 \3. ol
-{% **endnote** %}
+{% endnote %}
 
 ##### Table in note
 
@@ -559,7 +559,7 @@ code block in note tag
 
 在主题配置文件`next/_config.yml`
 
-```markdown
+```yaml
 pdf:
   enable: true
   # Default height
@@ -593,4 +593,31 @@ pdf:
 
 
 
-## Table
+## Tabs
+
+### 设置：
+
+在主题配置文件`next/_config.yml`
+
+```yaml
+tabs:
+  transition:
+    tabs: false
+    labels: true
+```
+
+### 作用：
+
+可以在文章中导入pdf。
+
+### 用法：
+
+```markdown
+{% pdf url [height] %}
+```
+
++ `url` : The URL (Absolute path) of the PDF file.
++ `[height]` : *Optional parameter.* Height of the PDF display element, e.g. 800px.
+
+### 示例：
+
