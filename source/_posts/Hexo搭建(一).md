@@ -1,6 +1,6 @@
 ---
 title: Hexo踩坑(一)
-urlname: Hexo(1)
+urlname: Hexo_configuration_1
 date: 2021-4-3 13:20:00
 categories: [Hexo]
 tags: [Hexo, Yaml, Configuration]
@@ -172,7 +172,7 @@ live2d:
 
 当然，由于潜在的安全隐患，这个博客肯定不会长期使用`valine`作为comment system，等`waline`与`hexo`适配的插件出来后，我应该会考虑使用`waline`。
 
-## 退而求其次的公式渲染器：
+## 退而求其次的公式渲染器
 
 ### 流程：
 
@@ -272,4 +272,150 @@ body:before{
    background-size:cover;
 }
 ```
+
+## 整个博客的工作流程详解
+
+### 整体布局：
+
+![layout](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.svg)
+
+### 工作流程
+
+#### 普通模式
+
++ 适用：在自己电脑(`windows 10`)上进行简单的写作并发表博客
++ 流程：layout中红线所示
++ 命令：`git add. `+`git commit -m "new blog"`+`git push`即可
+
+#### 陌生环境模式
+
++ 适用：在别人的电脑上进行写作并发表博客
+
++ 流程：
+
+  + 首先安装`git`
+
+  + 然后配置远程仓库并拉取
+
+    ```shell
+    $git init
+    
+    $git remote add origin https://github.com/user/repo.git
+    # Set a new remote
+    
+    $git 
+    # Verify new remote
+    > origin  https://github.com/user/repo.git (fetch)
+    > origin  https://github.com/user/repo.git (push)
+    
+    # 拉取远程仓库
+    $git pull
+    
+    # 切换分支
+    $git checkout writer
+    
+    # 更改为ssh验证方式登录（如无长期需求，切勿使用这种方式）
+    $ git remote set-url origin git@github.com:USERNAME/REPOSITORY.git
+    ```
+
+  + 接下来，layout中红线所示
+
++ 命令：如上`命令`+`git add. `+`git commit -m "new blog"`+`git push`即可
+
+#### 本地调试模式
+
++ 适用：在自己电脑(`manjaro`)上进行博客样式或者插件的调试等
++ 流程：
+  + 更改配置
+  + 渲染
+  + 创建服务
++ 命令：`hexo g`，`hexo s`
+
+### 工作机制详解：
+
+1. 首先通过`git`的三段命令，我们可以将除开被纳入`gitinore`文件内的所有文件和目录都`push`到github远程仓库中(`branch:writer`)
+
+   ```none /.gitinore
+   .DS_Store
+   Thumbs.db
+   db.json
+   *.log
+   node_modules/
+   public/
+   .deploy*/
+   ```
+
+2. 然后Travis CI检测到了`commit`后，先将仓库`pull`到服务器上，然后检查是否有`.travis.yml`，如果存在，则按照`.travis.yml`文件中的配置一步一步执行
+
+   ```yaml /.travis.yml
+   language: node_js
+   
+   node_js:
+     - 14.16.0 
+     
+   cache:
+     directories:
+       - node_modules
+   
+   branches:
+     only:
+     - writer #源码分支名称
+       
+   before_install:
+   - npm install -g hexo
+       
+   before_script:
+   # 下面两行配置用户名和邮箱不写也可以
+   - git config user.name "Coldeye"
+   - git config user.email "948283368@qq.com"
+   # 下面一行代码主要是进行了一个replace操作，即在Travis CI执行的全过程中将
+   # _config.yml文件中“https://github.com/Coldeye2020/coldeye2020.github.io.git”的字段
+   # replace为“https://${GH_TOKEN}@github.com/coldeye2020/coldeye2020.github.io.git”
+   # 注意这个操作是严格大小写区分的，并且是全字符匹配
+   # 然后${GH_TOKEN}这是一个变量，主要取决于你在Travis CI官网设置时的变量值，主要是用于github verification
+   - sed -i'' "s~https://github.com/Coldeye2020/coldeye2020.github.io.git~https://${GH_TOKEN}@github.com/coldeye2020/coldeye2020.github.io.git~" _config.yml
+   
+   install:
+   - npm install
+   # 这一步是安装hexo 和 github联动的插件，只有这样hexo deploy执行时才可以执行git操作
+   - npm install hexo-deployer-git --save
+   
+   script:
+   - hexo clean
+   - hexo generate
+   
+   after_success:
+   # 将根据.config.yml文件中deploy项中的配置进行执行
+   - hexo deploy
+   ```
+
+   {% note info %}
+   #### Attention
+   这里应该有三种方式配置`.travis.yml`文件的方式：
+
+   1. 以`hexo`的方式(本博客采用的方案，最为简单，并且对插件`baidu_url_submitter`的支持也更简单)
+   2. 以`travis ci`的方式(`Hexo`[中文官网](https://hexo.io/docs/github-pages)给出的方案)
+   3. 以`github action`的方式(`Hexo`[英文官网](https://hexo.io/docs/github-pages)给出的方案)
+
+   {% endnote %}
+
+   ```yaml /_config.yml
+   deploy:
+   # deploy type设置为git,这需要首先安装插件hexo-deployer-git
+   - type: git
+   # 这里的repo本应该设置为"https://${GH_TOKEN}@github.com/coldeye2020/coldeye2020.github.io.git"
+   # 但考虑到本项目放置在开源库下，所以仓库的Token肯定不可以写在配置文件中
+   # 这里使用的trick就是在.travis.yml中用命令sed -i进行字符串替换
+   # 把关键的token使用travis CI中早已经设置好的变量进行赋值，大大提高了安全性
+     repo: https://github.com/Coldeye2020/coldeye2020.github.io.git
+     # 设置deloy的分支为main
+     branch: main
+     message: "deployment"
+     
+   - type: baidu_url_submitter
+   ```
+
+   
+
+3. 所有的文章均放置在`/source/_post/`目录下，`hexo g`命令在执行时会首先将`/source/`目录下所有开头不是下划的文件拷贝到/public/目录下，对于`Markdown`和`HTML`文件则会先进行渲染然后再拷贝（如果想要指定某个`Markdown`或者`HTML`文件不进行渲染可以在站点配置文件`/_config.yml`中配置`skip_render`项）。在此过程中他会根据`markdown`文件中`front matter`段的`categories`项的值`A`来，确定渲染后得到的`HTML`文件应该放置在`/source/public/`目录下的同名`A`子目录下。如果是没有进行渲染的文件，则会保持原样放在`/public`下，其他部分(e.g.子目录`archives`,`categories`，`tags`)的生成也是差不多这么回事。同样的，`/themes/next/source/`目录下文件也会同样被copy到`/public/`目录下
 

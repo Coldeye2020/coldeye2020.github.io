@@ -130,7 +130,7 @@ baidusitemap:
   path: baidusitemap.xml
 
 baidu_url_submit:
-  count: 3
+  count: 10
   host: coldeye2020.monster
   token: sVWI9jMvOP6j7I7i  
   path: baidu_urls.txt 

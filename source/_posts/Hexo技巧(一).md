@@ -1,5 +1,5 @@
 ---
-title: Hexo技巧(一)
+title: Hexo技巧(一)Plugin
 date: 2021-04-04 20:43:52
 categories: [Hexo]
 tags: [Hexo]
