@@ -471,7 +471,7 @@ Note with summary: `note info no-icon This is a summary`
 Note with summary: `note info no-icon This is a summary`
 {% endnote %}
 
-#### Codeblock in note（這個貌似並不可行）
+##### Codeblock in note
 
 ```markdown
 {% note success %}
@@ -483,6 +483,15 @@ code block in note tag
 {% endcode %}
 {% endnote %}
 ```
+
+{% note success %}
+#### Codeblock in note
+{% code %}
+code block in note tag
+code block in note tag
+code block in note tag
+{% endcode %}
+{% endnote %}
 
 ##### List in note
 
@@ -503,7 +512,7 @@ code block in note tag
 {% endnote %}
 ```
 
-{% **note** default %}
+{% note default %}
 \#### Lists in note
 \* ul
 \* ul
@@ -580,3 +589,8 @@ pdf:
 {% pdf /path/to/your/file.pdf 600px %}
 ```
 
+
+
+
+
+## Table
