@@ -126,7 +126,7 @@ baidusitemap:
 
 baidu_url_submit:
   count: 3
-  host: https://coldeye2020.github.io 
+  host: coldeye2020.monster
   token: sVWI9jMvOP6j7I7i  
   path: baidu_urls.txt 
 
