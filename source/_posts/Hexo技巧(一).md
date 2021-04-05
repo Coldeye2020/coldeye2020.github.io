@@ -7,6 +7,7 @@ mathjax: false
 urlname: hexo_trick_1
 keywords: [hexo writting, tricks]
 description:
+
 ---
 
 {% note info %}
@@ -47,11 +48,11 @@ description:
 {% btn url, text, icon [class], [title] %}
 ```
 
-+ url : 绝对路径或者相对路径，当然也可以是网络地址
-+ text : Button中的文字内容. （和icon两者任选其一即可，也可以同时使用两者）
-+ icon : Button中的Awesome Icon （和text两者任选其一）
-+ [class] : 可选项，icon的size(es): fa-fw | fa-lg | fa-2x | fa-3x | fa-4x | fa-5x（从小到大）
-+ [title] :可选项， 鼠标悬停时的提示文字.
++ `url`: 绝对路径或者相对路径，当然也可以是网络地址
++ `text`: Button中的文字内容. （和icon两者任选其一即可，也可以同时使用两者）
++ `icon`: Button中的Awesome Icon （和text两者任选其一）
++ `[class]`: 可选项，icon的size(es): fa-fw | fa-lg | fa-2x | fa-3x | fa-4x | fa-5x（从小到大）
++ `[title]`:可选项， 鼠标悬停时的提示文字.
 
 ### 示例：
 
@@ -82,6 +83,7 @@ description:
 <div>{% btn #,, home fa-2x %}{% btn #,, home fa-2x %}{% btn #,, home fa-2x %}<div>
 <div>{% btn #,, home fa-lg %}{% btn #,, home fa-lg %}{% btn #,, home fa-lg %}<div>
 <div>{% btn #,, home %}{% btn #,, home %}{% btn #,, home %}<div>
+
 
 #### Button with text & icon
 
@@ -137,6 +139,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 <div>{% btn #,, italic %}{% btn #,, fab fa-scribd %}</div>
 <div>{% btn #,, fab fa-google %}{% btn #,, fab fa-chrome %}{% btn #,, fab fa-opera %}{% btn #,, gem fa-rotate-270 %}</div></div>
 
+
 #### Button with relative URL
 
 ```html
@@ -152,4 +155,87 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 ```
 
 <div class="text-center">{% btn https://github.com, GitHub, fab fa-github fa-fw fa-lg, GitHub %}</div>
+
+
+
+
+
+## Group Pictures
+
+### 作用：
+
+按照一定的结构排列一组图片，以增加美感。
+
+### 用法：
+
+```markdown
+{% grouppicture [number]-[layout] %}{% endgrouppicture %}
+<!-- Tag Alias -->
+{% gp [number]-[layout] %}{% endgp %}
+```
+
++ `[number]` : 可选项，图片的总数量
++ `[layout]` : 可选项，图片的布局结构
+
+`[layout]`如下：
+
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-1.png)
+
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-2.png)
+
+### 示例：
+
+```css
+{% grouppicture 6-3 %}
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+{% endgrouppicture %}
+```
+
+
+
+
+
+## Label
+
+### 作用：
+
+对文字加上标签，突出重点，增加文章可读性。
+
+### 用法：
+
+```markdown
+{% label [class]@text %}
+```
+
++ `[class]` : 可选项，支持的值有: `default` | `primary` | `success` | `info` | `warning` | `danger`.默认为`default`
++ `text` : `@text` can be specified with or without space
+  E.g. `success @text` is the same as `success@text`.
+
+### 示例：
+
+```html
+Lorem {% label @ipsum %} {% label primary@dolor sit %} amet, consectetur {% label success@adipiscing elit, %} sed {% label info@do eiusmod %} tempor incididunt ut labore et dolore magna aliqua.
+
+Ut enim *{% label warning @ad %}* minim veniam, quis **{% label danger@nostrud %}** exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate ~~{% label default @velit %}~~ <mark>esse</mark> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+```
+
+Lorem {% label @ipsum %} {% label primary@dolor sit %} amet, consectetur {% label success@adipiscing elit, %} sed {% label info@do eiusmod %} tempor incididunt ut labore et dolore magna aliqua.
+
+Ut enim *{% label warning @ad %}* minim veniam, quis **{% label danger@nostrud %}** exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate ~~{% label default @velit %}~~ <mark>esse</mark> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+
+# Link Grid
+
+
 
