@@ -20,7 +20,7 @@ description:
 
 
 
-`Next`主题或者说`HEXO`官方其实是提供了很多可以增加博文美观的[plugins](https://theme-next.js.org/docs/tag-plugins)，这篇文章将介绍部分实用的plugins以帮助使用者们更好的使用`Hexo`进行写作：
+`Next`主题或者说`HEXO`官方其实是提供了很多可以增加博文美观的plugin，戳{% link “此处” https://theme-next.js.org/docs/tag-plugins true %}查看Next官方文档，这篇文章将介绍部分实用的`Next plugins`以帮助使用者们更好的使用`Hexo`进行写作，戳{% link “此处” https://theme-next.js.org/docs/tag-plugins true %}查看Hexo官方文档提供的`plugins`
 
 1. Button
 2. Group Pictures
@@ -641,7 +641,7 @@ Any content (support inline tags too).
   + 如果不指定
     + 同时也没有设置选项的`[@icon]`：则默认设置为`Unique name`+选项对应的`index`
     + 如果设置了`[@icon]`：则留空
-+ `[@icon]` :  字体图标名
++ `[@icon]` : 字体图标名，戳{% link “此处” https://fontawesome.com/v4.7.0/icons/ true %}查询
   + 可选参数
   + 可以与`[Tab caption]`配合起来一起使用，也可以单独使用
 
