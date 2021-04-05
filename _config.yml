@@ -103,6 +103,11 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
+- type: git
+  repo: https://github.com/Coldeye2020/coldeye2020.github.io
+  branch: main
+  message: "deployment"
+  
 - type: baidu_url_submitter
 
 
