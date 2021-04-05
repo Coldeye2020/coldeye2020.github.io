@@ -17,7 +17,7 @@ before_install:
 before_script:
 - git config user.name "Coldeye"
 - git config user.email "948283368@qq.com"
-- sed -i'' "s~https://github.com/coldeye2020/coldeye2020.github.io.git~https://${GH_TOKEN}@github.com/coldeye2020/coldeye2020.github.io.git~" _config.yml
+- sed -i'' "s~https://github.com/Coldeye2020/coldeye2020.github.io.git~https://${GH_TOKEN}@github.com/coldeye2020/coldeye2020.github.io.git~" _config.yml
 
 install:
 - npm install
