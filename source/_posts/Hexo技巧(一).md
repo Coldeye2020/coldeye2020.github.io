@@ -471,7 +471,7 @@ Note with summary: `note info no-icon This is a summary`
 Note with summary: `note info no-icon This is a summary`
 {% endnote %}
 
-#### Codeblock in note
+#### Codeblock in note（這個貌似並不可行）
 
 ```markdown
 {% note success %}
@@ -483,19 +483,6 @@ code block in note tag
 {% endcode %}
 {% endnote %}
 ```
-
-{% raw %}
-{% note success %}
-
-#### Codeblock in note
-
-{% code %}
-code block in note tag
-code block in note tag
-code block in note tag
-{% endcode %}
-{% endnote %}
-{% endraw %}
 
 ##### List in note
 
@@ -572,22 +559,24 @@ pdf:
 
 ### 作用：
 
-将链接封装在一个button中以提高互动性和美观程度。
+可以在文章中导入pdf。
 
 ### 用法：
 
 ```markdown
-{% button url, text, icon [class], [title] %}
-<!-- Tag Alias -->
-{% btn url, text, icon [class], [title] %}
+{% pdf url [height] %}
 ```
 
-+ `url`: 绝对路径或者相对路径，当然也可以是网络地址
-+ `text`: Button中的文字内容. （和icon两者任选其一即可，也可以同时使用两者）
-+ `icon`: Button中的Awesome Icon （和text两者任选其一）
-+ `[class]`: 可选项，icon的size(es): fa-fw | fa-lg | fa-2x | fa-3x | fa-4x | fa-5x（从小到大）
-+ `[title]`:可选项， 鼠标悬停时的提示文字.
++ `url` : The URL (Absolute path) of the PDF file.
++ `[height]` : *Optional parameter.* Height of the PDF display element, e.g. 800px.
 
 ### 示例：
 
-#### Button with text
+```markdown
+{% pdf https://example.com/sample.pdf %}
+```
+
+```markdown
+{% pdf /path/to/your/file.pdf 600px %}
+```
+
