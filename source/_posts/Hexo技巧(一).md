@@ -197,7 +197,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 {% endgrouppicture %}
 ```
 
-
+{% grouppicture 6-3 %}
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+{% endgrouppicture %}
 
 
 
