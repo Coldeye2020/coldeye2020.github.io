@@ -18,10 +18,10 @@ description:
 本文主要记录了`Latex`中常用的特殊字符
 {% endnote %}
 
-<!--more-->
-
 {% note warning %}
-####  注意
+
+**注意**
+
 如果可能的话尽量避免在公式中出现`大括号#`以及类似的字符(这是保留字符)，这会导致渲染错误，处理起来比较麻烦
 {% endnote %}
 
@@ -55,6 +55,8 @@ $$
  \texttt{"fraktur"}     &\texttt{\mathfrak}&\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
 \end{array}
 $$
+
+<!--more-->
 
 ## 色彩表
 
@@ -167,6 +169,8 @@ x = a_0 + \frac{1^2}{a_1+}
           \frac{3^2}{a_3 +} 
           \frac{4^4}{a_4 +} \cdots
 $$
+
+
 ## 线性代数
 
     \begin{array}{ll}

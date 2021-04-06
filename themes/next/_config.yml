@@ -506,8 +506,6 @@ math:
     enable: true
     # Available values: none | ams | all
     tags: none
-    every_page: false
-    
 
   katex:
     enable: false
