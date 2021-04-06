@@ -13,9 +13,13 @@ description:
 ---
 
 {% note info %}
-#### 说明
+
+**说明**
+
 本文是在大二下学期因疫情缘故无法返校时看韩顺平`linux`网课所做笔记，后并为勘误，如有错误，请谅解
 {% endnote %}
+
+<!--more-->
 
 ```shell 常用基础命令
 # change directory，切换目录

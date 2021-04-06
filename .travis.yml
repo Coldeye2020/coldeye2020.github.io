@@ -13,8 +13,12 @@ branches:
   - writer #源码分支名称
     
 before_install:
+- wget https://github.com/jgm/pandoc/releases/download/2.13/pandoc-2.13-1-amd64.deb
+- sudo dpkg -i ./pandoc-2.13-1-amd64.deb
 - npm install -g hexo
-- sudo apt-get install pandoc
+- npm un hexo-renderer-marked --save
+- npm install hexo-renderer-pandoc --save
+- npm install --save markdown-it-implicit-figures --save
     
 before_script:
 - git config user.name "Coldeye"
