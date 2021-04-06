@@ -14,7 +14,10 @@ branches:
     
 before_install:
 - npm install -g hexo
+- npm un hexo-renderer-marked
+- npm un hexo-renderer-markdown-it-plus
 - sudo apt-get install pandoc
+- npm i hexo-renderer-pandoc
     
 before_script:
 - git config user.name "Coldeye"
