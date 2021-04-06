@@ -204,3 +204,7 @@ live2d:
     opacityDefault: 0.7
     opacityOnHover: 0.2
 
+# 解决启用pandoc可能会与插入图片产生冲突的问题
+pandoc:
+  extensions:
+    - '-implicit_figures'

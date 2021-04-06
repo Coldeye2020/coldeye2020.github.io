@@ -13,7 +13,7 @@ description:
 
 {% note info %}
 
-#### 说明
+**说明**
 
 本文主要记录了`Latex`中常用的特殊字符
 {% endnote %}
@@ -48,6 +48,8 @@ $$
  \texttt{"fraktur"}     &\texttt{\mathfrak}&\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
 \end{array}
 $$
+
+<!--more-->
 
 ## 色彩表
 
