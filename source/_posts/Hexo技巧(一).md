@@ -1,13 +1,14 @@
 ---
 title: Hexo技巧(一)Plugin
 date: 2021-04-04 20:43:52
-categories: [Hexo]
+categories: 
+- Hexo
+- Usage
 tags: [Hexo]
 mathjax: false
 urlname: hexo_trick_1
 keywords: [hexo writting, tricks]
 description:
-
 ---
 
 {% note info %}

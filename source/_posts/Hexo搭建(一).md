@@ -2,9 +2,19 @@
 title: Hexo踩坑(一)
 urlname: Hexo_configuration_1
 date: 2021-4-3 13:20:00
-categories: [Hexo]
+categories: 
+- Hexo
+- Config
 tags: [Hexo, Yaml, Configuration]
 ---
+
+{% note info %}
+
+**Attention**
+
+本文撰写时的环境为`Hexo Version:5.4.0 `,`Next Version:8.2.2`
+
+{% endnote %}
 
 ## yaml配置文件
 
