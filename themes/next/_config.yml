@@ -875,7 +875,7 @@ vendors:
   prism_line_numbers:
 
   # MathJax
-  mathjax:
+  mathjax: //cdn.bootcdn.net/ajax/libs/mathjax/3.1.2/es5/tex-mml-chtml.js
 
   # KaTeX
   katex:
