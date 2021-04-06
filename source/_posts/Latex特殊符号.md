@@ -117,6 +117,7 @@ $$
 $$
 
 ```latex
+{% raw %}
 \begin{array}{|rrrrrrrr|}
 \hline
 \verb+#000+ & \color{#000}{text} & \verb+#005+ & \color{#005}{text} & \verb+#00A+ & \color{#00A}{text} & \verb+#00F+ & \color{#00F}{text}  \\
