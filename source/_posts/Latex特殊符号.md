@@ -83,6 +83,7 @@ $$
     \hline
     \end{array}
 
+![](../images/latex_1.png)
 $$
 \begin{array}{|lc|}
 \hline
@@ -115,8 +116,6 @@ $$
 \end{array}
 $$
 
-{% raw %}
-
 ```latex
 \begin{array}{|rrrrrrrr|}
 \hline
@@ -139,6 +138,7 @@ $$
 {% endraw %}
 ```
 
+{% raw %}
 $$
 \begin{array}{|rrrrrrrr|}
 \hline
