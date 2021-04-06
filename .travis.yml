@@ -13,6 +13,7 @@ branches:
     
 before_install:
 - npm install -g hexo
+- sudo apt-get install pandoc
     
 before_script:
 - git config user.name "Coldeye"
