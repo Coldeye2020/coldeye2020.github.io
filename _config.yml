@@ -45,16 +45,16 @@ post_asset_folder: false
 relative_link: false
 future: true
 highlight:
-  enable: false
+  enable: true
   line_number: true
   auto_detect: false
   tab_replace: ''
   wrap: true
   hljs: false
 prismjs:
-  enable: true
-  preprocess: true
-  line_number: true
+  enable: false
+  preprocess: false
+  line_number: false
   tab_replace: ''
 
 # Home page setting
