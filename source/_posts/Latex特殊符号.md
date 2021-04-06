@@ -113,7 +113,7 @@ $$
 \end{array}
 $$
 
-
+{% raw %}
 
 ```latex
 \begin{array}{|rrrrrrrr|}
@@ -134,6 +134,7 @@ $$
 \verb+#FF0+ & \color{#FF0}{text} & \verb+#FF5+ & \color{#FF5}{text} & \verb+#FFA+ & \color{#FFA}{text} & \verb+#FFF+ & \color{#FFF}{text}  \\
 \hline
 \end{array}
+{% endraw %}
 ```
 
 $$
@@ -156,6 +157,8 @@ $$
 \hline
 \end{array}
 $$
+
+{% endraw %}
 
 ## 连分数
 
