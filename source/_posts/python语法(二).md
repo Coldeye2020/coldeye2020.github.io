@@ -3,7 +3,6 @@ title: Python(一)Python中级语法
 date: 2020-10-20 14:20:17
 categories:
 - Tech 
-- Language
 - Python
 tags: [Python]
 mathjax: false
