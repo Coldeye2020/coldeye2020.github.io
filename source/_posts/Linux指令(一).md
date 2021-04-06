@@ -3,7 +3,7 @@ title: linux命令(一)Ubuntu基础命令
 date: 2020-03-01 20:43:52
 categories:
 - Tech 
-- Language
+- Command
 - Linux
 tags: [Linux, Command]
 mathjax: false
