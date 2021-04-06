@@ -5,7 +5,7 @@ categories:
 - Tech 
 - Latex
 tags: [Latex]
-mathjax: false
+mathjax: true
 urlname: latex_characters
 keywords: [Latex, Writting, characters]
 description:
