@@ -3,7 +3,6 @@ title: Hexo技巧(一)Plugin
 date: 2021-04-04 20:43:52
 categories: 
 - Hexo
-- Usage
 tags: [Hexo]
 mathjax: false
 urlname: hexo_trick_1
@@ -21,7 +20,7 @@ description:
 
 
 
-`Next`主题或者说`HEXO`官方其实是提供了很多可以增加博文美观的plugin，戳{% link “此处” https://theme-next.js.org/docs/tag-plugins true %}查看Next官方文档，这篇文章将介绍部分实用的`Next plugins`以帮助使用者们更好的使用`Hexo`进行写作，戳{% link “此处” https://theme-next.js.org/docs/tag-plugins true %}查看Hexo官方文档提供的`plugins`
+`Next`主题或者说`HEXO`官方其实是提供了很多可以增加博文美观的plugin，戳{% link 此处 https://theme-next.js.org/docs/tag-plugins true %}查看Next官方文档，这篇文章将介绍部分实用的`Next plugins`以帮助使用者们更好的使用`Hexo`进行写作，戳{% link 此处 https://theme-next.js.org/docs/tag-plugins true %}查看Hexo官方文档提供的`plugins`
 
 1. Button
 2. Group Pictures

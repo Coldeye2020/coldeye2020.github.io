@@ -181,7 +181,7 @@ live2d:
 
 当然，由于潜在的安全隐患，这个博客肯定不会长期使用`valine`作为comment system，等`waline`与`hexo`适配的插件出来后，我应该会考虑使用`waline`。
 
-## ~~退而求其次的公式渲染器~~
+## ~~退而求其次的公式渲染器~~MathJax
 
 ### 流程：
 
@@ -286,7 +286,7 @@ body:before{
 
 ### 整体布局：
 
-![layout](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.svg)
 
 ### 工作流程
 

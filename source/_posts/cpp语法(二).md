@@ -3,7 +3,6 @@ title: Cpp(一)Cpp中级语法
 date: 2020-04-2 11:20:15
 categories:
 - Tech 
-- Language
 - Cpp
 tags: [Cpp, STL]
 mathjax: false
@@ -59,7 +58,7 @@ int main(){
 
 ##### 运行结果
 
-![image-20200317104913924](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172727.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172727.png)
 
 ##### 代码部分
 
@@ -88,7 +87,7 @@ int main(){
 
 ##### 运行结果
 
-![image-20200317113936619](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172728.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172728.png)
 
 ##### 代码部分
 
@@ -130,7 +129,7 @@ int main(){
 
 ##### 运行结果
 
-![image-20200317153220792](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172729.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172729.png)
 
 ##### 代码部分
 
@@ -163,7 +162,7 @@ int main(){
 
 ##### 运行结果![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321173034.png)
 
-![image-20200317155558229](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172730.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172730.png)
 
 ##### 代码部分
 
@@ -200,7 +199,7 @@ int main(){
 
 ##### 运行结果
 
-![image-20200317234810686](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172731.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172731.png)
 
 ##### 代码部分
 
@@ -281,13 +280,13 @@ int main(){
 
 ##### 	题目描述
 
-![image-20200317170443159](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172733.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172733.png)
 
 ​	
 
 ##### 	运行结果
 
-<img src="https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172732.png" alt="image-20200317170030019" style="zoom: 50%;" />
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172732.png)
 
 ##### 代码部分
 
@@ -331,11 +330,13 @@ int main(){
 
 ##### 题目描述
 
-​	![image-20200317212937327](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172736.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172736.png)
+
+
 
 ##### 运行结果
 
-![image-20200317184649424](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172734.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172734.png)
 
 ##### 代码部分
 
@@ -434,7 +435,7 @@ int main(){
 
 ##### 运行结果
 
-![image-20200317212912628](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172735.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172735.png)
 
 
 
