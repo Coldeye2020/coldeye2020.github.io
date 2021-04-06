@@ -18,6 +18,7 @@ before_install:
 - npm install -g hexo
 - npm un hexo-renderer-marked --save
 - npm install hexo-renderer-pandoc --save
+- npm install --save markdown-it-implicit-figures --save
     
 before_script:
 - git config user.name "Coldeye"
