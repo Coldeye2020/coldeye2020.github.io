@@ -333,19 +333,25 @@ body:before{
 
 ### 工作机制详解：
 
-1. 首先通过`git`的三段命令，我们可以将除开被纳入`gitinore`文件内的所有文件和目录都`push`到github远程仓库中(`branch:writer`)
+#### 本地主机部分
 
-   ```none /.gitinore
-   .DS_Store
-   Thumbs.db
-   db.json
-   *.log
-   node_modules/
-   public/
-   .deploy*/
-   ```
+首先通过`git`的三段命令，我们可以将除开被纳入`gitinore`文件内的所有文件和目录都`push`到github远程仓库中(`branch:writer`)
 
-2. 然后Travis CI检测到了`commit`后，先将仓库`pull`到服务器上，然后检查是否有`.travis.yml`，如果存在，则按照`.travis.yml`文件中的配置一步一步执行
+```none /.gitinore
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+```
+
+#### Travis CI部分
+
+1. 配置文件
+
+   然后Travis CI检测到了`commit`后，先将仓库`pull`到服务器上，然后检查是否有`.travis.yml`，如果存在，则按照`.travis.yml`文件中的配置一步一步执行
 
    ```yaml /.travis.yml
    language: node_js
@@ -390,7 +396,9 @@ body:before{
    ```
 
    {% note info %}
+
    #### Attention
+
    这里应该有三种方式配置`.travis.yml`文件的方式：
 
    1. 以`hexo`的方式(本博客采用的方案，最为简单，并且对插件`baidu_url_submitter`的支持也更简单)
@@ -415,7 +423,25 @@ body:before{
    - type: baidu_url_submitter
    ```
 
-   
+2. 命令执行
+   1. `hexo generate`命令在执行时会首先将`/source/`目录下所有开头不是下划的文件拷贝到/public/目录下（注：所有的文章均放置在`/source/_post/`目录下），对于`Markdown`和`HTML`文件则会先进行渲染然后再拷贝（如果想要指定某个`Markdown`或者`HTML`文件不进行渲染可以在站点配置文件`/_config.yml`中配置`skip_render`项）。在此过程中他会根据`markdown`文件中`front matter`段的`categories`项的值`A`来，确定渲染后得到的`HTML`文件应该放置在`/source/public/`目录下的同名`A`子目录下。如果是没有进行渲染的文件，则会保持原样放在`/public`下，其他部分(e.g.子目录`archives`,`categories`，`tags`)的生成也是差不多这么回事。同样的，`/themes/next/source/`目录下文件也会同样被copy到`/public/`目录下。
+   2. `hexo deploy`命令在执行时会按照`/_config.yml`文件中的配置，将`/public/`目录下的所有文件`push`到`github 远程仓库`的`mian`分支
 
-3. 所有的文章均放置在`/source/_post/`目录下，`hexo g`命令在执行时会首先将`/source/`目录下所有开头不是下划的文件拷贝到/public/目录下，对于`Markdown`和`HTML`文件则会先进行渲染然后再拷贝（如果想要指定某个`Markdown`或者`HTML`文件不进行渲染可以在站点配置文件`/_config.yml`中配置`skip_render`项）。在此过程中他会根据`markdown`文件中`front matter`段的`categories`项的值`A`来，确定渲染后得到的`HTML`文件应该放置在`/source/public/`目录下的同名`A`子目录下。如果是没有进行渲染的文件，则会保持原样放在`/public`下，其他部分(e.g.子目录`archives`,`categories`，`tags`)的生成也是差不多这么回事。同样的，`/themes/next/source/`目录下文件也会同样被copy到`/public/`目录下
+#### Github 远程仓库部分
 
++ 来自外部的`push`
+  + 来自本地主机的文件将被`push`到`writer`分支
+  + 来自Travis CI的文件将被`push`到`main`分支
++ 来自外部的`pull`
+  + 被Travis CI`pull`
+    + 若出现了`writter`分支的commit
+    + 检测是否存在`.travis.yml`文件
+    + 对`writer`分支中的文件进行`hexo g`操作
+  + 被Vercel`pull`
+    + 若出现了`main`分支的commit
+    + 直接将`main`分支`pull`下来
+
+#### Vercel 网站托管平台部分
+
+1. 如上所示，即Github仓库中的`main`分支如果出现了`commit`则会执行部署(但缺少部署文件，所以就是简单地pull下来了)
+2. 这个部分主要是提供了CDN服务，便于国内用户访问
