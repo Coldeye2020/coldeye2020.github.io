@@ -1,5 +1,5 @@
 ---
-title: Python(一)Python中级语法
+title: Python(二)Python中级语法
 date: 2020-10-20 14:20:17
 categories:
 - Tech 
@@ -15,7 +15,7 @@ description:
 
 **说明**
 
-+ 本文是在大三上学期看`廖雪峰Python`教程所做笔记，后并未勘误，如有错误，请谅解
++ 本文是在`大三上学期`参照`廖雪峰Python`教程所做笔记，后并未勘误，如有错误，请谅解
 + 另外，本文并不是一份严谨可靠的Python教程，更多的是我学习Python`中级语法设计时的一些心得和感悟
 
 {% endnote %}
