@@ -344,7 +344,7 @@ System.out.println(arr[0]);
 
 //数组遍历
 //通用格式
-int[] arr = {...};
+int[] arr = {......};
 for(int x=0; x<arr.length; x++){
 	System.out.println(arr[x]);
 }
