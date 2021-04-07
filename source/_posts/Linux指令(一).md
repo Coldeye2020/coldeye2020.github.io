@@ -233,7 +233,7 @@ vim 文件名
 
 ### 运行级别
 
-![image-20200328165315188](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200328165526.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20200328165526.png)
 
 #### 运行级别配置文件
 
@@ -373,9 +373,9 @@ ls-l中显示的内容-rwxrw-r-- 1 root root 1213 Feb 2 09:39 abc
 + #### 时间部分
 
   + 5个部分：分钟 小时 日期 月份 星期
-  + <img src="C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329142823572.png" alt="image-20200329142823572" style="zoom:50%;" />
+  + ![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329142823572.png)
 
-<img src="C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329142833796.png" alt="image-20200329142833796" style="zoom:50%;" />
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329142833796.png)
 
 + #### 任务执行部分
 
@@ -492,7 +492,7 @@ ls-l中显示的内容-rwxrw-r-- 1 root root 1213 Feb 2 09:39 abc
 
   + 方式	
     + 可以直接在运行级别5环境下进行操作，即勾选DHCP
-    + <img src="C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329170700425.png" alt="image-20200329170700425" style="zoom:50%;" />
+    + <img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329170700425.png" alt="image-20200329170700425" style="zoom:50%;" />
   + 缺点
     + 自动获取会导致ip地址是动态的，无法作为服务器
 
@@ -502,7 +502,7 @@ ls-l中显示的内容-rwxrw-r-- 1 root root 1213 Feb 2 09:39 abc
     + vim /etc/sysconfig/network-scripts/ifcfg-eth33
       + 注意，不同的版本文件可能名字不同，位置不同，需要具体查询
     + 具体需要注意几个点：IPADDR, GATEWAY, DNS1, BOOTPROTO, ONBOOT
-    + ![image-20200329171204112](C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329171204112.png)
+    + ![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329171204112.png)
     + service network restart
       + 重启网络服务
 
@@ -536,9 +536,9 @@ ls-l中显示的内容-rwxrw-r-- 1 root root 1213 Feb 2 09:39 abc
     + -p     显示进程PID
     + -u     显示进程所属用户
 
-  <img src="C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329184234373.png" alt="image-20200329184234373" style="zoom:50%;" />
+  <img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329184234373.png" alt="image-20200329184234373" style="zoom:50%;" />
 
-<img src="C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329184553477.png" alt="image-20200329184553477" style="zoom:50%;" />
+<img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329184553477.png" alt="image-20200329184553477" style="zoom:50%;" />
 
 ### 2 进程终止
 
@@ -596,7 +596,7 @@ ls-l中显示的内容-rwxrw-r-- 1 root root 1213 Feb 2 09:39 abc
 ### 6  动态监控进程（与ps的区别在于其实时更新）
 
 + top
-  + ![image-20200329193752382](C:\Users\大神哈哈\AppData\Roaming\Typora\typora-user-images\image-20200329193752382.png)
+  + ![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329193752382.png)
   + 交互指令
     + u      输入用户名，并只显示属于该用户的进程
     + k      输入PID，并终止进程
