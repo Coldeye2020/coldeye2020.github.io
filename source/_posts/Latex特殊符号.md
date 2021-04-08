@@ -399,27 +399,27 @@ $$
 
 ### 小写希腊字母
 
-![image-20200320151609176](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151609176.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151609176.png)
 
 ### 大写希腊字母
 
-![image-20200320151628633](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151628633.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151628633.png)
 
 ### 二元关系符
 
-![image-20200320151701880](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151701880.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151701880.png)
 
 ### 二元运算符
 
-![image-20200320151727539](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151727539.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151727539.png)
 
 ### 大尺寸运算符
 
-![image-20200320151743230](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151743230.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151743230.png)
 
 ### 箭头
 
-![image-20200320151755631](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151755631.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151755631.png)
 
 ### 定界符
 
@@ -427,44 +427,44 @@ $$
 
 ### 大尺寸定界符
 
-![image-20200320151824258](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151824258.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151824258.png)
 
 ### 其他符号
 
-![image-20200320151849212](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151849212.png)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151849212.png)
 
 #### 非数学符号
 
-![3-11](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120814709)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120814709)
 
 #### AMS 定界符
 
-![3-12](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120845203)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120845203)
 
 #### AMS 希腊和希伯来字母
 
-![3-13](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120857003)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120857003)
 
 #### AMS 二元关系符
 
-![3-14](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120908923)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120908923)
 
 #### AMS 箭头
 
-![3-15](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120921290)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120921290)
 
 #### AMS 二元否定关系符和箭头
 
-![3-16](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120934677)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120934677)
 
 #### AMS 二元运算符
 
-![3-17](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120948160)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120948160)
 
 #### AMS 其它符号
 
-![3-18](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121000205)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121000205)
 
 #### 数学字母
 
-![3-19](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121011781)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121011781)
