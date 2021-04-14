@@ -6,10 +6,10 @@ categories:
 - Tech 
 - Cpp
 - Pid
-tags: [Cpp, STL]
-mathjax: false
+tags: [Cpp, PID, car]
+mathjax: true
 urlname: cpp_grammar_intermediate
-keywords: [Cpp, STL]
+keywords: [Cpp, PID, car design]
 description:
 ---
 
@@ -166,6 +166,34 @@ Mbed OS：[Mbed OS 2](https://os.mbed.com/handbook)
 
 #### PID原理
 
+##### Wikipedia
+
+The PID control scheme is named after its three correcting terms, whose sum constitutes the manipulated variable (MV). The proportional, integral, and derivative terms are summed to calculate the output of the PID controller. Defining ${u(t)}$ the controller output, the final form of the PID algorithm is
+$$
+u(t)={MV}(t)=K_{\text{p}}e(t)+K_{\text{i}}\int _{0}^{t}e(\tau )\,d\tau +K_{\text{d}}{\frac {de(t)}{dt}}
+$$
+where
+
+${\displaystyle K_{\text{p}}}$is the proportional gain, a tuning parameter
+
+${\displaystyle K_{\text{i}}}$is the integral gain, a tuning parameter
+
+${\displaystyle K_{\text{d}}}$is the derivative gain, a tuning parameter
+
+${\displaystyle e(t)=\mathrm {SP} -\mathrm {PV} (t)}$ is the error (SP is the setpoint, and PV(*t*) is the process variable)
+
+$t$ is the time or instantaneous time (the present)
+
+$\tau $ is the variable of integration (takes on values from time 0 to the present ${\displaystyle t}$
+
+Equivalently, the [transfer function](https://en.wikipedia.org/wiki/Transfer_function) in the [Laplace domain](https://en.wikipedia.org/wiki/Laplace_transform) of the PID controller is
+$$
+\displaystyle L(s)=K_{\text{p}}+K_{\text{i}}/s+K_{\text{d}}s
+$$
+where ${\displaystyle s}$ is the complex frequency.
+
+##### Bilibili
+
 <iframe src="//player.bilibili.com/player.html?aid=627065033&bvid=BV1et4y1i7Gm&cid=235144459&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 #### PID更新方案(触发条件)
@@ -246,7 +274,7 @@ Mbed OS：[Mbed OS 2](https://os.mbed.com/handbook)
 
 结果：
 
-+ 
++ 我们决定采用方案二作为我们的PID更新方式
 
 #### PID代码
 
@@ -261,8 +289,6 @@ Mbed OS：[Mbed OS 2](https://os.mbed.com/handbook)
 ```
 
 
-
-#### PID代码
 
 >当算法译平台默认支持的语言是C和C++，因为除了大一的时候学过一学期C语言，之后都没怎么学过了，所以代码写的很糙，如果要直接使用的话，请仔细检查。
 >
