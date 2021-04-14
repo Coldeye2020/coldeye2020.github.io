@@ -348,7 +348,7 @@ extern "C"{
 
 
 
-```c++ main.cpp
+```cpp main.cpp
 #include "mbed.h"
 #include "pid.h"
 #include <iostream>
@@ -369,18 +369,17 @@ int flag=1;
 
 class PidFirst {
     public:
-        PidFirst(PinName pwm_name, PinName 
-                 sensorPort, double tar=60.0):pwm(pwm_name), _interruptin(sensorPort)
-       {              
-            _counter = 0;			// initialize pwm period
-            pwm.period_ms(20);		// initialize pwm period
-            target = tar;			// initialize target speed
-            PID_Calibration pidCali = {0.001, 0.006, 0};	
+        PidFirst(PinName pwm_name, PinName sensorPort, double tar=60.0): pwm(pwm_name), _interruptin(sensorPort){
+            _counter = 0;
+            pwm.period_ms(20);
+            pwm=1;
+            target = tar;
+            PID_Calibration pidCali = {0.001, 0.006, 0};
             PID_State pidState = {0,target,0.2,target,0,0.1};
-            _pidCalibration = pidCali;	// set PID Calibration
-            _pidState = pidState;	// initial PID State
-            time.start();			// enable timer
-            _interruptin.rise(this, &PidFirst::counterFunc);	// attach counterFunc to interrupt
+            _pidCalibration = pidCali;
+            _pidState = pidState;
+            time.start();
+            _interruptin.rise(this, &PidFirst::counterFunc);
         }
         
         // Function: set target velocity
@@ -395,17 +394,14 @@ class PidFirst {
             _pidCalibration.kd = kd;
         }
         
-        // Function: update counter when iterrupt happened
         void counterFunc(){
             _counter++;
         }
-		
-	   // Function: clear counter after PID renewal
+
         void counterClear(){
             _counter = 0;
         }
-		
-       // Function: return counter (for telling whether exec PID reneal or not in main function)
+
         int counterCheck(){
             return _counter;
         }
@@ -414,13 +410,12 @@ class PidFirst {
         // Attention: if the velocity lesson than 0.25round/s there will be a bug
         double speedFunc(){
             duration = time.read_ms() / 1000.0;
-            // avoid the Iterm error after long time stop 
-            if(duration > 0 && duration < 2){
+            if(duration > 0 && duration < 3){
                 _pidState.time_delta =  duration;
                 return  _counter / duration;               
             }
             else{
-                duration = 0.01;
+                duration = 0.1;
                  _pidState.time_delta =  duration;
                 return 0;
             }
@@ -429,17 +424,17 @@ class PidFirst {
 
         // Function: to update the pid control factor
         void pid_iterate(){
-            // calculate error
+            // 计算目标值与反馈值之间的误差
             double error = _pidState.target - _pidState.actual;
-            // calculate Iterm
+            // 计算Iterm
             _pidState.integral += (error * _pidState.time_delta);
-            // calculate Pterm
+            // 计算Pterm
             double derivative = (error - _pidState.previous_error) / _pidState.time_delta;
-            // calculate output
+            // 计算pid next state
             _pidState.output = (
                 (_pidCalibration.kp * error) + (_pidCalibration.ki * _pidState.integral) + (_pidCalibration.kd * derivative)
             );
-            // update previous_error
+            // 更新上一次的误差值为本次的误差值
             _pidState.previous_error = error;
             // 返回这次的状态
         }
@@ -462,6 +457,10 @@ class PidFirst {
             return _pidState.actual;
         }
         
+        double timeCheck(){
+            return time.read_ms() / 1000.0;
+        }
+        
         
     private:
         PID_Calibration _pidCalibration;       
@@ -474,14 +473,12 @@ class PidFirst {
         double duration;
 };
 
-// Instantiate pid objects for each mot
-PidFirst mot1_pid(D5, D2);
+PidFirst mot1_pid(D5, D2); 
 PidFirst mot2_pid(D6, D3);
 PidFirst mot3_pid(D9, D11);
 PidFirst mot4_pid(D10, A2);
 
-// Function: renew PID parameter according to string received in Serial port,
-// 			used to test effectiveness of differet PID parameter
+
 bool renew_motor(char _read[]){
     char *token;
     token = strtok(_read, " ");
@@ -545,16 +542,16 @@ int main()
     char ch;
     flipper.attach(&flag_change, 1);
     while(1){
-        if(mot1_pid.counterCheck() >= iterationCounter){
+        if(mot1_pid.counterCheck() >= iterationCounter || mot1_pid.timeCheck() >= 3){
             mot1_pid.renew();
         }
-        if(mot2_pid.counterCheck() >= iterationCounter){
+        if(mot2_pid.counterCheck() >= iterationCounter || mot2_pid.timeCheck() >= 3){
             mot2_pid.renew();
         }
-        if(mot3_pid.counterCheck() >= iterationCounter){
+        if(mot3_pid.counterCheck() >= iterationCounter || mot3_pid.timeCheck() >= 3){
             mot3_pid.renew();
         }
-        if(mot4_pid.counterCheck() >= iterationCounter){
+        if(mot4_pid.counterCheck() >= iterationCounter || mot4_pid.timeCheck() >= 3){
             mot4_pid.renew();
         }
         if(flag == 1){
