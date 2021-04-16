@@ -582,7 +582,7 @@ std::setprecision(n)：控制输出流显示浮点数的数字个数，C++默认
 
 ##### 运行测试
 
-![image-20200319171151877](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172737.png)
+![](https://raw.githubusercontent.com/Coldeye2020/picturebed/master/20200321172737.png)
 
 ##### 代码演示
 
@@ -706,11 +706,11 @@ char *strlwr(char *str);//用于将字符串中的字符转换为小写
 long strtol(char *str, char **endptr, int base);//将串转换为长整数
 ```
 
-![image-20200322150930993](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322150939.png)
+![](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322150939.png)
 
-![image-20200322151021822](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322151023.png)
+![](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322151023.png)
 
-![image-20200322151308530](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322151310.png)
+![](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322151310.png)
 
 ##### 内存操作函数
 
@@ -722,11 +722,11 @@ void * memset( void *ptr, int value, size_t num );//memset是一个非常好用�
 void *memcpy(void *destin, void *source, unsigned n);//函数的功能是从源内存地址的起始位置开始拷贝若干个字节到目标内存地址中，即从源source中拷贝n个字节到目标destin中
 ```
 
-![image-20200322153106304](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322153108.png)
+![](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322153108.png)
 
-![image-20200322153125106](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322153126.png)
+![](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322153126.png)
 
-![image-20200322153845225](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322153848.png)
+![](https://cdn.jsdelivr.net/gh/Coldeye2020/picturebed/img/20200322153848.png)
 
 #### 标准库文件头函数
 
