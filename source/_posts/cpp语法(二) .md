@@ -1,12 +1,12 @@
 ---
-title: Cpp(一)Cpp中级语法
-date: 2020-04-2 11:20:15
+title: Cpp(二)Cpp中级语法
+date: 2021-04-17 00:45:22
 categories:
 - Tech 
 - Cpp
 tags: [Cpp, STL]
 mathjax: false
-urlname: cpp_grammar_intermediate
+urlname: cpp_grammar_intermediate_2
 keywords: [Cpp, STL]
 description:
 ---
@@ -15,7 +15,7 @@ description:
 
 **说明**
 
-本文是在`大二期间`因疫情缘故无法返校看`北京大学 郭炜老师`的`C++进阶`网课所做笔记，后并为勘误，如有错误，请谅解
+本文是在`大三期间`看`北京大学 李葛老师`的`C语言基础`网课所做笔记，后并未勘误，如有错误，请谅解
 {% endnote %}
 
 <!--more-->
@@ -780,3 +780,105 @@ void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void *, c
 #include <set>
 ```
 
+```Cpp
+#include <iostream>
+using namespace std;
+
+
+int history[8][8] = {0}; 
+char panel[8][8] = {'\0'};
+
+struct position{
+    int x;
+    int y;
+    position *next;
+    position *ahead;
+} source;
+
+
+position *add_position(position *head, int x, int y){
+    position *temp = head;
+    while(temp->next != NULL) temp = temp->next;
+    temp->x = x;
+    temp->y = y;
+    position *extra = new position;
+    temp->next = extra;
+    extra->ahead = temp;
+    extra->next = NULL;
+    return head;
+}
+ 
+position *getLegalMove(position *head, int x, int y){
+    if(panel[x+1][y] != 'b' && panel[x+1][y] != '@'){
+        if(panel[x+2][y+1] != 'b' && panel[x+2][y+1] != '@' && panel[x+2][y+1] != 'S') add_position(head, x+2, y+1);
+        if(panel[x+2][y-1] != 'b' && panel[x+2][y-1] != '@' && panel[x+2][y-1] != 'S') add_position(head, x+2, y-1);
+    }
+    if(panel[x-1][y] != 'b' && panel[x-1][y] != '@'){
+        if(panel[x-2][y+1] != 'b' && panel[x-2][y+1] != '@' && panel[x-2][y+1] != 'S') add_position(head, x-2, y+1);
+        if(panel[x-2][y-1] != 'b' && panel[x-2][y-1] != '@' && panel[x-2][y-1] != 'S') add_position(head, x-2, y-1);
+    }
+    if(panel[x][y+1] != 'b' && panel[x][y+1] != '@'){
+        if(panel[x-1][y+2] != 'b' && panel[x-1][y+2] != '@' && panel[x-1][y+2] != 'S') add_position(head, x-1, y+2);
+        if(panel[x+1][y+2] != 'b' && panel[x+1][y+2] != '@' && panel[x+1][y+2] != 'S') add_position(head, x+1, y+2);
+    }
+    if(panel[x][y-1] != 'b' && panel[x][y-1] != '@'){
+        if(panel[x-1][y-2] != 'b' && panel[x-1][y-2] != '@' && panel[x-1][y-2] != 'S') add_position(head, x-1, y-2);
+        if(panel[x+1][y-2] != 'b' && panel[x+1][y-2] != '@' && panel[x+1][y-2] != 'S') add_position(head, x+1, y-2);
+    }
+    return head;
+}
+
+int step(position des){
+    int R = 100, Q = 100;
+    position *head = new position, *temp;
+    position mainsource = source;
+    head->next = NULL;
+    head = getLegalMove(head, source.x, source.y);
+    temp = head; 
+    while(temp->next!=NULL){
+        if(history[temp->x][temp->y] != -1){
+            Q = history[temp->x][temp->y];
+        }
+        else{
+            if (panel[temp->x][temp->y] == 'E')
+            {
+                return 1;
+            }
+            source.x = temp -> x;
+            source.y = temp -> y;
+            panel[temp->x][temp->y] = 'S';
+            Q = step(des);
+            history[temp->x][temp->y] = Q;
+            source = mainsource;
+            panel[temp->x][temp->y] = '.';
+        }
+        if(R > Q) 
+            R = Q;
+        temp = temp->next;
+    }
+    return R+1;
+}
+
+int main(){
+    for (int i = 1; i < 7; i++)
+    {
+        for (int j = 1; j < 7; j++)
+        {
+            cin>>panel[i][j];
+        }
+    }
+    
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(panel[i][j] == 'S'){
+                source.x = i;
+                source.y = j;
+            }
+            if(i == 0 || i == 7 || j == 0 || j ==7) panel[i][j] = 'b';
+            history[i][j] = -1;
+        }
+    }
+    position e = {1, 6};
+    cout << step(e);
+}
+```
