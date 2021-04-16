@@ -5,7 +5,7 @@ categories:
 - Tech 
 - Cpp
 tags: [Cpp, STL]
-mathjax: false
+mathjax: true
 urlname: cpp_grammar_intermediate
 keywords: [Cpp, STL]
 description:
