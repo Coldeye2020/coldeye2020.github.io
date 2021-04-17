@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon-32x32.png" color="#222">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="google-site-verification" content="vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k">
+  <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"coldeye2020.monster","root":"/","images":"/images","scheme":"Gemini","version":"8.2.2","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="Attention 本文撰写时的环境为Hexo Version:5.4.0,Next Version:8.2.2  Next主题或者说HEXO官方其实是提供了很多可以增加博文美观的plugin，戳此处查看Next官方文档，这篇文章将介绍部分实用的Next plugins以帮助使用者们更好的使用Hexo进行写作，戳此处查看Hexo官方文档提供的plugins  Button Group Pictur">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo技巧(一)Plugin">
+<meta property="og:url" content="https://coldeye2020.monster/Hexo/hexo_trick_1.html">
+<meta property="og:site_name" content="Doki Doki">
+<meta property="og:description" content="Attention 本文撰写时的环境为Hexo Version:5.4.0,Next Version:8.2.2  Next主题或者说HEXO官方其实是提供了很多可以增加博文美观的plugin，戳此处查看Next官方文档，这篇文章将介绍部分实用的Next plugins以帮助使用者们更好的使用Hexo进行写作，戳此处查看Hexo官方文档提供的plugins  Button Group Pictur">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-1.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-2.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg">
+<meta property="article:published_time" content="2021-04-04T12:43:52.000Z">
+<meta property="article:modified_time" content="2021-04-17T04:33:10.992Z">
+<meta property="article:author" content="Coldeye">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-1.png">
+
+
+<link rel="canonical" href="https://coldeye2020.monster/Hexo/hexo_trick_1.html">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+<title>Hexo技巧(一)Plugin | Doki Doki</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-193945147-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-193945147-1');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?166a4bbbc38e0e94b738a7cc1785a0ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Doki Doki</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog about life and tech sharing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#button"><span class="nav-number">1.</span> <span class="nav-text">Button</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">示例：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#button-with-text"><span class="nav-number">1.3.1.</span> <span class="nav-text">Button with text</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-with-icon"><span class="nav-number">1.3.2.</span> <span class="nav-text">Button with icon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-with-text-icon"><span class="nav-number">1.3.3.</span> <span class="nav-text">Button with text &amp; icon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-inside-text"><span class="nav-number">1.3.4.</span> <span class="nav-text">Button inside text</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-inside-other-tag"><span class="nav-number">1.3.5.</span> <span class="nav-text">Button inside other tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-margin"><span class="nav-number">1.3.6.</span> <span class="nav-text">Button margin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-with-relative-url"><span class="nav-number">1.3.7.</span> <span class="nav-text">Button with relative URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#button-with-absolute-url"><span class="nav-number">1.3.8.</span> <span class="nav-text">Button with absolute URL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#group-pictures"><span class="nav-number">2.</span> <span class="nav-text">Group Pictures</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-1"><span class="nav-number">2.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95-1"><span class="nav-number">2.2.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="nav-number">2.3.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#label"><span class="nav-number">3.</span> <span class="nav-text">Label</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-2"><span class="nav-number">3.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95-2"><span class="nav-number">3.2.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="nav-number">3.3.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#link-grid"><span class="nav-number">4.</span> <span class="nav-text">Link Grid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-3"><span class="nav-number">4.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95-3"><span class="nav-number">4.2.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="nav-number">4.3.</span> <span class="nav-text">示例：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F1"><span class="nav-number">4.3.1.</span> <span class="nav-text">使用方式1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F2"><span class="nav-number">4.3.2.</span> <span class="nav-text">使用方式2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#note"><span class="nav-number">5.</span> <span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-4"><span class="nav-number">5.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE"><span class="nav-number">5.2.</span> <span class="nav-text">设置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95-4"><span class="nav-number">5.3.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="nav-number">5.4.</span> <span class="nav-text">示例：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.4.1.</span> <span class="nav-text">简单示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#header"><span class="nav-number">5.4.2.</span> <span class="nav-text">Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#default-header"><span class="nav-number">5.4.3.</span> <span class="nav-text">Default Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#primary-header"><span class="nav-number">5.4.4.</span> <span class="nav-text">Primary Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#info-header"><span class="nav-number">5.4.5.</span> <span class="nav-text">Info Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#success-header"><span class="nav-number">5.4.6.</span> <span class="nav-text">Success Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#warning-header"><span class="nav-number">5.4.7.</span> <span class="nav-text">Warning Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#danger-header"><span class="nav-number">5.4.8.</span> <span class="nav-text">Danger Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="nav-number">5.4.9.</span> <span class="nav-text">高级用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#no-icon-note"><span class="nav-number">5.4.9.1.</span> <span class="nav-text">No icon note</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#no-icon-note"><span class="nav-number">5.4.10.</span> <span class="nav-text">No icon note</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#note-with-summary"><span class="nav-number">5.4.10.1.</span> <span class="nav-text">Note with summary</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#details-and-summary"><span class="nav-number">5.4.11.</span> <span class="nav-text">Details and summary</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#no-icon-with-summary"><span class="nav-number">5.4.11.1.</span> <span class="nav-text">No icon with Summary</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#details-and-summary-no-icon"><span class="nav-number">5.4.12.</span> <span class="nav-text">Details and summary (No icon)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#codeblock-in-note"><span class="nav-number">5.4.12.1.</span> <span class="nav-text">Codeblock in note</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#codeblock-in-note"><span class="nav-number">5.4.13.</span> <span class="nav-text">Codeblock in note</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#list-in-note"><span class="nav-number">5.4.13.1.</span> <span class="nav-text">List in note</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lists-in-note"><span class="nav-number">5.4.14.</span> <span class="nav-text">Lists in note</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#table-in-note"><span class="nav-number">5.4.14.1.</span> <span class="nav-text">Table in note</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-in-note-1"><span class="nav-number">5.4.15.</span> <span class="nav-text">Table in Note</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pdf"><span class="nav-number">6.</span> <span class="nav-text">PDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-1"><span class="nav-number">6.1.</span> <span class="nav-text">设置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-5"><span class="nav-number">6.2.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95-5"><span class="nav-number">6.3.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-5"><span class="nav-number">6.4.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tabs"><span class="nav-number">7.</span> <span class="nav-text">Tabs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-2"><span class="nav-number">7.1.</span> <span class="nav-text">设置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8-6"><span class="nav-number">7.2.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%B3%95-6"><span class="nav-number">7.3.</span> <span class="nav-text">用法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-6"><span class="nav-number">7.4.</span> <span class="nav-text">示例：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95"><span class="nav-number">7.4.1.</span> <span class="nav-text">简单用法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-default-tab-selected"><span class="nav-number">7.4.1.1.</span> <span class="nav-text">Tabs with default tab selected</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-3rd-tab-selected"><span class="nav-number">7.4.1.2.</span> <span class="nav-text">Tabs with 3rd tab selected</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-no-tab-selected"><span class="nav-number">7.4.1.3.</span> <span class="nav-text">Tabs with no tab selected</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-custom-labels"><span class="nav-number">7.4.1.4.</span> <span class="nav-text">Tabs with custom labels</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-icons-only"><span class="nav-number">7.4.1.5.</span> <span class="nav-text">Tabs with icons only</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-icons-and-labels"><span class="nav-number">7.4.1.6.</span> <span class="nav-text">Tabs with icons and labels</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95-1"><span class="nav-number">7.4.2.</span> <span class="nav-text">高级用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-permalinks-testtabs%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="nav-number">7.4.2.1.</span> <span class="nav-text">Tabs permalinks test（tabs在页面中的链接）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tabs-with-other-tags"><span class="nav-number">7.4.2.2.</span> <span class="nav-text">Tabs with other tags</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Coldeye"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Coldeye</p>
+  <div class="site-description" itemprop="description">Finnally, you will find nothing is irreplaceable,</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/coldeye2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;coldeye2020" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:948283368.coldeye@gamil.com" title="E-Mail → mailto:948283368.coldeye@gamil.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/948283368" title="QQ → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;948283368" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+<!-- Insert Clustrmaps -->
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=200&t=tt&d=-ZnRDnKizjAkFSMaMv_zwM1vK_yTeDc1r3Pr34sq6a8&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://coldeye2020.monster/Hexo/hexo_trick_1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Coldeye">
+      <meta itemprop="description" content="Finnally, you will find nothing is irreplaceable,">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doki Doki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo技巧(一)Plugin
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-04 20:43:52" itemprop="dateCreated datePublished" datetime="2021-04-04T20:43:52+08:00">2021-04-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-17 12:33:10" itemprop="dateModified" datetime="2021-04-17T12:33:10+08:00">2021-04-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/Hexo/hexo_trick_1.html" class="post-meta-item leancloud_visitors" data-flag-title="Hexo技巧(一)Plugin" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>27k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>25 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note info"><p><strong>Attention</strong></p>
+<p>本文撰写时的环境为<code>Hexo Version:5.4.0</code>,<code>Next Version:8.2.2</code></p>
+</div>
+<p><code>Next</code>主题或者说<code>HEXO</code>官方其实是提供了很多可以增加博文美观的plugin，戳<a href="https://theme-next.js.org/docs/tag-plugins" rel="external nofollow noreferrer" title="" target="_blank">此处</a>查看Next官方文档，这篇文章将介绍部分实用的<code>Next plugins</code>以帮助使用者们更好的使用<code>Hexo</code>进行写作，戳<a href="https://theme-next.js.org/docs/tag-plugins" rel="external nofollow noreferrer" title="" target="_blank">此处</a>查看Hexo官方文档提供的<code>plugins</code></p>
+<ol type="1">
+<li>Button</li>
+<li>Group Pictures</li>
+<li>Label</li>
+<li>Link Grid</li>
+<li>Note</li>
+<li>PDF</li>
+<li>Tabs</li>
+</ol>
+<span id="more"></span>
+<h2 id="button">Button</h2>
+<h3 id="作用">作用：</h3>
+<p>将链接封装在一个button中以提高互动性和美观程度。</p>
+<h3 id="用法">用法：</h3>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% button url, text, icon [class], [title] %&#125;
+<span class="token comment">&lt;!-- Tag Alias --></span>
+&#123;% btn url, text, icon [class], [title] %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>url</code>: 绝对路径或者相对路径，当然也可以是网络地址</li>
+<li><code>text</code>: Button中的文字内容. （和icon两者任选其一即可，也可以同时使用两者）</li>
+<li><code>icon</code>: Button中的Awesome Icon （和text两者任选其一）</li>
+<li><code>[class]</code>: 可选项，icon的size(es): fa-fw | fa-lg | fa-2x | fa-3x | fa-4x | fa-5x（从小到大）</li>
+<li><code>[title]</code>:可选项， 鼠标悬停时的提示文字.</li>
+</ul>
+<h3 id="示例">示例：</h3>
+<h4 id="button-with-text">Button with text</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&#123;% btn #, Text %&#125;
+&#123;% btn #, Text &amp; Title,, Title %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<a class="btn" href="#">Text</a>
+<a class="btn" href="#" title="Title">Text & Title</a>
+<h4 id="button-with-icon">Button with icon</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"># 使用<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span> 进行换行控制
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, home fa-5x %&#125;&#123;% btn #,, home fa-5x %&#125;&#123;% btn #,, home fa-5x %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, home fa-4x %&#125;&#123;% btn #,, home fa-4x %&#125;&#123;% btn #,, home fa-4x %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, home fa-3x %&#125;&#123;% btn #,, home fa-3x %&#125;&#123;% btn #,, home fa-3x %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, home fa-2x %&#125;&#123;% btn #,, home fa-2x %&#125;&#123;% btn #,, home fa-2x %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, home fa-lg %&#125;&#123;% btn #,, home fa-lg %&#125;&#123;% btn #,, home fa-lg %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, home %&#125;&#123;% btn #,, home %&#125;&#123;% btn #,, home %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div>
+<a class="btn" href="#"><i class="fa fa-home fa-5x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-5x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-5x"></i></a>
+<div>
+<div>
+<a class="btn" href="#"><i class="fa fa-home fa-4x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-4x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-4x"></i></a>
+<div>
+<div>
+<a class="btn" href="#"><i class="fa fa-home fa-3x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-3x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-3x"></i></a>
+<div>
+<div>
+<a class="btn" href="#"><i class="fa fa-home fa-2x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-2x"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-2x"></i></a>
+<div>
+<div>
+<a class="btn" href="#"><i class="fa fa-home fa-lg"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-lg"></i></a>
+<a class="btn" href="#"><i class="fa fa-home fa-lg"></i></a>
+<div>
+<div>
+<a class="btn" href="#"><i class="fa fa-home"></i></a>
+<a class="btn" href="#"><i class="fa fa-home"></i></a>
+<a class="btn" href="#"><i class="fa fa-home"></i></a>
+<div>
+
+
+<h4 id="button-with-text-icon">Button with text &amp; icon</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>&#123;% btn #, Text &amp; Icon (buggy), home %&#125;
+&#123;% btn #, Text &amp; Icon (fixed width), home fa-fw %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>
+<a class="btn" href="#"><i class="fa fa-home"></i>Text & Icon (buggy)</a>
+<a class="btn" href="#"><i class="fa fa-home fa-fw"></i>Text & Icon (fixed width)</a>
+</p>
+<h4 id="button-inside-text">Button inside text</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">Lorem &#123;% btn #, Lorem, home fa-fw fa-lg %&#125; ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident &#123;% btn #, Ipsum, home fa-fw fa-lg %&#125;, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>Lorem <a class="btn" href="#"><i class="fa fa-home fa-fw fa-lg"></i>Lorem</a> ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident <a class="btn" href="#"><i class="fa fa-home fa-fw fa-lg"></i>Ipsum</a>, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h4 id="button-inside-other-tag">Button inside other tag</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">&#123;% note info %&#125;
+&#123;% btn #, Text &amp; Icon, home fa-fw %&#125;
+
+&#123;% btn #,, home, Title %&#125;&#123;% btn #, Text %&#125;
+
+[Link](#)
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note info"><p><a class="btn" href="#"><i class="fa fa-home fa-fw"></i>Text &amp; Icon</a></p>
+<p><a class="btn" href="#" title="Title"><i class="fa fa-home"></i></a><a class="btn" href="#">Text</a></p>
+<p><a href="#">Link</a></p>
+</div>
+<h4 id="button-margin">Button margin</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-center<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, heading %&#125;&#123;% btn #,, fab fa-edge %&#125;&#123;% btn #,, times %&#125;&#123;% btn #,, circle-notch %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, italic %&#125;&#123;% btn #,, fab fa-scribd %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>&#123;% btn #,, fab fa-google %&#125;&#123;% btn #,, fab fa-chrome %&#125;&#123;% btn #,, fab fa-opera %&#125;&#123;% btn #,, gem fa-rotate-270 %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<div class="text-center">
+<div>
+<a class="btn" href="#"><i class="fa fa-heading"></i></a>
+<a class="btn" href="#"><i class="fab fa-edge"></i></a>
+<a class="btn" href="#"><i class="fa fa-times"></i></a>
+<a class="btn" href="#"><i class="fa fa-circle-notch"></i></a>
+</div>
+<div>
+<a class="btn" href="#"><i class="fa fa-italic"></i></a>
+<a class="btn" href="#"><i class="fab fa-scribd"></i></a>
+</div>
+<div>
+<a class="btn" href="#"><i class="fab fa-google"></i></a>
+<a class="btn" href="#"><i class="fab fa-chrome"></i></a>
+<a class="btn" href="#"><i class="fab fa-opera"></i></a>
+<a class="btn" href="#"><i class="fa fa-gem fa-rotate-270"></i></a>
+</div>
+</div>
+<h4 id="button-with-relative-url">Button with relative URL</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-center<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>&#123;% btn #, Previous Chapter, arrow-left fa-fw fa-lg, Previous Chapter (Full Image) %&#125; &#123;% btn #, Next Chapter, arrow-right fa-fw fa-lg, Next Chapter (Label) %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<div class="text-center">
+<a class="btn" href="#" title="Previous Chapter (Full Image)"><i class="fa fa-arrow-left fa-fw fa-lg"></i>Previous Chapter</a>
+<a class="btn" href="#" title="Next Chapter (Label)"><i class="fa fa-arrow-right fa-fw fa-lg"></i>Next Chapter</a>
+</div>
+<h4 id="button-with-absolute-url">Button with absolute URL</h4>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-center<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>&#123;% btn https://github.com, GitHub, fab fa-github fa-fw fa-lg, GitHub %&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<div class="text-center">
+<a class="btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com" title="GitHub"><i class="fab fa-github fa-fw fa-lg"></i>GitHub</a>
+</div>
+<h2 id="group-pictures">Group Pictures</h2>
+<h3 id="作用-1">作用：</h3>
+<p>按照一定的结构排列一组图片，以增加美感。</p>
+<h3 id="用法-1">用法：</h3>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% grouppicture [number]-[layout] %&#125;&#123;% endgrouppicture %&#125;
+<span class="token comment">&lt;!-- Tag Alias --></span>
+&#123;% gp [number]-[layout] %&#125;&#123;% endgp %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>[number]</code> : 可选项，图片的总数量</li>
+<li><code>[layout]</code> : 可选项，图片的布局结构</li>
+</ul>
+<p><code>[layout]</code>如下：</p>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-1.png" /></p>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/group-picture-2.png" /></p>
+<h3 id="示例-1">示例：</h3>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token punctuation">&#123;</span>% grouppicture 6-3 %<span class="token punctuation">&#125;</span>
+<span class="token selector">![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)
+![](https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg)</span>
+<span class="token punctuation">&#123;</span>% endgrouppicture %<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg" /></div><div class="group-picture-column"><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg" /></div><div class="group-picture-column"><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg" /></div><div class="group-picture-column"><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/next.svg" /></div></div></div>
+<h2 id="label">Label</h2>
+<h3 id="作用-2">作用：</h3>
+<p>对文字加上标签，突出重点，增加文章可读性。</p>
+<h3 id="用法-2">用法：</h3>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% label [class]@text %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><code>[class]</code> : 可选项，支持的值有: <code>default</code> | <code>primary</code> | <code>success</code> | <code>info</code> | <code>warning</code> | <code>danger</code>.默认为<code>default</code></li>
+<li><code>text</code> : <code>@text</code> can be specified with or without space E.g. <code>success @text</code> is the same as <code>success@text</code>.</li>
+</ul>
+<h3 id="示例-2">示例：</h3>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html">Lorem &#123;% label @ipsum %&#125; &#123;% label primary@dolor sit %&#125; amet, consectetur &#123;% label success@adipiscing elit, %&#125; sed &#123;% label info@do eiusmod %&#125; tempor incididunt ut labore et dolore magna aliqua.
+
+Ut enim *&#123;% label warning @ad %&#125;* minim veniam, quis **&#123;% label danger@nostrud %&#125;** exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate ~~&#123;% label default @velit %&#125;~~ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mark</span><span class="token punctuation">></span></span>esse<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mark</span><span class="token punctuation">></span></span> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Lorem <mark class="label ">ipsum</mark> <mark class="label primary">dolor sit</mark> amet, consectetur <mark class="label success">adipiscing elit,</mark> sed <mark class="label info">do eiusmod</mark> tempor incididunt ut labore et dolore magna aliqua.</p>
+<p>Ut enim <em><mark class="label warning">ad</mark></em> minim veniam, quis <strong><mark class="label danger">nostrud</mark></strong> exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate <del><mark class="label default">velit</mark></del> <mark>esse</mark> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h2 id="link-grid">Link Grid</h2>
+<h3 id="作用-3">作用：</h3>
+<p>动态的<code>link grid</code>，增加互动性</p>
+<h3 id="用法-3">用法：</h3>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token punctuation">&#123;</span>% linkgrid [image] [delimiter] [comment] %<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>% endlinkgrid %<span class="token punctuation">&#125;</span>
+<span class="token selector">&lt;!-- Tag Alias --></span>
+<span class="token punctuation">&#123;</span>% lg [image] [delimiter] [comment] %<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>% endlg %<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>[image]</code> : 可选项， 图片的URL地址.</li>
+<li><code>[delimiter]</code> : 可选项，如果不给出分隔符的话默认分隔符为<code>|</code>，可以在此项指定分隔符.</li>
+<li><code>[comment]</code> : 可选项，如果不给出的注释参数的话默认分隔符为<code>%</code>，可以在此项指定注释参数.</li>
+</ul>
+<h3 id="示例-3">示例：</h3>
+<h4 id="使用方式1">使用方式1</h4>
+<pre class="line-numbers language-none"><code class="language-none">&#123;% linkgrid %&#125;
+Theme NexT | https:&#x2F;&#x2F;theme-next.js.org&#x2F; | Stay Simple. Stay NexT. | https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+Theme NexT | https:&#x2F;&#x2F;theme-next.js.org&#x2F; | Stay Simple. Stay NexT. | https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+Theme NexT | https:&#x2F;&#x2F;theme-next.js.org&#x2F; | Stay Simple. Stay NexT. | https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+Theme NexT | https:&#x2F;&#x2F;theme-next.js.org&#x2F; | Stay Simple. Stay NexT. | https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+% Theme NexT | https:&#x2F;&#x2F;theme-next.js.org&#x2F; | Stay Simple. Stay NexT. | https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+&#123;% endlinkgrid %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="link-grid"><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div></div>
+<h4 id="使用方式2">使用方式2</h4>
+<pre class="line-numbers language-none"><code class="language-none">&#123;% lg &#x2F;images&#x2F;apple-touch-icon-next.png , %&#125;
+Theme NexT , https:&#x2F;&#x2F;theme-next.js.org&#x2F; , Stay Simple. Stay NexT. , https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+Theme NexT , https:&#x2F;&#x2F;theme-next.js.org&#x2F; , Stay Simple. Stay NexT. , https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+Theme NexT , https:&#x2F;&#x2F;theme-next.js.org&#x2F; , Stay Simple. Stay NexT. , https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+% Theme NexT , https:&#x2F;&#x2F;theme-next.js.org&#x2F; , Stay Simple. Stay NexT. , https:&#x2F;&#x2F;picgo-1301748200.cos.ap-chengdu.myqcloud.com&#x2F;apple-touch-icon-next.png
+&#123;% endlg %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="link-grid"><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/apple-touch-icon-next.png);"></div>
+<p>Theme NexT</p><p>Stay Simple. Stay NexT.</p>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/"></a>
+</div></div>
+<h2 id="note">Note</h2>
+<h3 id="作用-4">作用：</h3>
+<p>动态的<code>link grid</code>，增加互动性</p>
+<h3 id="设置">设置：</h3>
+<p>打开主题配置文件<code>next/_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">note</span><span class="token punctuation">:</span>
+  <span class="token comment"># Note tag style values:</span>
+  <span class="token comment">#  - simple    bs-callout old alert style. Default.</span>
+  <span class="token comment">#  - modern    bs-callout new (v2-v3) alert style.</span>
+  <span class="token comment">#  - flat      flat callout style with background, like on Mozilla or StackOverflow.</span>
+  <span class="token comment">#  - disabled  disable all CSS styles import of note tag.</span>
+  <span class="token key atrule">style</span><span class="token punctuation">:</span> simple
+  <span class="token key atrule">icons</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token comment"># Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).</span>
+  <span class="token comment"># Offset also applied to label tag variables. This option can work with disabled note tag.</span>
+  <span class="token key atrule">light_bg_offset</span><span class="token punctuation">:</span> <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="用法-4">用法：</h3>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token punctuation">&#123;</span>% note [class] [no-icon] [summary] %<span class="token punctuation">&#125;</span>
+<span class="token selector">Any content (support inline tags too).</span>
+<span class="token punctuation">&#123;</span>% endnote %<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>[class]</code> : 可选项，支持的值有: default | primary | success | info | warning | danger.</li>
+<li><code>[no-icon]</code> : 可选项，取消icon.</li>
+<li><code>[summary]</code> : 可选项，总结note.</li>
+</ul>
+<h3 id="示例-4">示例：</h3>
+<h4 id="简单示例">简单示例</h4>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token punctuation">&#123;</span>% note %<span class="token punctuation">&#125;</span>
+<span class="token selector">#### Header
+(without define class style)</span>
+<span class="token punctuation">&#123;</span>% endnote %<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note "><h4 id="header">Header</h4>
+<p>(without define class style)</p>
+</div>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note default %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Default Header</span>
+Welcome to <span class="token url">[<span class="token content">Hexo!</span>](<span class="token url">https://hexo.io</span>)</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note default"><h4 id="default-header">Default Header</h4>
+<p>Welcome to <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo!</a></p>
+</div>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note primary %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Primary Header</span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Welcome</span><span class="token punctuation">**</span></span> to <span class="token url">[<span class="token content">Hexo!</span>](<span class="token url">https://hexo.io</span>)</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note primary"><h4 id="primary-header">Primary Header</h4>
+<p><strong>Welcome</strong> to <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo!</a></p>
+</div>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note info %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Info Header</span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Welcome</span><span class="token punctuation">**</span></span> to <span class="token url">[<span class="token content">Hexo!</span>](<span class="token url">https://hexo.io</span>)</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note info"><h4 id="info-header">Info Header</h4>
+<p><strong>Welcome</strong> to <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo!</a></p>
+</div>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note success %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Success Header</span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Welcome</span><span class="token punctuation">**</span></span> to <span class="token url">[<span class="token content">Hexo!</span>](<span class="token url">https://hexo.io</span>)</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note success"><h4 id="success-header">Success Header</h4>
+<p><strong>Welcome</strong> to <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo!</a></p>
+</div>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note warning %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Warning Header</span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Welcome</span><span class="token punctuation">**</span></span> to <span class="token url">[<span class="token content">Hexo!</span>](<span class="token url">https://hexo.io</span>)</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note warning"><h4 id="warning-header">Warning Header</h4>
+<p><strong>Welcome</strong> to <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo!</a></p>
+</div>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note danger %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Danger Header</span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Welcome</span><span class="token punctuation">**</span></span> to <span class="token url">[<span class="token content">Hexo!</span>](<span class="token url">https://hexo.io</span>)</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note danger"><h4 id="danger-header">Danger Header</h4>
+<p><strong>Welcome</strong> to <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo!</a></p>
+</div>
+<h4 id="高级用法">高级用法</h4>
+<h5 id="no-icon-note">No icon note</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note info no-icon %&#125;
+<span class="token title important"><span class="token punctuation">####</span> No icon note</span>
+Note <span class="token bold"><span class="token punctuation">**</span><span class="token content">without</span><span class="token punctuation">**</span></span> icon: <span class="token code keyword">`note info no-icon`</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note info no-icon"><h4 id="no-icon-note">No icon note</h4>
+<p>Note <strong>without</strong> icon: <code>note info no-icon</code></p>
+</div>
+<h5 id="note-with-summary">Note with summary</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note primary This is a summary %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Details and summary</span>
+Note with summary: <span class="token code keyword">`note primary This is a summary`</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<details class="note primary"><summary><p>This is a summary</p>
+</summary>
+<h4 id="details-and-summary">Details and summary</h4>
+<p>Note with summary: <code>note primary This is a summary</code></p>
+
+</details>
+<h5 id="no-icon-with-summary">No icon with Summary</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note info no-icon This is a summary %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Details and summary (No icon)</span>
+Note with summary: <span class="token code keyword">`note info no-icon This is a summary`</span>
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<details class="note info no-icon"><summary><p>This is a summary</p>
+</summary>
+<h4 id="details-and-summary-no-icon">Details and summary (No icon)</h4>
+<p>Note with summary: <code>note info no-icon This is a summary</code></p>
+
+</details>
+<h5 id="codeblock-in-note">Codeblock in note</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note success %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Codeblock in note</span>
+&#123;% code %&#125;
+code block in note tag
+code block in note tag
+code block in note tag
+&#123;% endcode %&#125;
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note success"><h4 id="codeblock-in-note">Codeblock in note</h4>
+<pre class="line-numbers language-none"><code class="language-none">code block in note tag
+code block in note tag
+code block in note tag<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</div>
+<h5 id="list-in-note">List in note</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% note default %&#125;
+<span class="token title important"><span class="token punctuation">####</span> Lists in note</span>
+<span class="token list punctuation">*</span> ul
+<span class="token list punctuation">*</span> ul
+    <span class="token list punctuation">*</span> ul
+    <span class="token list punctuation">*</span> ul
+<span class="token list punctuation">*</span> ul
+
+<span class="token list punctuation">1.</span> ol
+<span class="token list punctuation">2.</span> ol
+    <span class="token list punctuation">1.</span> ol
+    <span class="token list punctuation">2.</span> ol
+<span class="token list punctuation">3.</span> ol
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note default"><h4 id="lists-in-note">Lists in note</h4>
+<ul>
+<li>ul</li>
+<li>ul
+<ul>
+<li>ul</li>
+<li>ul</li>
+</ul></li>
+<li>ul</li>
+</ul>
+<ol type="1">
+<li>ol</li>
+<li>ol
+<ol type="1">
+<li>ol</li>
+<li>ol</li>
+</ol></li>
+<li>ol</li>
+</ol>
+</div>
+<h5 id="table-in-note">Table in note</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">####</span> Table in Note</span>
+&#123;% note default %&#125;
+| 1 | 2 |
+| - | - |
+| 3 | 4 |
+| 5 | 6 |
+| 7 | 8 |
+&#123;% endnote %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="table-in-note-1">Table in Note</h4>
+<div class="note default"><table>
+<thead>
+<tr class="header">
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="pdf">PDF</h2>
+<h3 id="设置-1">设置：</h3>
+<p>在主题配置文件<code>next/_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">pdf</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token comment"># Default height</span>
+  <span class="token key atrule">height</span><span class="token punctuation">:</span> 500px<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="作用-5">作用：</h3>
+<p>可以在文章中导入pdf。</p>
+<h3 id="用法-5">用法：</h3>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% pdf url [height] %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><code>url</code> : The URL (Absolute path) of the PDF file.</li>
+<li><code>[height]</code> : <em>Optional parameter.</em> Height of the PDF display element, e.g. 800px.</li>
+</ul>
+<h3 id="示例-5">示例：</h3>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% pdf https://example.com/sample.pdf %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% pdf /path/to/your/file.pdf 600px %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="tabs">Tabs</h2>
+<h3 id="设置-2">设置：</h3>
+<p>在主题配置文件<code>next/_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">tabs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">transition</span><span class="token punctuation">:</span>
+    <span class="token key atrule">tabs</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+    <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token boolean important">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="作用-6">作用：</h3>
+<p>可以在文章中加入带有互动选项的表格，一般用于提供某一个问题的多种不同解决方案。</p>
+<h3 id="用法-6">用法：</h3>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Unique name, [index] %&#125;
+<span class="token comment">&lt;!-- tab [Tab caption] [@icon] --></span>
+Any content (support inline tags too).
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>Unique name</code> : 表的名字
+<ul>
+<li>必选参数</li>
+<li>首先一定要有，作为该tabs的唯一标识符，且一篇文章中不能出现同名的unique name</li>
+<li>并且当<code>[Tab caption]</code>项没有指定的话，将与<code>自动生成的index</code>一起作为每一个选项的名字</li>
+</ul></li>
+<li><code>[index]</code> : 默认出现的选项
+<ul>
+<li>可选参数</li>
+<li>可以选择某一个选项作为默认选项，即如果用户未指定就是这个选项，若不指定<code>[index]</code>默认为1</li>
+<li>当然也可以设置一个选项都不指定，将<code>[index]</code>的值设置为<code>-1</code></li>
+</ul></li>
+<li><code>[Tab caption]</code> : 各选项的表头名
+<ul>
+<li>可选参数</li>
+<li>如果不指定
+<ul>
+<li>同时也没有设置选项的<code>[@icon]</code>：则默认设置为<code>Unique name</code>+选项对应的<code>index</code></li>
+<li>如果设置了<code>[@icon]</code>：则留空</li>
+</ul></li>
+</ul></li>
+<li><code>[@icon]</code> : 字体图标名，戳<a href="https://fontawesome.com/v4.7.0/icons/" rel="external nofollow noreferrer" title="" target="_blank">“此处”</a>查询
+<ul>
+<li>可选参数</li>
+<li>可以与<code>[Tab caption]</code>配合起来一起使用，也可以单独使用</li>
+</ul></li>
+</ul>
+<h3 id="示例-6">示例：</h3>
+<h4 id="简单用法">简单用法：</h4>
+<h5 id="tabs-with-default-tab-selected">Tabs with default tab selected</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs First unique name %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="first-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#first-unique-name-1">First unique name 1</a></li><li class="tab"><a href="#first-unique-name-2">First unique name 2</a></li><li class="tab"><a href="#first-unique-name-3">First unique name 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="first-unique-name-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="first-unique-name-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="first-unique-name-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h5 id="tabs-with-3rd-tab-selected">Tabs with 3rd tab selected</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Second unique name, 3 %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="second-unique-name"><ul class="nav-tabs"><li class="tab"><a href="#second-unique-name-1">Second unique name 1</a></li><li class="tab"><a href="#second-unique-name-2">Second unique name 2</a></li><li class="tab active"><a href="#second-unique-name-3">Second unique name 3</a></li></ul><div class="tab-content"><div class="tab-pane" id="second-unique-name-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="second-unique-name-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane active" id="second-unique-name-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h5 id="tabs-with-no-tab-selected">Tabs with no tab selected</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Third unique name, -1 %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="third-unique-name"><ul class="nav-tabs"><li class="tab"><a href="#third-unique-name-1">Third unique name 1</a></li><li class="tab"><a href="#third-unique-name-2">Third unique name 2</a></li><li class="tab"><a href="#third-unique-name-3">Third unique name 3</a></li></ul><div class="tab-content"><div class="tab-pane" id="third-unique-name-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="third-unique-name-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="third-unique-name-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h5 id="tabs-with-custom-labels">Tabs with custom labels</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Fourth unique name %&#125;
+<span class="token comment">&lt;!-- tab Solution 1 --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab Solution 2 --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab Solution 3 --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="fourth-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#fourth-unique-name-1">Solution 1</a></li><li class="tab"><a href="#fourth-unique-name-2">Solution 2</a></li><li class="tab"><a href="#fourth-unique-name-3">Solution 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="fourth-unique-name-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="fourth-unique-name-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="fourth-unique-name-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h5 id="tabs-with-icons-only">Tabs with icons only</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Fifth unique name %&#125;
+<span class="token comment">&lt;!-- tab @text-width --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab @font --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab @bold --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="fifth-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#fifth-unique-name-1"><i class="fa fa-text-width"></i></a></li><li class="tab"><a href="#fifth-unique-name-2"><i class="fa fa-font"></i></a></li><li class="tab"><a href="#fifth-unique-name-3"><i class="fa fa-bold"></i></a></li></ul><div class="tab-content"><div class="tab-pane active" id="fifth-unique-name-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="fifth-unique-name-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="fifth-unique-name-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h5 id="tabs-with-icons-and-labels">Tabs with icons and labels</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Sixth unique name %&#125;
+<span class="token comment">&lt;!-- tab Solution 1@text-width --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab Solution 2@font --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab Solution 3@bold --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="sixth-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#sixth-unique-name-1"><i class="fa fa-text-width"></i>Solution 1</a></li><li class="tab"><a href="#sixth-unique-name-2"><i class="fa fa-font"></i>Solution 2</a></li><li class="tab"><a href="#sixth-unique-name-3"><i class="fa fa-bold"></i>Solution 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sixth-unique-name-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="sixth-unique-name-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="sixth-unique-name-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h4 id="高级用法-1">高级用法</h4>
+<h5 id="tabs-permalinks-testtabs在页面中的链接">Tabs permalinks test（tabs在页面中的链接）</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">Permalink for > <span class="token url">[<span class="token content">Tab one</span>](<span class="token url">#tab-one</span>)</span>.
+Permalink for > <span class="token url">[<span class="token content">Tab one 1</span>](<span class="token url">#tab-one-1</span>)</span>.
+Permalink for > <span class="token url">[<span class="token content">Tab one 2</span>](<span class="token url">#tab-one-2</span>)</span>.
+Permalink for > <span class="token url">[<span class="token content">Tab one 3</span>](<span class="token url">#tab-one-3</span>)</span>.
+
+Permalink for > <span class="token url">[<span class="token content">Tab two</span>](<span class="token url">#tab-two</span>)</span>.
+Permalink for > <span class="token url">[<span class="token content">Tab two 1</span>](<span class="token url">#tab-two-1</span>)</span>.
+Permalink for > <span class="token url">[<span class="token content">Tab two 2</span>](<span class="token url">#tab-two-2</span>)</span>.
+Permalink for > <span class="token url">[<span class="token content">Tab two 3</span>](<span class="token url">#tab-two-3</span>)</span>.
+
+&#123;% tabs Tab one %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;
+
+&#123;% tabs Tab two %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Permalink for &gt; <a href="#tab-one">Tab one</a>. Permalink for &gt; <a href="#tab-one-1">Tab one 1</a>. Permalink for &gt; <a href="#tab-one-2">Tab one 2</a>. Permalink for &gt; <a href="#tab-one-3">Tab one 3</a>.</p>
+<p>Permalink for &gt; <a href="#tab-two">Tab two</a>. Permalink for &gt; <a href="#tab-two-1">Tab two 1</a>. Permalink for &gt; <a href="#tab-two-2">Tab two 2</a>. Permalink for &gt; <a href="#tab-two-3">Tab two 3</a>.</p>
+<div class="tabs" id="tab-one"><ul class="nav-tabs"><li class="tab active"><a href="#tab-one-1">Tab one 1</a></li><li class="tab"><a href="#tab-one-2">Tab one 2</a></li><li class="tab"><a href="#tab-one-3">Tab one 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-one-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="tab-one-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="tab-one-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<div class="tabs" id="tab-two"><ul class="nav-tabs"><li class="tab active"><a href="#tab-two-1">Tab two 1</a></li><li class="tab"><a href="#tab-two-2">Tab two 2</a></li><li class="tab"><a href="#tab-two-3">Tab two 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-two-1"><p><strong>This is Tab 1.</strong></p></div><div class="tab-pane" id="tab-two-2"><p><strong>This is Tab 2.</strong></p></div><div class="tab-pane" id="tab-two-3"><p><strong>This is Tab 3.</strong></p></div></div></div>
+<h5 id="tabs-with-other-tags">Tabs with other tags</h5>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">&#123;% tabs Tags %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 1.</span><span class="token punctuation">**</span></span>
+
+<span class="token list punctuation">1.</span> One
+<span class="token list punctuation">2.</span> Two
+<span class="token list punctuation">3.</span> Three
+
+Indented code block:
+
+<span class="token code keyword">    nano /etc</span>
+
+Tagged code block:
+
+&#123;% code %&#125;
+code tag
+code tag
+code tag
+&#123;% endcode %&#125;
+
+&#123;% note default %&#125;
+Note default tag.
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 2.</span><span class="token punctuation">**</span></span>
+
+<span class="token list punctuation">*</span> Five
+<span class="token list punctuation">*</span> Six
+<span class="token list punctuation">*</span> Seven
+
+&#123;% note primary %&#125;
+&#123;% youtube Kt7u5kr_P5o %&#125;
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Tab 3.</span><span class="token punctuation">**</span></span>
+
+&#123;% subtabs Sub Tabs %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Sub Tab 1.</span><span class="token punctuation">**</span></span>
+&#123;% note success %&#125;
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+
+&#123;% note warning %&#125;
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+&#123;% endnote %&#125;
+
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Sub Tab 2.</span><span class="token punctuation">**</span></span>
+&#123;% note success %&#125;
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+
+&#123;% note danger %&#125;
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+&#123;% endnote %&#125;
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Sub Tab 3.</span><span class="token punctuation">**</span></span>
+
+&#123;% subtabs Sub-Sub Tabs %&#125;
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Sub-Sub Tab 1 of Sub Tab 3.</span><span class="token punctuation">**</span></span>
+&#123;% note success %&#125;
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Sub-Sub Tab 2 of Sub Tab 3.</span><span class="token punctuation">**</span></span>
+&#123;% note success %&#125;
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+
+&#123;% note warning %&#125;
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+&#123;% endnote %&#125;
+
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+
+<span class="token comment">&lt;!-- tab --></span>
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">This is Sub-Sub Tab 3 of Sub Tab 3.</span><span class="token punctuation">**</span></span>
+
+&#123;% note success %&#125;
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+
+&#123;% note warning %&#125;
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+
+&#123;% note danger %&#125;
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+&#123;% endnote %&#125;
+
+&#123;% endnote %&#125;
+
+&#123;% endnote %&#125;
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endsubtabs %&#125;
+
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endsubtabs %&#125;
+
+<span class="token comment">&lt;!-- endtab --></span>
+&#123;% endtabs %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="tabs" id="tags"><ul class="nav-tabs"><li class="tab active"><a href="#tags-1">Tags 1</a></li><li class="tab"><a href="#tags-2">Tags 2</a></li><li class="tab"><a href="#tags-3">Tags 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tags-1"><p><strong>This is Tab 1.</strong></p>
+<ol type="1">
+<li>One</li>
+<li>Two</li>
+<li>Three</li>
+</ol>
+<p>Indented code block:</p>
+<pre><code>nano /etc</code></pre>
+<p>Tagged code block:</p>
+<pre class="line-numbers language-none"><code class="language-none">code tag
+code tag
+code tag<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<div class="note default">
+<p>
+Note default tag.
+</p>
+</div></div><div class="tab-pane" id="tags-2"><p><strong>This is Tab 2.</strong></p>
+<ul>
+<li>Five</li>
+<li>Six</li>
+<li>Seven</li>
+</ul>
+<div class="note primary">
+<div class="video-container">
+<iframe src="https://www.youtube.com/embed/Kt7u5kr_P5o" frameborder="0" loading="lazy" allowfullscreen>
+</iframe>
+</div>
+</div></div><div class="tab-pane" id="tags-3"><p><strong>This is Tab 3.</strong></p>
+<div id="sub-tabs" class="tabs">
+<ul class="nav-tabs">
+<li class="tab active">
+<a href="#sub-tabs-1">Sub Tabs 1</a>
+</li>
+<li class="tab">
+<a href="#sub-tabs-2">Sub Tabs 2</a>
+</li>
+<li class="tab">
+<a href="#sub-tabs-3">Sub Tabs 3</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="sub-tabs-1" class="tab-pane active">
+<strong>This is Sub Tab 1.</strong>
+<div class="note success">
+<p>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+</p>
+<div class="note warning">
+<p>
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+</p>
+</div>
+<p>
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+</p>
+</div>
+</div>
+<div id="sub-tabs-2" class="tab-pane">
+<strong>This is Sub Tab 2.</strong>
+<div class="note success">
+<p>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+</p>
+<p>
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+</p>
+<div class="note danger">
+<p>
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+</p>
+</div>
+</div>
+</div>
+<div id="sub-tabs-3" class="tab-pane">
+<p>
+<strong>This is Sub Tab 3.</strong>
+</p>
+<div id="sub-sub-tabs" class="tabs">
+<ul class="nav-tabs">
+<li class="tab active">
+<a href="#sub-sub-tabs-1">Sub-Sub Tabs 1</a>
+</li>
+<li class="tab">
+<a href="#sub-sub-tabs-2">Sub-Sub Tabs 2</a>
+</li>
+<li class="tab">
+<a href="#sub-sub-tabs-3">Sub-Sub Tabs 3</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="sub-sub-tabs-1" class="tab-pane active">
+<strong>This is Sub-Sub Tab 1 of Sub Tab 3.</strong>
+<div class="note success">
+<p>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+</p>
+<p>
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+</p>
+<p>
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+</p>
+</div>
+</div>
+<div id="sub-sub-tabs-2" class="tab-pane">
+<strong>This is Sub-Sub Tab 2 of Sub Tab 3.</strong>
+<div class="note success">
+<p>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+</p>
+<div class="note warning">
+<p>
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+</p>
+<p>
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+</p>
+</div>
+</div>
+</div>
+<div id="sub-sub-tabs-3" class="tab-pane">
+<p>
+<strong>This is Sub-Sub Tab 3 of Sub Tab 3.</strong>
+</p>
+<div class="note success">
+<p>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.
+</p>
+<div class="note warning">
+<p>
+Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+</p>
+<div class="note danger">
+<p>
+Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div></div></div>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Coldeye
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://coldeye2020.monster/Hexo/hexo_trick_1.html" title="Hexo技巧(一)Plugin">https://coldeye2020.monster/Hexo/hexo_trick_1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Hexo/Hexo_configuration_1.html" rel="prev" title="Hexo配置(一)">
+                  <i class="fa fa-chevron-left"></i> Hexo配置(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Hexo/MathJax_test.html" rel="next" title="MathJax测试">
+                  MathJax测试 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Coldeye</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">143k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:10</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://coldeye2020.monster/Hexo/hexo_trick_1.html',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"09tInux3xJRlMs2A008PDeuP-MdYXbMMI","appKey":"PIFdCFbjTxC8EPP53JdDhrKO","serverURLs":null,"placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[]}, {
+      el: '#valine-comments',
+      path: "/Hexo/hexo_trick_1.html",
+      serverURLs: "https://09tinux3.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":450,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

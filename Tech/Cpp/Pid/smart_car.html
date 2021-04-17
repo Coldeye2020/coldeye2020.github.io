@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon-32x32.png" color="#222">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="google-site-verification" content="vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k">
+  <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"coldeye2020.monster","root":"/","images":"/images","scheme":"Gemini","version":"8.2.2","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="说明 本文记录了我在完成大三下学期的寻迹小车小组项目时的所负责的控制部分内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cpp项目(一)寻迹小车PID设计">
+<meta property="og:url" content="https://coldeye2020.monster/Tech/Cpp/Pid/smart_car.html">
+<meta property="og:site_name" content="Doki Doki">
+<meta property="og:description" content="说明 本文记录了我在完成大三下学期的寻迹小车小组项目时的所负责的控制部分内容。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/nucleo_l432kc_2017_10_09.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/TB2H2C7ipXXXXXjXpXXXXXXXXXX_!!361121710.jpg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/绘图1.svg">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/geogebra-export%20(1).svg">
+<meta property="article:published_time" content="2021-04-14T07:08:22.000Z">
+<meta property="article:modified_time" content="2021-04-17T04:33:10.992Z">
+<meta property="article:author" content="Coldeye">
+<meta property="article:tag" content="Cpp">
+<meta property="article:tag" content="PID">
+<meta property="article:tag" content="car">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/nucleo_l432kc_2017_10_09.png">
+
+
+<link rel="canonical" href="https://coldeye2020.monster/Tech/Cpp/Pid/smart_car.html">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+<title>Cpp项目(一)寻迹小车PID设计 | Doki Doki</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-193945147-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-193945147-1');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?166a4bbbc38e0e94b738a7cc1785a0ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Doki Doki</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog about life and tech sharing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AD%E7%8E%AF%E6%8E%A7%E9%80%9F%E9%83%A8%E5%88%86%E4%B8%80%E9%98%B6pid"><span class="nav-number">1.</span> <span class="nav-text">闭环控速部分（一阶PID）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%89%87%E6%9C%BA%E5%BC%95%E8%84%9A%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">单片机引脚图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E8%BD%A6%E8%BD%A6%E6%9E%B6%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">小车车架模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%98%B6pid%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6"><span class="nav-number">1.3.</span> <span class="nav-text">一阶PID整体框架：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">1.3.1.</span> <span class="nav-text">速度闭环控制系统结构图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#part1wheel-speed-encoder-disk"><span class="nav-number">1.3.2.</span> <span class="nav-text">Part1(Wheel &amp; Speed Encoder Disk)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#function"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#input"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">Output</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#part2sensor"><span class="nav-number">1.3.3.</span> <span class="nav-text">Part2(Sensor)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#function-1"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#input-1"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output-1"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">Output</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#part3pid-control"><span class="nav-number">1.3.4.</span> <span class="nav-text">Part3(PID control)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#function-2"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#input-2"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output-2"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">Output</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#trigger"><span class="nav-number">1.3.4.4.</span> <span class="nav-text">Trigger</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#part4pwmout"><span class="nav-number">1.3.5.</span> <span class="nav-text">Part4(PwmOut)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#function-3"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#input-3"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output-3"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">Output</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#part5bdc"><span class="nav-number">1.3.6.</span> <span class="nav-text">Part5(BDC)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#function-4"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#input-4"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#output-4"><span class="nav-number">1.3.6.3.</span> <span class="nav-text">Output</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pid-%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.4.</span> <span class="nav-text">PID 设计：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pid%E5%8E%9F%E7%90%86"><span class="nav-number">1.4.1.</span> <span class="nav-text">PID原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#wikipedia"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Wikipedia</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#bilibili"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">Bilibili</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pid%E6%9B%B4%E6%96%B0%E6%96%B9%E6%A1%88%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.4.2.</span> <span class="nav-text">PID更新方案(触发条件)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%E6%97%B6%E9%97%B4%E5%A2%9E%E9%87%8F%E8%A7%A6%E5%8F%91"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">方式一：时间增量触发</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8Ccounter%E5%A2%9E%E9%87%8F%E8%A7%A6%E5%8F%91"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">方式二：counter增量触发</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pid%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.3.</span> <span class="nav-text">PID代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">项目目录</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pid%E8%B0%83%E8%AF%95"><span class="nav-number">1.4.4.</span> <span class="nav-text">PID调试</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Coldeye"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Coldeye</p>
+  <div class="site-description" itemprop="description">Finnally, you will find nothing is irreplaceable,</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/coldeye2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;coldeye2020" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:948283368.coldeye@gamil.com" title="E-Mail → mailto:948283368.coldeye@gamil.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/948283368" title="QQ → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;948283368" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+<!-- Insert Clustrmaps -->
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=200&t=tt&d=-ZnRDnKizjAkFSMaMv_zwM1vK_yTeDc1r3Pr34sq6a8&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://coldeye2020.monster/Tech/Cpp/Pid/smart_car.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Coldeye">
+      <meta itemprop="description" content="Finnally, you will find nothing is irreplaceable,">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doki Doki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cpp项目(一)寻迹小车PID设计
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-14 15:08:22" itemprop="dateCreated datePublished" datetime="2021-04-14T15:08:22+08:00">2021-04-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-17 12:33:10" itemprop="dateModified" datetime="2021-04-17T12:33:10+08:00">2021-04-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/Cpp/Pid/" itemprop="url" rel="index"><span itemprop="name">Pid</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/Tech/Cpp/Pid/smart_car.html" class="post-meta-item leancloud_visitors" data-flag-title="Cpp项目(一)寻迹小车PID设计" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note info"><p><strong>说明</strong></p>
+<p>本文记录了我在完成<code>大三下学期</code>的寻迹小车小组项目时的所负责的控制部分内容。</p>
+</div>
+<span id="more"></span>
+<div class="note success"><p>单片机型号：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://os.mbed.com/platforms/ST-Nucleo-L432KC/l">NUCLEO-L432KC</a></p>
+<p>编译平台：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://ide.mbed.com/compiler/">Mbed Online Compiler</a></p>
+<p>Mbed OS：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://os.mbed.com/handbook">Mbed OS 2</a></p>
+</div>
+<h2 id="闭环控速部分一阶pid">闭环控速部分（一阶PID）</h2>
+<h3 id="单片机引脚图">单片机引脚图</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/nucleo_l432kc_2017_10_09.png" /></p>
+<h3 id="小车车架模型">小车车架模型</h3>
+<p>我们采用的车架结构是<code>ZK-4WD</code>，具体清单如下：</p>
+<ul>
+<li><p>小车底盘（亚克力材质） 2只</p></li>
+<li><p>直流减速电机（过EMC检测） 4只</p></li>
+<li><p>黄色轮子 4只</p></li>
+<li><p>20线测速码盘 4只</p></li>
+<li><p>紧固件 8只</p></li>
+<li><p>螺丝螺帽铜柱 若干</p></li>
+</ul>
+<p>小车模型如下:</p>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/TB2H2C7ipXXXXXjXpXXXXXXXXXX_!!361121710.jpg" /></p>
+<h3 id="一阶pid整体框架">一阶PID整体框架：</h3>
+<h4 id="速度闭环控制系统结构图">速度闭环控制系统结构图</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/绘图1.svg" /></p>
+<h4 id="part1wheel-speed-encoder-disk">Part1(Wheel &amp; Speed Encoder Disk)</h4>
+<p>这部分包含车轮以及与车轮配套的测速码盘，一圈总计<code>20线</code>。</p>
+<h5 id="function">Function</h5>
+<ul>
+<li>驱动小车前进</li>
+<li>产生能让测速传感器读取的信号</li>
+</ul>
+<h5 id="input">Input</h5>
+<ul>
+<li>直流电机输出的机械能</li>
+</ul>
+<h5 id="output">Output</h5>
+<ul>
+<li>小车的位移，速度（by Wheel）</li>
+<li>测速传感器的触发信号（by Speed Encoder Disk）</li>
+</ul>
+<h4 id="part2sensor">Part2(Sensor)</h4>
+<p>这部分我们采用的测速传感器型号为：， 时高电平， 时低电平</p>
+<h5 id="function-1">Function</h5>
+<ul>
+<li>将光信号转换为电信号，并触发Mbed的中断以记录速度信息。</li>
+</ul>
+<h5 id="input-1">Input</h5>
+<ul>
+<li>测速码盘产生的交替隔断信号</li>
+</ul>
+<h5 id="output-1">Output</h5>
+<ul>
+<li>Mbed的触发中断信号（by Sensor）</li>
+<li>Mbed寄存器中特定值<code>counter</code>的增加（by Interrupt System in Mbed）</li>
+</ul>
+<h4 id="part3pid-control">Part3(PID control)</h4>
+<p>这部分我们采用PID控制算法来实现小车各车轮速度的闭环控制。</p>
+<h5 id="function-2">Function</h5>
+<ul>
+<li><p>将寄存器中的特定值<code>counter</code>换算为实际的速度值(单位 <span class="math inline">\(lines/s\)</span>)</p>
+<p><span class="math display">\[
+speed = \frac{\Delta counter}{\Delta time}
+\]</span></p></li>
+<li><p>通过各车轮对应的counter换算得到的实际速度值来调节各Pwm口的输出，从而使实际速度趋近于设定的目标速度。</p></li>
+</ul>
+<h5 id="input-2">Input</h5>
+<ul>
+<li><code>counter</code>值（from Registers in Mbed）</li>
+<li><code>counter</code>转换出来的实际速度值（from Counter-Speed Converter）</li>
+</ul>
+<h5 id="output-2">Output</h5>
+<ul>
+<li>实际速度值（by Counter-Speed Converter）</li>
+<li>PwmOut的更新值（by PID algorithm）</li>
+</ul>
+<h5 id="trigger">Trigger</h5>
+<ul>
+<li>方式一：时间增量触发：距离上一次迭代时间的增量到达某一指定值时，触发PID迭代，实现速度更新。</li>
+<li>方式二：<code>counter</code>增量触发：<code>counter</code>的增量达到某一指定值时，触发PID迭代，实现速度更新。</li>
+</ul>
+<h4 id="part4pwmout">Part4(PwmOut)</h4>
+<p>这部分我们采用Mbed的Pwm模块来控制直流电机的输出</p>
+<h5 id="function-3">Function</h5>
+<ul>
+<li>控制直流电机</li>
+</ul>
+<h5 id="input-3">Input</h5>
+<ul>
+<li>PID的输出值（from PID algorithm）</li>
+</ul>
+<h5 id="output-3">Output</h5>
+<ul>
+<li>电机的Pwm电信号</li>
+</ul>
+<h4 id="part5bdc">Part5(BDC)</h4>
+<p>这部分我们才用的是直流减速电机</p>
+<h5 id="function-4">Function</h5>
+<ul>
+<li>提供机械能给车轮</li>
+</ul>
+<h5 id="input-4">Input</h5>
+<ul>
+<li>Pwm的电信号</li>
+</ul>
+<h5 id="output-4">Output</h5>
+<ul>
+<li>车轮的机械能</li>
+</ul>
+<h3 id="pid-设计">PID 设计：</h3>
+<h4 id="pid原理">PID原理</h4>
+<h5 id="wikipedia">Wikipedia</h5>
+<p>The PID control scheme is named after its three correcting terms, whose sum constitutes the manipulated variable (MV). The proportional, integral, and derivative terms are summed to calculate the output of the PID controller. Defining <span class="math inline">\({u(t)}\)</span> the controller output, the final form of the PID algorithm is <span class="math display">\[
+u(t)={MV}(t)=K_{\text{p}}e(t)+K_{\text{i}}\int _{0}^{t}e(\tau )\,d\tau +K_{\text{d}}{\frac {de(t)}{dt}}
+\]</span> where</p>
+<p><span class="math inline">\({\displaystyle K_{\text{p}}}\)</span>is the proportional gain, a tuning parameter</p>
+<p><span class="math inline">\({\displaystyle K_{\text{i}}}\)</span>is the integral gain, a tuning parameter</p>
+<p><span class="math inline">\({\displaystyle K_{\text{d}}}\)</span>is the derivative gain, a tuning parameter</p>
+<p><span class="math inline">\({\displaystyle e(t)=\mathrm {SP} -\mathrm {PV} (t)}\)</span> is the error (SP is the setpoint, and PV(<em>t</em>) is the process variable)</p>
+<p><span class="math inline">\(t\)</span> is the time or instantaneous time (the present)</p>
+<p>$$ is the variable of integration (takes on values from time 0 to the present <span class="math inline">\({\displaystyle t}\)</span></p>
+<p>Equivalently, the <a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Transfer_function">transfer function</a> in the <a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Laplace_transform">Laplace domain</a> of the PID controller is <span class="math display">\[
+\displaystyle L(s)=K_{\text{p}}+K_{\text{i}}/s+K_{\text{d}}s
+\]</span> where <span class="math inline">\({\displaystyle s}\)</span> is the complex frequency.</p>
+<h5 id="bilibili">Bilibili</h5>
+<iframe src="//player.bilibili.com/player.html?aid=627065033&amp;bvid=BV1et4y1i7Gm&amp;cid=235144459&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
+</iframe>
+<h4 id="pid更新方案触发条件">PID更新方案(触发条件)</h4>
+<h5 id="方式一时间增量触发">方式一：时间增量触发</h5>
+<p><del>原理：距离上一次迭代时间的增量到达某一指定值时，触发PID迭代，实现速度更新。</del>（已舍弃）</p>
+<p>实现：</p>
+<ul>
+<li>通过<code>flipper</code>创建一个定时任务，规定每0.2s执行一次迭代</li>
+<li>计算当前实际速度<span class="math inline">\(actual\ speed = \frac{\Delta counter}{time}\)</span></li>
+<li>执行PID算法，<code>time_delta</code>恒定为0.2s</li>
+<li>将<code>counter</code>清零，进入下一个定时循环</li>
+</ul>
+<p>问题&amp;改进：</p>
+<ol type="1">
+<li>测得速度与实际速度有误差，且该误差与小车速度以及迭代的间隔时间相关：
+<ul>
+<li><p>测试结果：在我们首先对一个车轮进行PID测试，发现存在返回的速度值波动较大，于是我们将Full Pwm加在电机上，我们发现在<code>time_delta</code>为0.2s的空转测试中，返回的测得速度在95~105之间波动，明显存在一定的问题</p></li>
+<li><p>分析：我们猜测定时触发更新迭代会导致测得速度与实际速度之间存在随机的偏差，这是由于<code>counter</code>变量所表示出来的位移信息并不精确，举个具体一点例子吧！比如，实际位移应该是1.1个counter，1.5个counter和1.9个counter，这些统统都会被认为是1个counter。当然如果我们每次更新时counter的增量都很大的话，这种1以内的误差其实就并不会影响多少了。</p></li>
+<li><p>理论分析：</p>
+<ul>
+<li><p>我们假设起始点为A，我们发现当counter的增量为n时，其位移最少为n，最大为n+1，假设起始点为A'，counter增量为n时，其位移最少为n-1，最大为n。所以对于counter读数为n而言，其最小可能位移为n-1，最大可能位移为n+1<img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/geogebra-export%20(1).svg" /></p></li>
+<li><p>误差计算</p>
+<p>我们假设能满足合理性<span class="math inline">\(\Delta time_{max} = 0.2s\)</span>，此时我们假设速度为<span class="math inline">\(\omega(unit:line/s)\)</span> <span class="math display">\[
+counter = \omega \times \Delta time_{max} = 0.2\omega \\
+counter_{error} = 2 \\
+error = \frac{couter_{error}}{counter}=\frac{10}{\omega} \times 100\% \\
+\]</span> 我们的最大速度<span class="math inline">\(\omega_{max}≈100\)</span>，所以最小误差为<span class="math inline">\(error_{min}≈10\%\)</span>，最小平均误差为<span class="math inline">\(ave\_error_{min}=\frac{1}{2} \times error_{min}≈5\%\)</span></p>
+<p>当我们速度为<span class="math inline">\(\omega=50\)</span>，误差为<span class="math inline">\(error≈20\%\)</span></p>
+<p>显然这是不可能容忍的，除非我们将<span class="math inline">\(\Delta time\)</span>设置为2s以上或者更高才能基本上满足我们的要求。</p></li>
+</ul></li>
+</ul></li>
+</ol>
+<p>结果：</p>
+<ul>
+<li>由于误差过大，我们基本上排除了了这个方法</li>
+<li>但是如果后续需要添加根据长时间更新PID的策略时，我们也可以调用这个方法，尽量让<span class="math inline">\(\Delta time\)</span>大于2s就可以满足我们的需要了</li>
+</ul>
+<h5 id="方式二counter增量触发">方式二：<code>counter</code>增量触发</h5>
+<p><code>counter</code>的增量达到某一指定值时，触发PID迭代，实现速度更新。</p>
+<p>实现：</p>
+<ul>
+<li>通过<code>timer</code>创建一个计时器，用于记录连续两次PID更新之间的间隔时间<span class="math inline">\(\Delta time\)</span>。</li>
+<li>在<code>main()</code>函数的循环过程中加入判断语句，规定<code>counter</code>变量的值达到10后执行一次迭代</li>
+<li>计算当前实际速度<span class="math inline">\(actual\ speed = \frac{counter}{\Delta time}\)</span></li>
+<li>执行PID算法，<code>time_delta</code>更新为<span class="math inline">\(\Delta time\)</span></li>
+<li>将<code>counter</code>清零，将<code>timer</code>清零，进入下一个定时循环</li>
+</ul>
+<p>问题&amp;改进：</p>
+<ol type="1">
+<li><p>首先是停止后无法自动起步的问题</p>
+<ul>
+<li>测试结果：我们首先对一个车轮进行PID测试，发现小车并不能自动起步，需要手动给予一定速度后才能开始稳定运行</li>
+<li>分析：由于这种更新触发策略需要小车开始运行后才能开始持续不断的更新速度，所以小车一旦因为任何原因停下以后将不能进行下一次的速度更新，导致永远无法自动起步</li>
+<li>改进：我们可以利用PID中设定的计时器<code>timer</code>，因为每次执行PID算法时候，都会进行清零操作，所以我们很容易联想到的方法就是设定当计时器<code>timer</code>读数大于某个特定值时，将会强制执行PID算法</li>
+<li>方案改进：</li>
+</ul></li>
+<li><p>然后就是停止过长时间再次更新时会导致PID算法中积分项过大的问题</p>
+<p>然后就是起步时速度猛增的问题</p>
+<ul>
+<li><p>测试结果：我们首先对一个车轮进行PID测试，发现小车往往能够弹射起步，并维持一段时间告诉运行后之后才恢复到目标速度</p></li>
+<li><p>测试结果：在我们首先对一个车轮进行PID测试时，发现小车往往能够弹射起步，并维持一段时间告诉运行后之后才恢复到目标速度</p></li>
+<li><p>分析：<code>timer</code>的累积可能会导致PID算法中积分项过大</p></li>
+<li><p>改进：在PID更新过程中，当检测到<code>timer</code>的读数过大时，自动识别为停止起步模式，返回测得速度为0，并将<span class="math inline">\(\Delta time\)</span> 设置为0.01s</p></li>
+</ul></li>
+</ol>
+<p>结果：</p>
+<ul>
+<li>我们决定采用方案二作为我们的PID更新方式</li>
+</ul>
+<h4 id="pid代码">PID代码</h4>
+<h5 id="项目目录">项目目录</h5>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">└─little_car
+    ├─main.cpp
+    ├─pid.h
+    └─mbed
+        └─...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>当算法译平台默认支持的语言是C和C++，因为除了大一的时候学过一学期C语言，之后都没怎么学过了，所以代码写的很糙，如果要直接使用的话，请仔细检查。</p>
+<p>考虑到之后在PID Calibration过程，可能要使用到的字符串的处理，以及我之前在学习Java和Python时对类有一定的了解，所以果断采用C++。</p>
+<p>该代码是最初始版本，包含了调试时所需要的串口通信和字符串处理的代码</p>
+</blockquote>
+<pre class="line-numbers language-c" data-language="c"><div class="caption"><span>pid.h Used to define two Structures pidCalibrationand pidState</span></div><code class="language-c"><span class="token comment">// protection against multiple includes</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifndef</span> <span class="token expression">SAXBOPHONE_PID_H</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">SAXBOPHONE_PID_H</span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifdef</span> <span class="token expression">__cplusplus</span></span>
+<span class="token keyword">extern</span> <span class="token string">"C"</span><span class="token punctuation">&#123;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
+    <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">pid_calibration</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">/*
+         * struct PID_Calibration
+         * 
+         * Struct storing calibrated PID constants for a PID Controller
+         * These are used for tuning the algorithm and the values they take are
+         * dependent upon the application - (in other words, YMMV...)
+         */</span>
+        <span class="token keyword">double</span> kp<span class="token punctuation">;</span> <span class="token comment">// Proportional gain</span>
+        <span class="token keyword">double</span> ki<span class="token punctuation">;</span> <span class="token comment">// Integral gain</span>
+        <span class="token keyword">double</span> kd<span class="token punctuation">;</span> <span class="token comment">// Derivative gain</span>
+    <span class="token punctuation">&#125;</span> PID_Calibration<span class="token punctuation">;</span>
+
+
+    <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">pid_state</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">/*
+         * struct PID_State
+         * 
+         * Struct storing the current state of a PID Controller.
+         * This is used as the input value to the PID algorithm function, which also
+         * returns a PID_State struct reflecting the adjustments suggested by the algorithm.
+         * 
+         * NOTE: The output field in this struct is set by the PID algorithm function, and
+         * is ignored in the actual calculations.
+         */</span>
+        <span class="token keyword">double</span> actual<span class="token punctuation">;</span> <span class="token comment">// The actual reading as measured</span>
+        <span class="token keyword">double</span> target<span class="token punctuation">;</span> <span class="token comment">// The desired reading</span>
+        <span class="token keyword">double</span> time_delta<span class="token punctuation">;</span> <span class="token comment">// Time since last sample/calculation - should be set when updating state</span>
+        <span class="token comment">// The previously calculated error between actual and target (zero initially)</span>
+        <span class="token keyword">double</span> previous_error<span class="token punctuation">;</span>
+        <span class="token keyword">double</span> integral<span class="token punctuation">;</span> <span class="token comment">// Sum of integral error over time</span>
+        <span class="token keyword">double</span> output<span class="token punctuation">;</span> <span class="token comment">// the modified output value calculated by the algorithm, to compensate for error</span>
+    <span class="token punctuation">&#125;</span> PID_State<span class="token punctuation">;</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifdef</span> <span class="token expression">__cplusplus</span></span>
+<span class="token punctuation">&#125;</span> <span class="token comment">// extern "C"</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
+
+<span class="token comment">// end of header</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><div class="caption"><span>main.cpp</span></div><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"mbed.h"</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"pid.h"</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string></span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+Serial <span class="token function">pc</span><span class="token punctuation">(</span>PA_9<span class="token punctuation">,</span> PA_10<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+PwmOut <span class="token function">mot1</span><span class="token punctuation">(</span>D5<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//D2配对左下轮</span>
+PwmOut <span class="token function">mot2</span><span class="token punctuation">(</span>D6<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//D3配对左上轮</span>
+PwmOut <span class="token function">mot3</span><span class="token punctuation">(</span>D9<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//D11配对右上轮</span>
+PwmOut <span class="token function">mot4</span><span class="token punctuation">(</span>D10<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//A2配对右下轮</span>
+
+Ticker flipper<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> iterationCounter<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> flag<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">PidFirst</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span><span class="token operator">:</span>
+        <span class="token function">PidFirst</span><span class="token punctuation">(</span>PinName pwm_name<span class="token punctuation">,</span> PinName sensorPort<span class="token punctuation">,</span> <span class="token keyword">double</span> tar<span class="token operator">=</span><span class="token number">60.0</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">pwm</span><span class="token punctuation">(</span>pwm_name<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">_interruptin</span><span class="token punctuation">(</span>sensorPort<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            _counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            pwm<span class="token punctuation">.</span><span class="token function">period_ms</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            pwm<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+            target <span class="token operator">=</span> tar<span class="token punctuation">;</span>
+            PID_Calibration pidCali <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0.001</span><span class="token punctuation">,</span> <span class="token number">0.006</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+            PID_State pidState <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">,</span>target<span class="token punctuation">,</span><span class="token number">0.2</span><span class="token punctuation">,</span>target<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0.1</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+            _pidCalibration <span class="token operator">=</span> pidCali<span class="token punctuation">;</span>
+            _pidState <span class="token operator">=</span> pidState<span class="token punctuation">;</span>
+            time<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            _interruptin<span class="token punctuation">.</span><span class="token function">rise</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>PidFirst<span class="token operator">::</span>counterFunc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token comment">// Function: set target velocity</span>
+        <span class="token keyword">void</span> <span class="token function">setTarget</span><span class="token punctuation">(</span><span class="token keyword">double</span> tar<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            _pidState<span class="token punctuation">.</span>target <span class="token operator">=</span> tar<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token comment">// Function: set pid calibration</span>
+        <span class="token keyword">void</span> <span class="token function">setPid</span><span class="token punctuation">(</span><span class="token keyword">double</span> kp<span class="token punctuation">,</span> <span class="token keyword">double</span> ki<span class="token punctuation">,</span> <span class="token keyword">double</span> kd<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            _pidCalibration<span class="token punctuation">.</span>kp <span class="token operator">=</span> kp<span class="token punctuation">;</span>
+            _pidCalibration<span class="token punctuation">.</span>ki <span class="token operator">=</span> ki<span class="token punctuation">;</span>
+            _pidCalibration<span class="token punctuation">.</span>kd <span class="token operator">=</span> kd<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token keyword">void</span> <span class="token function">counterFunc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            _counter<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">void</span> <span class="token function">counterClear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            _counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">int</span> <span class="token function">counterCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> _counter<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// Function: return a speed and justify whether there is an error</span>
+        <span class="token comment">// Attention: if the velocity lesson than 0.25round/s there will be a bug</span>
+        <span class="token keyword">double</span> <span class="token function">speedFunc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            duration <span class="token operator">=</span> time<span class="token punctuation">.</span><span class="token function">read_ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1000.0</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>duration <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> duration <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                _pidState<span class="token punctuation">.</span>time_delta <span class="token operator">=</span>  duration<span class="token punctuation">;</span>
+                <span class="token keyword">return</span>  _counter <span class="token operator">/</span> duration<span class="token punctuation">;</span>               
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+                duration <span class="token operator">=</span> <span class="token number">0.1</span><span class="token punctuation">;</span>
+                 _pidState<span class="token punctuation">.</span>time_delta <span class="token operator">=</span>  duration<span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// Function: to update the pid control factor</span>
+        <span class="token keyword">void</span> <span class="token function">pid_iterate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token comment">// 计算目标值与反馈值之间的误差</span>
+            <span class="token keyword">double</span> error <span class="token operator">=</span> _pidState<span class="token punctuation">.</span>target <span class="token operator">-</span> _pidState<span class="token punctuation">.</span>actual<span class="token punctuation">;</span>
+            <span class="token comment">// 计算Iterm</span>
+            _pidState<span class="token punctuation">.</span>integral <span class="token operator">+=</span> <span class="token punctuation">(</span>error <span class="token operator">*</span> _pidState<span class="token punctuation">.</span>time_delta<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 计算Pterm</span>
+            <span class="token keyword">double</span> derivative <span class="token operator">=</span> <span class="token punctuation">(</span>error <span class="token operator">-</span> _pidState<span class="token punctuation">.</span>previous_error<span class="token punctuation">)</span> <span class="token operator">/</span> _pidState<span class="token punctuation">.</span>time_delta<span class="token punctuation">;</span>
+            <span class="token comment">// 计算pid next state</span>
+            _pidState<span class="token punctuation">.</span>output <span class="token operator">=</span> <span class="token punctuation">(</span>
+                <span class="token punctuation">(</span>_pidCalibration<span class="token punctuation">.</span>kp <span class="token operator">*</span> error<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">(</span>_pidCalibration<span class="token punctuation">.</span>ki <span class="token operator">*</span> _pidState<span class="token punctuation">.</span>integral<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">(</span>_pidCalibration<span class="token punctuation">.</span>kd <span class="token operator">*</span> derivative<span class="token punctuation">)</span>
+            <span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 更新上一次的误差值为本次的误差值</span>
+            _pidState<span class="token punctuation">.</span>previous_error <span class="token operator">=</span> error<span class="token punctuation">;</span>
+            <span class="token comment">// 返回这次的状态</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// Function: renew pid state;</span>
+        <span class="token keyword">void</span> <span class="token function">renewPidState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            _pidState<span class="token punctuation">.</span>actual <span class="token operator">=</span> <span class="token function">speedFunc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">pid_iterate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// Function: renew the hole motor parameter according to pid algorithm</span>
+        <span class="token keyword">void</span> <span class="token function">renew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token function">renewPidState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            pwm <span class="token operator">=</span> _pidState<span class="token punctuation">.</span>output<span class="token punctuation">;</span>
+            time<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">counterClear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token keyword">double</span> <span class="token function">checkSpeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> _pidState<span class="token punctuation">.</span>actual<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token keyword">double</span> <span class="token function">timeCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> time<span class="token punctuation">.</span><span class="token function">read_ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1000.0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        
+        
+    <span class="token keyword">private</span><span class="token operator">:</span>
+        PID_Calibration _pidCalibration<span class="token punctuation">;</span>       
+        PID_State _pidState<span class="token punctuation">;</span>
+        <span class="token keyword">double</span> target<span class="token punctuation">;</span>
+        <span class="token keyword">volatile</span> <span class="token keyword">int</span> _counter<span class="token punctuation">;</span>
+        PwmOut pwm<span class="token punctuation">;</span>
+        InterruptIn _interruptin<span class="token punctuation">;</span>
+        Timer time<span class="token punctuation">;</span>
+        <span class="token keyword">double</span> duration<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+PidFirst <span class="token function">mot1_pid</span><span class="token punctuation">(</span>D5<span class="token punctuation">,</span> D2<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+PidFirst <span class="token function">mot2_pid</span><span class="token punctuation">(</span>D6<span class="token punctuation">,</span> D3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+PidFirst <span class="token function">mot3_pid</span><span class="token punctuation">(</span>D9<span class="token punctuation">,</span> D11<span class="token punctuation">)</span><span class="token punctuation">;</span>
+PidFirst <span class="token function">mot4_pid</span><span class="token punctuation">(</span>D10<span class="token punctuation">,</span> A2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token keyword">bool</span> <span class="token function">renew_motor</span><span class="token punctuation">(</span><span class="token keyword">char</span> _read<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>token<span class="token punctuation">;</span>
+    token <span class="token operator">=</span> <span class="token function">strtok</span><span class="token punctuation">(</span>_read<span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    string flag <span class="token operator">=</span>  token<span class="token punctuation">;</span>
+
+    token <span class="token operator">=</span> <span class="token function">strtok</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> kp <span class="token operator">=</span> <span class="token function">atof</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    token <span class="token operator">=</span> <span class="token function">strtok</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> ki <span class="token operator">=</span> <span class="token function">atof</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    token <span class="token operator">=</span> <span class="token function">strtok</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> kd <span class="token operator">=</span> <span class="token function">atof</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    token <span class="token operator">=</span> <span class="token function">strtok</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> tar <span class="token operator">=</span> <span class="token function">atof</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token string">"S"</span> <span class="token operator">||</span> flag <span class="token operator">==</span> <span class="token string">"s"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        mot1_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot1_pid<span class="token punctuation">.</span><span class="token function">setTarget</span><span class="token punctuation">(</span>tar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot2_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot2_pid<span class="token punctuation">.</span><span class="token function">setTarget</span><span class="token punctuation">(</span>tar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot3_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot3_pid<span class="token punctuation">.</span><span class="token function">setTarget</span><span class="token punctuation">(</span>tar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot4_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mot4_pid<span class="token punctuation">.</span><span class="token function">setTarget</span><span class="token punctuation">(</span>tar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token string">"S1"</span> <span class="token operator">||</span> flag <span class="token operator">==</span> <span class="token string">"s1"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        mot1_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token string">"S2"</span> <span class="token operator">||</span> flag <span class="token operator">==</span> <span class="token string">"s2"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        mot2_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token string">"S3"</span> <span class="token operator">||</span> flag <span class="token operator">==</span> <span class="token string">"s3"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        mot3_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token string">"S4"</span> <span class="token operator">||</span> flag <span class="token operator">==</span> <span class="token string">"s4"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        mot4_pid<span class="token punctuation">.</span><span class="token function">setPid</span><span class="token punctuation">(</span>kp<span class="token punctuation">,</span> ki<span class="token punctuation">,</span> kd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">void</span> <span class="token function">flag_change</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    flag <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    string str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span> ch<span class="token punctuation">;</span>
+    flipper<span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>flag_change<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>mot1_pid<span class="token punctuation">.</span><span class="token function">counterCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> iterationCounter <span class="token operator">||</span> mot1_pid<span class="token punctuation">.</span><span class="token function">timeCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            mot1_pid<span class="token punctuation">.</span><span class="token function">renew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>mot2_pid<span class="token punctuation">.</span><span class="token function">counterCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> iterationCounter <span class="token operator">||</span> mot2_pid<span class="token punctuation">.</span><span class="token function">timeCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            mot2_pid<span class="token punctuation">.</span><span class="token function">renew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>mot3_pid<span class="token punctuation">.</span><span class="token function">counterCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> iterationCounter <span class="token operator">||</span> mot3_pid<span class="token punctuation">.</span><span class="token function">timeCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            mot3_pid<span class="token punctuation">.</span><span class="token function">renew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>mot4_pid<span class="token punctuation">.</span><span class="token function">counterCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> iterationCounter <span class="token operator">||</span> mot4_pid<span class="token punctuation">.</span><span class="token function">timeCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            mot4_pid<span class="token punctuation">.</span><span class="token function">renew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            pc<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%f  %f  %f %f\n"</span><span class="token punctuation">,</span> mot1_pid<span class="token punctuation">.</span><span class="token function">checkSpeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mot2_pid<span class="token punctuation">.</span><span class="token function">checkSpeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mot3_pid<span class="token punctuation">.</span><span class="token function">checkSpeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mot4_pid<span class="token punctuation">.</span><span class="token function">checkSpeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            flag <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>pc<span class="token punctuation">.</span><span class="token function">readable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            ch <span class="token operator">=</span> pc<span class="token punctuation">.</span><span class="token function">getc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>ch <span class="token operator">==</span> <span class="token string">'E'</span> <span class="token operator">||</span> ch <span class="token operator">==</span> <span class="token string">'e'</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">char</span> chTemp<span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token function">strcpy</span><span class="token punctuation">(</span>chTemp<span class="token punctuation">,</span> str<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">renew_motor</span><span class="token punctuation">(</span>chTemp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                    pc<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"successful!successful!successful!successful!successful!successful!successful!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+                    pc<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"failed!failed!failed!failed!failed!failed!failed!failed!failed!failed!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> 
+                str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+                str <span class="token operator">+=</span> ch<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="pid调试">PID调试</h4>
+<p>（未完待续）</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Coldeye
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://coldeye2020.monster/Tech/Cpp/Pid/smart_car.html" title="Cpp项目(一)寻迹小车PID设计">https://coldeye2020.monster/Tech/Cpp/Pid/smart_car.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Cpp/" rel="tag"><i class="fa fa-tag"></i> Cpp</a>
+              <a href="/tags/PID/" rel="tag"><i class="fa fa-tag"></i> PID</a>
+              <a href="/tags/car/" rel="tag"><i class="fa fa-tag"></i> car</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Thoughts/essay_1.html" rel="prev" title="随笔(一)">
+                  <i class="fa fa-chevron-left"></i> 随笔(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Tech/Cpp/cpp_grammar_intermediate_2.html" rel="next" title="Cpp(二)Cpp中级语法">
+                  Cpp(二)Cpp中级语法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Coldeye</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">143k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:10</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.bootcdn.net/ajax/libs/mathjax/3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://coldeye2020.monster/Tech/Cpp/Pid/smart_car.html',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"09tInux3xJRlMs2A008PDeuP-MdYXbMMI","appKey":"PIFdCFbjTxC8EPP53JdDhrKO","serverURLs":null,"placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[]}, {
+      el: '#valine-comments',
+      path: "/Tech/Cpp/Pid/smart_car.html",
+      serverURLs: "https://09tinux3.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":450,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

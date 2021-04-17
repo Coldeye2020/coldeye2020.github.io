@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon-32x32.png" color="#222">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="google-site-verification" content="vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k">
+  <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"coldeye2020.monster","root":"/","images":"/images","scheme":"Gemini","version":"8.2.2","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="Attention 本文撰写时的环境为Hexo Version:5.4.0,Next Version:8.2.2  yaml配置文件 一定要注意：yaml配置文件也是有其固定格式的，特别是要注意空格。 经典报错： can not read a block mapping entry; a multiline key may not be an implicit key">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo配置(一)">
+<meta property="og:url" content="https://coldeye2020.monster/Hexo/Hexo_configuration_1.html">
+<meta property="og:site_name" content="Doki Doki">
+<meta property="og:description" content="Attention 本文撰写时的环境为Hexo Version:5.4.0,Next Version:8.2.2  yaml配置文件 一定要注意：yaml配置文件也是有其固定格式的，特别是要注意空格。 经典报错： can not read a block mapping entry; a multiline key may not be an implicit key">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.svg">
+<meta property="article:published_time" content="2021-04-03T05:20:00.000Z">
+<meta property="article:modified_time" content="2021-04-17T04:33:10.992Z">
+<meta property="article:author" content="Coldeye">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Yaml">
+<meta property="article:tag" content="Configuration">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.png">
+
+
+<link rel="canonical" href="https://coldeye2020.monster/Hexo/Hexo_configuration_1.html">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+<title>Hexo配置(一) | Doki Doki</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-193945147-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-193945147-1');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?166a4bbbc38e0e94b738a7cc1785a0ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Doki Doki</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog about life and tech sharing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">yaml配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E6%8A%A5%E9%94%99"><span class="nav-number">1.1.</span> <span class="nav-text">经典报错：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.2.</span> <span class="nav-text">报错原因：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF"><span class="nav-number">1.3.</span> <span class="nav-text">我犯的错误：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E6%8A%A5%E9%94%99-1"><span class="nav-number">1.4.</span> <span class="nav-text">经典报错：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E5%8E%9F%E5%9B%A0-1"><span class="nav-number">1.5.</span> <span class="nav-text">报错原因：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF-1"><span class="nav-number">1.6.</span> <span class="nav-text">我犯的错误：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A4%E4%BA%BA%E6%84%9F%E5%88%B0%E7%BB%9D%E6%9C%9B%E7%9A%84%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E5%BB%BA%E7%AB%8B"><span class="nav-number">2.</span> <span class="nav-text">令人感到绝望的评论系统建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF-2"><span class="nav-number">2.2.</span> <span class="nav-text">我犯的错误：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD"><span class="nav-number">2.3.</span> <span class="nav-text">后续：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%80%E8%80%8C%E6%B1%82%E5%85%B6%E6%AC%A1%E7%9A%84%E5%85%AC%E5%BC%8F%E6%B8%B2%E6%9F%93%E5%99%A8mathjax"><span class="nav-number">3.</span> <span class="nav-text">退而求其次的公式渲染器MathJax</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-1"><span class="nav-number">3.1.</span> <span class="nav-text">流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD-1"><span class="nav-number">3.2.</span> <span class="nav-text">后续：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D"><span class="nav-number">4.</span> <span class="nav-text">关于移动端适配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%B8%AA%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3"><span class="nav-number">5.</span> <span class="nav-text">整个博客的工作流程详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E5%B8%83%E5%B1%80"><span class="nav-number">5.1.</span> <span class="nav-text">整体布局：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">5.2.</span> <span class="nav-text">工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text">普通模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%8C%E7%94%9F%E7%8E%AF%E5%A2%83%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.2.</span> <span class="nav-text">陌生环境模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.3.</span> <span class="nav-text">本地调试模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3"><span class="nav-number">5.3.</span> <span class="nav-text">工作机制详解：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%B8%BB%E6%9C%BA%E9%83%A8%E5%88%86"><span class="nav-number">5.3.1.</span> <span class="nav-text">本地主机部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#travis-ci%E9%83%A8%E5%88%86"><span class="nav-number">5.3.2.</span> <span class="nav-text">Travis CI部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#attention"><span class="nav-number">5.3.3.</span> <span class="nav-text">Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#github-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E9%83%A8%E5%88%86"><span class="nav-number">5.3.4.</span> <span class="nav-text">Github 远程仓库部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vercel-%E7%BD%91%E7%AB%99%E6%89%98%E7%AE%A1%E5%B9%B3%E5%8F%B0%E9%83%A8%E5%88%86"><span class="nav-number">5.3.5.</span> <span class="nav-text">Vercel 网站托管平台部分</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Coldeye"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Coldeye</p>
+  <div class="site-description" itemprop="description">Finnally, you will find nothing is irreplaceable,</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/coldeye2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;coldeye2020" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:948283368.coldeye@gamil.com" title="E-Mail → mailto:948283368.coldeye@gamil.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/948283368" title="QQ → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;948283368" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+<!-- Insert Clustrmaps -->
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=200&t=tt&d=-ZnRDnKizjAkFSMaMv_zwM1vK_yTeDc1r3Pr34sq6a8&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://coldeye2020.monster/Hexo/Hexo_configuration_1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Coldeye">
+      <meta itemprop="description" content="Finnally, you will find nothing is irreplaceable,">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doki Doki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo配置(一)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-03 13:20:00" itemprop="dateCreated datePublished" datetime="2021-04-03T13:20:00+08:00">2021-04-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-17 12:33:10" itemprop="dateModified" datetime="2021-04-17T12:33:10+08:00">2021-04-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/Hexo/Hexo_configuration_1.html" class="post-meta-item leancloud_visitors" data-flag-title="Hexo配置(一)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note info"><p><strong>Attention</strong></p>
+<p>本文撰写时的环境为<code>Hexo Version:5.4.0</code>,<code>Next Version:8.2.2</code></p>
+</div>
+<h2 id="yaml配置文件">yaml配置文件</h2>
+<p>一定要注意：yaml配置文件也是有其固定格式的，特别是要注意空格。</p>
+<h3 id="经典报错">经典报错：</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">can not read a block mapping entry; a multiline key may not be an implicit key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span id="more"></span>
+<h3 id="报错原因">报错原因：</h3>
+<p>由于yaml文件配置时，配置项的冒号与值之间未加上空格。</p>
+<h3 id="我犯的错误">我犯的错误：</h3>
+<p>在配置SEO，修改<code>根目录配置文件</code> <code>theme/next/_config.yml</code>时</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># 错误案例</span>
+<span class="token comment"># Google Webmaster tools verification.</span>
+<span class="token comment"># See: https://developers.google.com/search</span>
+google_site_verification<span class="token punctuation">:</span>vBZBS_Ucyk1uWpkEaY8fasdfasdfasoSATSjHr<span class="token punctuation">-</span>k
+
+<span class="token comment"># Bing Webmaster tools verification.</span>
+<span class="token comment"># See: https://www.bing.com/webmasters</span>
+bing_site_verification<span class="token punctuation">:</span>0A53asdfassdf5103C2117Ddf5737EA0C7 
+
+<span class="token comment"># Yandex Webmaster tools verification.</span>
+<span class="token comment"># See: https://webmaster.yandex.ru</span>
+<span class="token key atrule">yandex_site_verification</span><span class="token punctuation">:</span> 
+
+<span class="token comment"># 正确案例</span>
+<span class="token comment"># Baidu Webmaster tools verification.</span>
+<span class="token comment"># See: https://ziyuan.baidu.com/site</span>
+<span class="token key atrule">baidu_site_verification</span><span class="token punctuation">:</span> code<span class="token punctuation">-</span>snlfasdfgB7<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="经典报错-1">经典报错：</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">YAMLException</span><span class="token punctuation">:</span> duplicated mapping key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="报错原因-1">报错原因：</h3>
+<p>一个yaml文件中，配置项出现重复。</p>
+<h3 id="我犯的错误-1">我犯的错误：</h3>
+<p>在配置Live2d时，修改站点配置文件<code>_config.yml</code>时</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># 错误案例</span>
+<span class="token comment"># Live2D</span>
+<span class="token comment">## https://github.com/xiazeyu/live2d-widget.js</span>
+<span class="token comment">## https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init</span>
+<span class="token key atrule">live2d</span><span class="token punctuation">:</span>
+   <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+   <span class="token comment"># enable: false</span>
+   <span class="token key atrule">scriptFrom</span><span class="token punctuation">:</span> local <span class="token comment"># 默认</span>
+   <span class="token key atrule">pluginRootPath</span><span class="token punctuation">:</span> live2dw/ <span class="token comment"># 插件在站点上的根目录(相对路径)</span>
+   <span class="token key atrule">pluginJsPath</span><span class="token punctuation">:</span> lib/ <span class="token comment"># 脚本文件相对与插件根目录路径</span>
+   <span class="token key atrule">pluginModelPath</span><span class="token punctuation">:</span> assets/ <span class="token comment"># 模型文件相对与插件根目录路径</span>
+   <span class="token comment"># scriptFrom: jsdelivr # jsdelivr CDN</span>
+   <span class="token comment"># scriptFrom: unpkg # unpkg CDN</span>
+   <span class="token comment"># scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url</span>
+   <span class="token key atrule">tagMode</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span>
+   <span class="token key atrule">debug</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 调试, 是否在控制台输出日志</span>
+   <span class="token key atrule">model</span><span class="token punctuation">:</span>
+     <span class="token key atrule">use</span><span class="token punctuation">:</span> live2d<span class="token punctuation">-</span>widget<span class="token punctuation">-</span>model<span class="token punctuation">-</span>koharu <span class="token comment"># npm-module package name</span>
+     <span class="token comment"># use: wanko # 博客根目录/live2d_models/ 下的目录名</span>
+     <span class="token comment"># use: ./wives/wanko # 相对于博客根目录的路径</span>
+     <span class="token comment"># use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url</span>
+   <span class="token key atrule">model</span><span class="token punctuation">:</span>
+     <span class="token key atrule">scale</span><span class="token punctuation">:</span> <span class="token number">1</span>
+     <span class="token key atrule">hHeadPos</span><span class="token punctuation">:</span> <span class="token number">0.5</span>
+     <span class="token key atrule">vHeadPos</span><span class="token punctuation">:</span> <span class="token number">0.618</span>
+   <span class="token key atrule">display</span><span class="token punctuation">:</span>
+     <span class="token key atrule">superSample</span><span class="token punctuation">:</span> <span class="token number">2</span>
+     <span class="token key atrule">width</span><span class="token punctuation">:</span> <span class="token number">300</span>
+     <span class="token key atrule">height</span><span class="token punctuation">:</span> <span class="token number">450</span>
+     <span class="token key atrule">position</span><span class="token punctuation">:</span> right
+     <span class="token key atrule">hOffset</span><span class="token punctuation">:</span> <span class="token number">0</span>
+     <span class="token key atrule">vOffset</span><span class="token punctuation">:</span> <span class="token number">-20</span>
+   <span class="token key atrule">mobile</span><span class="token punctuation">:</span>
+     <span class="token key atrule">show</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+     <span class="token key atrule">scale</span><span class="token punctuation">:</span> <span class="token number">0.5</span>
+   <span class="token key atrule">react</span><span class="token punctuation">:</span>
+     <span class="token key atrule">opacityDefault</span><span class="token punctuation">:</span> <span class="token number">0.7</span>
+     <span class="token key atrule">opacityOnHover</span><span class="token punctuation">:</span> <span class="token number">0.2</span>
+
+<span class="token comment"># 正确示范</span>
+<span class="token comment"># Live2D</span>
+<span class="token comment">## https://github.com/xiazeyu/live2d-widget.js</span>
+<span class="token comment">## https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init</span>
+<span class="token key atrule">live2d</span><span class="token punctuation">:</span>
+   <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+   <span class="token comment"># enable: false</span>
+   <span class="token key atrule">scriptFrom</span><span class="token punctuation">:</span> local <span class="token comment"># 默认</span>
+   <span class="token key atrule">pluginRootPath</span><span class="token punctuation">:</span> live2dw/ <span class="token comment"># 插件在站点上的根目录(相对路径)</span>
+   <span class="token key atrule">pluginJsPath</span><span class="token punctuation">:</span> lib/ <span class="token comment"># 脚本文件相对与插件根目录路径</span>
+   <span class="token key atrule">pluginModelPath</span><span class="token punctuation">:</span> assets/ <span class="token comment"># 模型文件相对与插件根目录路径</span>
+   <span class="token comment"># scriptFrom: jsdelivr # jsdelivr CDN</span>
+   <span class="token comment"># scriptFrom: unpkg # unpkg CDN</span>
+   <span class="token comment"># scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url</span>
+   <span class="token key atrule">tagMode</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span>
+   <span class="token key atrule">debug</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 调试, 是否在控制台输出日志</span>
+   <span class="token key atrule">model</span><span class="token punctuation">:</span>
+     <span class="token key atrule">use</span><span class="token punctuation">:</span> live2d<span class="token punctuation">-</span>widget<span class="token punctuation">-</span>model<span class="token punctuation">-</span>koharu <span class="token comment"># npm-module package name</span>
+     <span class="token comment"># use: wanko # 博客根目录/live2d_models/ 下的目录名</span>
+     <span class="token comment"># use: ./wives/wanko # 相对于博客根目录的路径</span>
+     <span class="token comment"># use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url</span>
+     <span class="token key atrule">scale</span><span class="token punctuation">:</span> <span class="token number">1</span>
+     <span class="token key atrule">hHeadPos</span><span class="token punctuation">:</span> <span class="token number">0.5</span>
+     <span class="token key atrule">vHeadPos</span><span class="token punctuation">:</span> <span class="token number">0.618</span>
+     
+   <span class="token key atrule">display</span><span class="token punctuation">:</span>
+     <span class="token key atrule">superSample</span><span class="token punctuation">:</span> <span class="token number">2</span>
+     <span class="token key atrule">width</span><span class="token punctuation">:</span> <span class="token number">300</span>
+     <span class="token key atrule">height</span><span class="token punctuation">:</span> <span class="token number">450</span>
+     <span class="token key atrule">position</span><span class="token punctuation">:</span> right
+     <span class="token key atrule">hOffset</span><span class="token punctuation">:</span> <span class="token number">0</span>
+     <span class="token key atrule">vOffset</span><span class="token punctuation">:</span> <span class="token number">-20</span>
+   <span class="token key atrule">mobile</span><span class="token punctuation">:</span>
+     <span class="token key atrule">show</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+     <span class="token key atrule">scale</span><span class="token punctuation">:</span> <span class="token number">0.5</span>
+   <span class="token key atrule">react</span><span class="token punctuation">:</span>
+     <span class="token key atrule">opacityDefault</span><span class="token punctuation">:</span> <span class="token number">0.7</span>
+     <span class="token key atrule">opacityOnHover</span><span class="token punctuation">:</span> <span class="token number">0.2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="令人感到绝望的评论系统建立">令人感到绝望的评论系统建立</h2>
+<h3 id="流程">流程：</h3>
+<ol type="1">
+<li><p>首先打算使用<code>gitalk</code>，根据官方文档<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/docs/third-party-services/comments.html">Comment Systems</a>给出的配置一步一步进行，但最后总是提示<code>bad credentials</code>，不解，于是查看原仓库<code>issue</code>，发现也有类似的案例，但是他们都是通过“重新更新了<code>clientSecret</code>之后再输入一次来解决的，我尝试多次未果后，选择在google上找解决方案，但是根据他们的博客内容，大体也同样是刷新一次就解决了，还有一个是通过加单引号解决的（可能也是通过更新，只是博主并未意识到），所以在经历了长达2h的鏖战未果后，我无奈选择了放弃使用<code>gitalk</code>作为comment system。</p></li>
+<li><p>然后我开始查找好用的评论系统，发现很多人都推荐了<code>valine</code>，所以我开始了漫长的配置之旅</p></li>
+<li><p>我首先查看官方文档，发现文档中并未预装<code>valine</code>插件，也没有相关教程，于是我查看了valine官网，但是配置过程过于复杂，所以我决定google一份教程，但大部分的教程都指向next主题是预装了<code>valine</code>插件的，只需要修改主题配置文件，打开这一功能就可以了，这些教程最晚的时间是今年2月份的，所以我以为valine是已经预装了，但是官方文档没写而已，于是参照教程上的步骤一步一步更改了配置文件，然后就。。。</p></li>
+<li><p>更早之前的教程指向需要自己<code>npm</code>安装一下，但是我觉得不可信，所以在next官方仓库中查了一下更新内容，发现还真的有，打开发现是在最近的版本（next8.1貌似）中删除了这个<code>valine</code>，具体原因没有明确指出，但是我在<code>issue</code>中看到了网友讨论的原因。于是查看了他们第三方comment system的使用方案，根据<code>hexo-next-valine</code>的教程完成了配置，但要命的事情发生了，我<code>hexo s</code>后查看博客时发现报错<code>valine Code 401: 未经授权的操作，请检查你的AppId和AppKey</code>，我google了大量的相关教程，发现他们要么是说<code>AppId</code>和<code>AppKey</code>配置错误，要么就是说自己代码有问题，也有说是打开了<code>next</code>中的<code>leancloud-counter</code>功能导致的，但都不符合我的情况，在疯狂的一顿尝试之后我决定再次更换。</p></li>
+<li><p>但是我仍感觉不死心，所以我重新的在<code>issue</code>中查找了一番，然后找到了<code>valine</code>中被<code>next</code>下架的原因，以及网友们推荐的新的替代品<code>waline</code>，但是<code>waline</code>是最近才出来的，没有与<code>hexo</code>适配的插件，需要自己更改<code>html</code>文件，考虑到之后next hexo更新的时候可能会出现的诸多merge，我有点不想尝试了，但是在查看<code>waline</code>官网教程的时候我无意发现了这样一句：</p>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.png" /></p>
+<p>然后，我貌似发现之前报错<code>valine Code 401: 未经授权的操作，请检查你的AppId和AppKey</code>的原因了（对，没错我就是那个注册了Leancode国内版的倒霉蛋），因为这两个项目都是使用的leancloud作为自己的应用服务器，所以我考虑到可能是因为Leancloud不同区域的服务不同造成的，于是我从新注册了一个国际版帐号，结果顺利通过，不再报错，至此博客的评论系统正式建立完成。</p></li>
+</ol>
+<h3 id="我犯的错误-2">我犯的错误：</h3>
+<p>在搭建<code>gitalk</code>时的错误至今仍是个谜，在搭建<code>valine</code>时的错误在于我没有考虑到同一家网站国际版和国内版的服务居然会不同，浪费了大量时间，事实上网上很多教程都是使用的国内版进行注册的，他们没有遇到这个问题应该是当时还不需要备案。</p>
+<h3 id="后续">后续：</h3>
+<p>当然，由于潜在的安全隐患，这个博客肯定不会长期使用<code>valine</code>作为comment system，等<code>waline</code>与<code>hexo</code>适配的插件出来后，我应该会考虑使用<code>waline</code>。</p>
+<h2 id="退而求其次的公式渲染器mathjax"><del>退而求其次的公式渲染器</del>MathJax</h2>
+<h3 id="流程-1">流程：</h3>
+<ol type="1">
+<li><p>next官方文档是表明了支持两种公式渲染的插件，即<code>MathJax</code>以及<code>KaTex</code>，一开始我上网搜了一下两个渲染器的差别，基本都写道<code>KaTex</code>相较于<code>MathJax</code>支持更少的公式效果，但是渲染速度十分的快，鉴于此我决定采用<code>KaTex</code>来作为博客的数学公式渲染器</p></li>
+<li><p>官方文档<a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/docs/third-party-services/math-equations.html">Math Equations</a>是提供了两种安装方案，即<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/CHENXCHEN/hexo-renderer-markdown-it-plus">hexo-renderer-markdown-it-plus</a>，以及<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/hexojs/hexo-renderer-markdown-it">hexo-renderer-markdown-it</a>，我稍微看了下两个插件的区别，无非是前者plus版安装更为简洁，相当于对后者进行了一次封装。所以我果断选择了前者，但是配置好后发现公式的渲染效果差强人意，（就像是用正常的字体写的公式，而不是一般我们看到的像意大利斜体的公式），果然还是不如老大哥<code>MathJax</code>，所以我卸载了这个插件</p></li>
+<li><p><del>在安装<code>MathJax</code>时，需要安装渲染器<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/wzpan/hexo-renderer-pandoc">hexo-renderer-pandoc</a>，这和之前使用<code>KaTex</code>的安装步骤差不多，但是要命的来了，就是他需要<code>pandoc</code>本身作为dependency，我是使用的manjaro，发现是预装了这款软件的，所以我可以很轻易的就利用<code>MathJax</code>对markdown中的公式进行渲染，但是部署到github上时，我发现好像并没有效果，并且正常的markdown渲染都出了问题，所以我猜测可能是因为我使用了<code>CI</code>的原因（我并不是直接将渲染好了的文件通过<code>hexo d</code>部署到github，而是在<code>CI</code>中进行的渲染并部署的，而<code>CI</code>的虚拟机中没有预装<code>pandoc</code>所以才导致了这样的结果），于是我google了一下解决方案，貌似大家都没有使用<code>CI</code>，并没有人遇到类似的问题，我只是看到<code>pandoc</code>官方文档中写道，<code>github actions</code>支持<code>pandoc</code>，所以我推测<code>CI</code>是一定有办法使用到<code>pandoc</code>的，我稍微看看了使用案例，但考虑到还是太麻烦了，所以退而求其次，我重新回到<code>KaTex</code>的怀抱中。</del><strong>本博客已经采用<code>MathJax</code>进行渲染，解决方案为使用<code>Travis CI</code>预装<code>pandoc</code>，详情见<code>/.travis.yml</code>文件</strong></p></li>
+<li><p>然后又又又出了点小问题，因为<code>next</code>主题是提供了两种方式开启公式渲染器的嘛，即每个文章都进行渲染，或者使用<code>front matter</code>的方式指定文章是否进行公式渲染，想必只要是一个真心想把博客做好的同学都会选择后者的吧，毕竟每篇都进行公式渲染的话，posts少的时候还好，但是如果posts多起来了，可能会大量增加渲染的时间，所以我使用了后者，具体的配置如下</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">math</span><span class="token punctuation">:</span>
+   <span class="token comment"># Default (false) will load mathjax / katex script on demand.</span>
+   <span class="token comment"># That is it only render those page which has `mathjax: true` in front-matter.</span>
+   <span class="token comment"># If you set it to true, it will load mathjax / katex srcipt EVERY PAGE.</span>
+   <span class="token key atrule">every_page</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+
+   <span class="token key atrule">mathjax</span><span class="token punctuation">:</span>
+     <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+     <span class="token comment"># Available values: none | ams | all</span>
+     <span class="token key atrule">tags</span><span class="token punctuation">:</span> none
+
+   <span class="token key atrule">katex</span><span class="token punctuation">:</span>
+     <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+     <span class="token comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span>
+     <span class="token key atrule">copy_tex</span><span class="token punctuation">:</span> <span class="token boolean important">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>其实在配置文件中已经说明的很清楚了，需要在想要进行公式渲染的文章<code>front-matter</code>部分加入<code>mathjax: true</code>即可，但是我以为如果要使用<code>KaTex</code>的话就要把配置项改为<code>katex: true</code>，真是不做死就不会死，于是成功的又让我陷入了沉思，还好我看到了一篇文章 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://lingr7.github.io/2019/10/03/hexo+next%E5%85%AC%E5%BC%8F%E6%94%AF%E6%8C%81---%E9%87%87%E7%94%A8Katex.html">《hexo+next公式支持---采用Katex》</a>，里面谈到即使是使用<code>KaTex</code>也要将配置想设置为<code>mathjax: true</code>才可以，至此安装和使用的基本问题解决，鉴于<code>katex</code>有特别多的限制，以后有时间可能会再写一篇来介绍，或者在这篇博文下面补充。</p></li>
+</ol>
+<h3 id="后续-1">后续：</h3>
+<p><del>因为我现在对于公式渲染的要求还不大，然后其实<code>KaTex</code>本身除了渲染的效果丑一点以外，速度还是杠杠的，所以暂时应该会继续使用<code>KaTex</code>作为公式渲染器了，以后如果有机会学习了<code>github actions</code>可能会重装<code>MathJax</code>练练手。</del><strong>本博客已经采用<code>MathJax</code>进行渲染，解决方案为使用<code>Travis CI</code>预装<code>pandoc</code>，详情见<code>/.travis.yml</code>文件</strong></p>
+<h2 id="关于移动端适配">关于移动端适配</h2>
+<p>其实就是响应式布局，直接把教程链接放在这吧</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="http://seikasahara.com/p/1578.html">Hexo博客Next主题如何在移动端上设置不同的背景</a></p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector"># 电脑 + 移动端适配
+body</span><span class="token punctuation">&#123;</span>
+    <span class="token property">background</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/images/bg.jpg<span class="token punctuation">)</span></span><span class="token punctuation">;</span>
+    <span class="token property">background-size</span><span class="token punctuation">:</span>cover<span class="token punctuation">;</span>
+    <span class="token property">background-repeat</span><span class="token punctuation">:</span>no-repeat<span class="token punctuation">;</span>
+    <span class="token property">background-attachment</span><span class="token punctuation">:</span>fixed<span class="token punctuation">;</span>
+    <span class="token property">background-position</span><span class="token punctuation">:</span>center<span class="token punctuation">;</span>  
+<span class="token punctuation">&#125;</span>
+
+<span class="token atrule"><span class="token rule">@media</span> <span class="token keyword">only</span> screen <span class="token keyword">and</span> <span class="token punctuation">(</span><span class="token property">max-width</span><span class="token punctuation">:</span> 1000px<span class="token punctuation">)</span></span> <span class="token punctuation">&#123;</span>
+  <span class="token selector">body</span><span class="token punctuation">&#123;</span>
+    <span class="token property">background</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/images/bg2.jpg<span class="token punctuation">)</span></span><span class="token punctuation">;</span>
+    <span class="token property">background-size</span><span class="token punctuation">:</span>cover<span class="token punctuation">;</span>
+    <span class="token property">background-repeat</span><span class="token punctuation">:</span>no-repeat<span class="token punctuation">;</span>
+    <span class="token property">background-attachment</span><span class="token punctuation">:</span>fixed<span class="token punctuation">;</span>
+    <span class="token property">background-position</span><span class="token punctuation">:</span>center<span class="token punctuation">;</span>  
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+# 移动端 + safari适配（对第二段进行一下修改即可）
+<span class="token atrule"><span class="token rule">@media</span> <span class="token keyword">only</span> screen <span class="token keyword">and</span> <span class="token punctuation">(</span><span class="token property">max-width</span><span class="token punctuation">:</span> 1000px<span class="token punctuation">)</span></span> <span class="token punctuation">&#123;</span>
+  <span class="token selector">body:before</span><span class="token punctuation">&#123;</span>
+  <span class="token property">content</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">;</span>
+  <span class="token property">display</span><span class="token punctuation">:</span>block<span class="token punctuation">;</span>
+  <span class="token property">position</span><span class="token punctuation">:</span>fixed<span class="token punctuation">;</span>
+  <span class="token property">top</span><span class="token punctuation">:</span>0<span class="token punctuation">;</span>
+  <span class="token property">left</span><span class="token punctuation">:</span>0<span class="token punctuation">;</span>
+  <span class="token property">bottom</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+  <span class="token property">z-index</span><span class="token punctuation">:</span>-1<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span>100%<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span>100vh<span class="token punctuation">;</span>
+  <span class="token property">background</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/images/bg2.png<span class="token punctuation">)</span></span> center 0 no-repeat<span class="token punctuation">;</span>
+  <span class="token property">background-size</span><span class="token punctuation">:</span>cover<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+# 主要是safari识别不了
+# <span class="token property">background-attachment</span><span class="token punctuation">:</span>fixed<span class="token punctuation">;</span>
+# <span class="token property">background-position</span><span class="token punctuation">:</span>center<span class="token selector">;  
+# 这两项
+
+
+# 当然如果考虑到像ipad这样的大屏幕，我们也需要将body部分做一些修改
+body:before</span><span class="token punctuation">&#123;</span>
+   <span class="token property">content</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">;</span>
+   <span class="token property">display</span><span class="token punctuation">:</span>block<span class="token punctuation">;</span>
+   <span class="token property">position</span><span class="token punctuation">:</span>fixed<span class="token punctuation">;</span>
+   <span class="token property">top</span><span class="token punctuation">:</span>0<span class="token punctuation">;</span>
+   <span class="token property">left</span><span class="token punctuation">:</span>0<span class="token punctuation">;</span>
+   <span class="token property">bottom</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+   <span class="token property">z-index</span><span class="token punctuation">:</span>-1<span class="token punctuation">;</span>
+   <span class="token property">width</span><span class="token punctuation">:</span>100%<span class="token punctuation">;</span>
+   <span class="token property">height</span><span class="token punctuation">:</span>100vh<span class="token punctuation">;</span>
+   <span class="token property">background</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>../images/background.jpg<span class="token punctuation">)</span></span> center 0 no-repeat<span class="token punctuation">;</span>
+   <span class="token property">background-size</span><span class="token punctuation">:</span>cover<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="整个博客的工作流程详解">整个博客的工作流程详解</h2>
+<h3 id="整体布局">整体布局：</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/hexo_1.svg" /></p>
+<h3 id="工作流程">工作流程</h3>
+<h4 id="普通模式">普通模式</h4>
+<ul>
+<li>适用：在自己电脑(<code>windows 10</code>)上进行简单的写作并发表博客</li>
+<li>流程：layout中红线所示</li>
+<li>命令：<code>git add.</code>+<code>git commit -m "new blog"</code>+<code>git push</code>即可</li>
+</ul>
+<h4 id="陌生环境模式">陌生环境模式</h4>
+<ul>
+<li><p>适用：在别人的电脑上进行写作并发表博客</p></li>
+<li><p>流程：</p>
+<ul>
+<li><p>首先安装<code>git</code></p></li>
+<li><p>然后配置远程仓库并拉取</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$git init
+
+$git remote add origin https:&#x2F;&#x2F;github.com&#x2F;user&#x2F;repo.git
+# Set a new remote
+
+$git 
+# Verify new remote
+&gt; origin  https:&#x2F;&#x2F;github.com&#x2F;user&#x2F;repo.git (fetch)
+&gt; origin  https:&#x2F;&#x2F;github.com&#x2F;user&#x2F;repo.git (push)
+
+# 拉取远程仓库
+$git pull
+
+# 切换分支
+$git checkout writer
+
+# 更改为ssh验证方式登录（如无长期需求，切勿使用这种方式）
+$ git remote set-url origin git@github.com:USERNAME&#x2F;REPOSITORY.git<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>接下来，layout中红线所示</p></li>
+</ul></li>
+<li><p>命令：如上<code>命令</code>+<code>git add.</code>+<code>git commit -m "new blog"</code>+<code>git push</code>即可</p></li>
+</ul>
+<h4 id="本地调试模式">本地调试模式</h4>
+<ul>
+<li>适用：在自己电脑(<code>manjaro</code>)上进行博客样式或者插件的调试等</li>
+<li>流程：
+<ul>
+<li>更改配置</li>
+<li>渲染</li>
+<li>创建服务</li>
+</ul></li>
+<li>命令：<code>hexo g</code>，<code>hexo s</code></li>
+</ul>
+<h3 id="工作机制详解">工作机制详解：</h3>
+<h4 id="本地主机部分">本地主机部分</h4>
+<p>首先通过<code>git</code>的三段命令，我们可以将除开被纳入<code>gitinore</code>文件内的所有文件和目录都<code>push</code>到github远程仓库中(<code>branch:writer</code>)</p>
+<pre class="line-numbers language-none"><div class="caption"><span>/.gitinore</span></div><code class="language-none">.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules&#x2F;
+public&#x2F;
+.deploy*&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="travis-ci部分">Travis CI部分</h4>
+<ol type="1">
+<li><p>配置文件</p>
+<p>然后Travis CI检测到了<code>commit</code>后，先将仓库<code>pull</code>到服务器上，然后检查是否有<code>.travis.yml</code>，如果存在，则按照<code>.travis.yml</code>文件中的配置一步一步执行</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><div class="caption"><span>/.travis.yml</span></div><code class="language-yaml"><span class="token key atrule">language</span><span class="token punctuation">:</span> node_js
+
+<span class="token key atrule">node_js</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> 14.16.0 
+  
+<span class="token key atrule">cache</span><span class="token punctuation">:</span>
+  <span class="token key atrule">directories</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> node_modules
+
+<span class="token key atrule">branches</span><span class="token punctuation">:</span>
+  <span class="token key atrule">only</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> writer <span class="token comment">#源码分支名称</span>
+    
+<span class="token key atrule">before_install</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> npm install <span class="token punctuation">-</span>g hexo
+    
+<span class="token key atrule">before_script</span><span class="token punctuation">:</span>
+<span class="token comment"># 下面两行配置用户名和邮箱不写也可以</span>
+<span class="token punctuation">-</span> git config user.name "Coldeye"
+<span class="token punctuation">-</span> git config user.email "948283368@qq.com"
+<span class="token comment"># 下面一行代码主要是进行了一个replace操作，即在Travis CI执行的全过程中将</span>
+<span class="token comment"># _config.yml文件中“https://github.com/Coldeye2020/coldeye2020.github.io.git”的字段</span>
+<span class="token comment"># replace为“https://$&#123;GH_TOKEN&#125;@github.com/coldeye2020/coldeye2020.github.io.git”</span>
+<span class="token comment"># 注意这个操作是严格大小写区分的，并且是全字符匹配</span>
+<span class="token comment"># 然后$&#123;GH_TOKEN&#125;这是一个变量，主要取决于你在Travis CI官网设置时的变量值，主要是用于github verification</span>
+<span class="token punctuation">-</span> sed <span class="token punctuation">-</span>i'' "s~https<span class="token punctuation">:</span>//github.com/Coldeye2020/coldeye2020.github.io.git~https<span class="token punctuation">:</span>//$<span class="token punctuation">&#123;</span>GH_TOKEN<span class="token punctuation">&#125;</span>@github.com/coldeye2020/coldeye2020.github.io.git~" _config.yml
+
+<span class="token key atrule">install</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> npm install
+<span class="token comment"># 这一步是安装hexo 和 github联动的插件，只有这样hexo deploy执行时才可以执行git操作</span>
+<span class="token punctuation">-</span> npm install hexo<span class="token punctuation">-</span>deployer<span class="token punctuation">-</span>git <span class="token punctuation">-</span><span class="token punctuation">-</span>save
+
+<span class="token key atrule">script</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> hexo clean
+<span class="token punctuation">-</span> hexo generate
+
+<span class="token key atrule">after_success</span><span class="token punctuation">:</span>
+<span class="token comment"># 将根据.config.yml文件中deploy项中的配置进行执行</span>
+<span class="token punctuation">-</span> hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="note info"><h4 id="attention">Attention</h4>
+<p>这里应该有三种方式配置<code>.travis.yml</code>文件的方式：</p>
+<ol type="1">
+<li>以<code>hexo</code>的方式(本博客采用的方案，最为简单，并且对插件<code>baidu_url_submitter</code>的支持也更简单)</li>
+<li>以<code>travis ci</code>的方式(<code>Hexo</code><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/docs/github-pages">中文官网</a>给出的方案)</li>
+<li>以<code>github action</code>的方式(<code>Hexo</code><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/docs/github-pages">英文官网</a>给出的方案)</li>
+</ol>
+</div>
+<pre class="line-numbers language-yaml" data-language="yaml"><div class="caption"><span>/_config.yml</span></div><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+<span class="token comment"># deploy type设置为git,这需要首先安装插件hexo-deployer-git</span>
+<span class="token punctuation">-</span> <span class="token key atrule">type</span><span class="token punctuation">:</span> git
+<span class="token comment"># 这里的repo本应该设置为"https://$&#123;GH_TOKEN&#125;@github.com/coldeye2020/coldeye2020.github.io.git"</span>
+<span class="token comment"># 但考虑到本项目放置在开源库下，所以仓库的Token肯定不可以写在配置文件中</span>
+<span class="token comment"># 这里使用的trick就是在.travis.yml中用命令sed -i进行字符串替换</span>
+<span class="token comment"># 把关键的token使用travis CI中早已经设置好的变量进行赋值，大大提高了安全性</span>
+  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/Coldeye2020/coldeye2020.github.io.git
+  <span class="token comment"># 设置deloy的分支为main</span>
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> main
+  <span class="token key atrule">message</span><span class="token punctuation">:</span> <span class="token string">"deployment"</span>
+  
+<span class="token punctuation">-</span> <span class="token key atrule">type</span><span class="token punctuation">:</span> baidu_url_submitter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>命令执行</p>
+<ol type="1">
+<li><code>hexo generate</code>命令在执行时会首先将<code>/source/</code>目录下所有开头不是下划的文件拷贝到/public/目录下（注：所有的文章均放置在<code>/source/_post/</code>目录下），对于<code>Markdown</code>和<code>HTML</code>文件则会先进行渲染然后再拷贝（如果想要指定某个<code>Markdown</code>或者<code>HTML</code>文件不进行渲染可以在站点配置文件<code>/_config.yml</code>中配置<code>skip_render</code>项）。在此过程中他会根据<code>markdown</code>文件中<code>front matter</code>段的<code>categories</code>项的值<code>A</code>来，确定渲染后得到的<code>HTML</code>文件应该放置在<code>/source/public/</code>目录下的同名<code>A</code>子目录下。如果是没有进行渲染的文件，则会保持原样放在<code>/public</code>下，其他部分(e.g.子目录<code>archives</code>,<code>categories</code>，<code>tags</code>)的生成也是差不多这么回事。同样的，<code>/themes/next/source/</code>目录下文件也会同样被copy到<code>/public/</code>目录下。</li>
+<li><code>hexo deploy</code>命令在执行时会按照<code>/_config.yml</code>文件中的配置，将<code>/public/</code>目录下的所有文件<code>push</code>到<code>github 远程仓库</code>的<code>mian</code>分支</li>
+</ol></li>
+</ol>
+<h4 id="github-远程仓库部分">Github 远程仓库部分</h4>
+<ul>
+<li>来自外部的<code>push</code>
+<ul>
+<li>来自本地主机的文件将被<code>push</code>到<code>writer</code>分支</li>
+<li>来自Travis CI的文件将被<code>push</code>到<code>main</code>分支</li>
+</ul></li>
+<li>来自外部的<code>pull</code>
+<ul>
+<li>被Travis CI<code>pull</code>
+<ul>
+<li>若出现了<code>writter</code>分支的commit</li>
+<li>检测是否存在<code>.travis.yml</code>文件</li>
+<li>对<code>writer</code>分支中的文件进行<code>hexo g</code>操作</li>
+</ul></li>
+<li>被Vercel<code>pull</code>
+<ul>
+<li>若出现了<code>main</code>分支的commit</li>
+<li>直接将<code>main</code>分支<code>pull</code>下来</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="vercel-网站托管平台部分">Vercel 网站托管平台部分</h4>
+<ol type="1">
+<li>如上所示，即Github仓库中的<code>main</code>分支如果出现了<code>commit</code>则会执行部署(但缺少部署文件，所以就是简单地pull下来了)</li>
+<li>这个部分主要是提供了CDN服务，便于国内用户访问</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Coldeye
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://coldeye2020.monster/Hexo/Hexo_configuration_1.html" title="Hexo配置(一)">https://coldeye2020.monster/Hexo/Hexo_configuration_1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+              <a href="/tags/Yaml/" rel="tag"><i class="fa fa-tag"></i> Yaml</a>
+              <a href="/tags/Configuration/" rel="tag"><i class="fa fa-tag"></i> Configuration</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Anime/Kaori_Miyazono_letter.html" rel="prev" title="宮園かをりの手紙">
+                  <i class="fa fa-chevron-left"></i> 宮園かをりの手紙
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Hexo/hexo_trick_1.html" rel="next" title="Hexo技巧(一)Plugin">
+                  Hexo技巧(一)Plugin <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Coldeye</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">143k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:10</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://coldeye2020.monster/Hexo/Hexo_configuration_1.html',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"09tInux3xJRlMs2A008PDeuP-MdYXbMMI","appKey":"PIFdCFbjTxC8EPP53JdDhrKO","serverURLs":null,"placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[]}, {
+      el: '#valine-comments',
+      path: "/Hexo/Hexo_configuration_1.html",
+      serverURLs: "https://09tinux3.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":450,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

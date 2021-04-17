@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon-32x32.png" color="#222">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="google-site-verification" content="vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k">
+  <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"coldeye2020.monster","root":"/","images":"/images","scheme":"Gemini","version":"8.2.2","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="说明 本文是在大三期间看北京大学 李葛老师的C语言基础与进阶网课所做笔记，后并未勘误，如有错误，请谅解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cpp(二)Cpp中级语法">
+<meta property="og:url" content="https://coldeye2020.monster/Tech/Cpp/cpp_grammar_intermediate_2.html">
+<meta property="og:site_name" content="Doki Doki">
+<meta property="og:description" content="说明 本文是在大三期间看北京大学 李葛老师的C语言基础与进阶网课所做笔记，后并未勘误，如有错误，请谅解">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417114448702.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417114705852.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417115106202.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417115629826.png">
+<meta property="article:published_time" content="2021-04-16T16:45:22.000Z">
+<meta property="article:modified_time" content="2021-04-17T04:33:10.992Z">
+<meta property="article:author" content="Coldeye">
+<meta property="article:tag" content="Cpp">
+<meta property="article:tag" content="STL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417114448702.png">
+
+
+<link rel="canonical" href="https://coldeye2020.monster/Tech/Cpp/cpp_grammar_intermediate_2.html">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+<title>Cpp(二)Cpp中级语法 | Doki Doki</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-193945147-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-193945147-1');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?166a4bbbc38e0e94b738a7cc1785a0ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Doki Doki</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog about life and tech sharing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%BF%9B%E9%98%B6"><span class="nav-number">1.</span> <span class="nav-text">C语言基础与进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">递归基础部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E6%84%9F%E4%BC%A0%E6%9F%93"><span class="nav-number">1.1.1.</span> <span class="nav-text">流感传染</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">代码部分</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%8F%B7%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">扩号匹配问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86-1"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">代码部分</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AB%E7%9A%87%E5%90%8E%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.3.</span> <span class="nav-text">八皇后问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-2"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86-2"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">代码部分</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%8B%E7%9B%98%E8%B7%B3%E9%A9%AC%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.4.</span> <span class="nav-text">棋盘跳马问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-3"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86-3"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">代码部分</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Coldeye"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Coldeye</p>
+  <div class="site-description" itemprop="description">Finnally, you will find nothing is irreplaceable,</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/coldeye2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;coldeye2020" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:948283368.coldeye@gamil.com" title="E-Mail → mailto:948283368.coldeye@gamil.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/948283368" title="QQ → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;948283368" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+<!-- Insert Clustrmaps -->
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=200&t=tt&d=-ZnRDnKizjAkFSMaMv_zwM1vK_yTeDc1r3Pr34sq6a8&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://coldeye2020.monster/Tech/Cpp/cpp_grammar_intermediate_2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Coldeye">
+      <meta itemprop="description" content="Finnally, you will find nothing is irreplaceable,">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doki Doki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cpp(二)Cpp中级语法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-17 00:45:22 / Modified: 12:33:10" itemprop="dateCreated datePublished" datetime="2021-04-17T00:45:22+08:00">2021-04-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/Tech/Cpp/cpp_grammar_intermediate_2.html" class="post-meta-item leancloud_visitors" data-flag-title="Cpp(二)Cpp中级语法" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note info"><p><strong>说明</strong></p>
+<p>本文是在<code>大三期间</code>看<code>北京大学 李葛老师</code>的<code>C语言基础与进阶</code>网课所做笔记，后并未勘误，如有错误，请谅解</p>
+</div>
+<span id="more"></span>
+<h2 id="c语言基础与进阶">C语言基础与进阶</h2>
+<h3 id="递归基础部分">递归基础部分</h3>
+<h4 id="流感传染"><a target="_blank" rel="noopener external nofollow noreferrer" href="http://pkuic.openjudge.cn/hw06/6/">流感传染</a></h4>
+<h5 id="题目描述">题目描述</h5>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417114448702.png" /></p>
+<h5 id="代码部分">代码部分</h5>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+
+
+int main ()&#123;
+    char area[100][100] &#x3D; &#123;&#39;\0&#39;&#125;;
+    int n;
+    cin &gt;&gt; n;
+    for(int i &#x3D; 1; i &lt;&#x3D; n; i++)
+        for(int j &#x3D; 1; j &lt;&#x3D; n; j++)&#123;
+            cin &gt;&gt; area[i][j];
+        &#125;
+    int m;
+    cin &gt;&gt; m;
+    for(int day &#x3D; 1; day &lt;&#x3D; m; day++)&#123;
+        for(int i &#x3D; 1; i &lt;&#x3D; n; i++)
+            for(int j &#x3D; 1; j &lt;&#x3D; n; j++)&#123;
+                if(area[i][j] &#x3D;&#x3D; &#39;w&#39;)
+                &#123;
+                    area[i][j] &#x3D; &#39;@&#39;;
+                &#125;
+            &#125;
+        for(int i &#x3D; 1; i &lt;&#x3D; n ; i++)
+            for(int j &#x3D; 1; j &lt;&#x3D; n; j++)&#123;
+                if(area[i][j] &#x3D;&#x3D; &#39;.&#39;)
+                &#123;
+                    if ((area[i-1][j] &#x3D;&#x3D; &#39;@&#39;) + (area[i+1][j] &#x3D;&#x3D; &#39;@&#39;) + (area[i][j+1] &#x3D;&#x3D; &#39;@&#39;) + (area[i][j-1] &#x3D;&#x3D; &#39;@&#39;))
+                    &#123;
+                        area[i][j] &#x3D; &#39;w&#39;;
+                    &#125;
+                    
+                &#125;
+            &#125;
+    &#125;
+    int num &#x3D; 0;  
+    for(int i &#x3D; 1; i &lt;&#x3D; n ; i++)&#123;
+        for(int j &#x3D; 1; j &lt;&#x3D; n; j++)&#123;
+            if(area[i][j] &#x3D;&#x3D; &#39;@&#39;)
+                num++;
+        &#125;
+    &#125;
+    
+    cout&lt;&lt;num;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="扩号匹配问题"><a target="_blank" rel="noopener external nofollow noreferrer" href="http://pkuic.openjudge.cn/hw07/4/">扩号匹配问题</a></h4>
+<h5 id="题目描述-1">题目描述</h5>
+<figure>
+<img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417114705852.png" alt="image-20210417114705852" /><figcaption aria-hidden="true">image-20210417114705852</figcaption>
+</figure>
+<h5 id="代码部分-1">代码部分</h5>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+
+int flag &#x3D; 0;
+
+char *F(char *str_l)&#123;
+    while(*str_l !&#x3D; &#39;\0&#39;)&#123;
+        if(*str_l !&#x3D; &#39;(&#39;)&#123;
+            if(*str_l &#x3D;&#x3D; &#39;)&#39;)&#123;
+                if(flag &#x3D;&#x3D; 0)
+                &#123;
+                    *str_l &#x3D; &#39;?&#39;;
+                    return F( str_l + 1);
+                &#125;
+                else&#123;
+                    flag--;
+                    *str_l &#x3D; &#39; &#39;;
+                    return str_l;
+                &#125;
+           &#125;
+            else&#123;
+                *str_l &#x3D; &#39; &#39;;
+                str_l++;
+            &#125;
+        &#125;
+        else&#123;
+            flag++;
+            char *temp &#x3D; F(str_l+1);
+            if(*temp &#x3D;&#x3D; &#39;\0&#39;)&#123;
+                *str_l &#x3D; &#39;$&#39;;
+                return temp;
+            &#125;
+            else&#123;
+                *str_l &#x3D; &#39; &#39;;
+                str_l &#x3D; ++temp;
+            &#125;
+                
+        &#125;
+    &#125;    
+    return str_l;
+&#125;
+
+int main()&#123;
+    char str[100];
+    while(cin&gt;&gt;str)&#123;
+        cout&lt;&lt;str&lt;&lt;endl;
+        F(str);
+        cout&lt;&lt;str&lt;&lt;endl;
+        flag &#x3D; 0;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="八皇后问题"><a target="_blank" rel="noopener external nofollow noreferrer" href="http://pkuic.openjudge.cn/dg4/2/">八皇后问题</a></h4>
+<h5 id="题目描述-2">题目描述</h5>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417115106202.png" /></p>
+<h5 id="代码部分-2">代码部分</h5>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+
+int flag &#x3D; 0, flag2 &#x3D; 0;
+int chess[10][10] &#x3D; &#123;0&#125;;
+
+bool check(int row, int column)&#123;
+    int *pointer &#x3D; &amp;chess[row][column];
+    for(pointer--; *pointer !&#x3D; -1; pointer--)
+        if(*pointer &#x3D;&#x3D; 1)&#123;
+            return false;
+        &#125;
+    pointer &#x3D; &amp;chess[row][column];
+    for(pointer+&#x3D; 9; *pointer !&#x3D; -1; pointer +&#x3D; 9)&#123;
+        if(*pointer &#x3D;&#x3D; 1)&#123;
+            return false;
+        &#125;
+    &#125;
+    pointer &#x3D; &amp;chess[row][column];
+    for(pointer -&#x3D; 11; *pointer !&#x3D; -1; pointer -&#x3D; 11)&#123;
+        if(*pointer &#x3D;&#x3D; 1)&#123;
+            return false;
+        &#125;
+    &#125;
+    return true;
+&#125;
+
+void squeen(int num)&#123;
+    if (num &#x3D;&#x3D; 9)
+    &#123;
+        flag++;
+        cout&lt;&lt;&quot;No. &quot;&lt;&lt;flag&lt;&lt;endl;
+        for(int i &#x3D; 1; i &lt; 9; i++)&#123;
+            for(int j &#x3D; 1; j &lt; 9; j++)
+                cout &lt;&lt; chess[i][j]&lt;&lt;&quot; &quot;;
+            cout&lt;&lt;endl;
+        &#125;
+        return;
+    &#125;
+    for(int i &#x3D; 1; i &lt; 9; i++)&#123;
+        chess[i][num] &#x3D; 1;
+        if(check(i, num))&#123;
+            squeen(num+1);
+        &#125;
+        chess[i][num] &#x3D; 0;
+    &#125;
+    return;
+&#125;
+
+int main()&#123;
+    for(int i &#x3D; 0; i &lt; 10; i++)&#123;
+        chess[0][i] &#x3D; -1;
+        chess[9][i] &#x3D; -1;
+        chess[i][0] &#x3D; -1;
+        chess[i][9] &#x3D; -1;
+    &#125;
+    squeen(1);
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="棋盘跳马问题"><a target="_blank" rel="noopener external nofollow noreferrer" href="http://poj.org/problem?id=2243">棋盘跳马问题</a></h4>
+<h5 id="题目描述-3">题目描述</h5>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20210417115629826.png" /></p>
+<h5 id="代码部分-3">代码部分</h5>
+<p>题目描述和代码部分并不是很一样，代码写的是具有障碍的跳马问题</p>
+<p>还没有规范输出，但是思路基本是对的，我是选取6X6的棋盘，固定右上角为终点格子，这个也可以自己写一个checkend()函数自行检验，此时可以输入一串字符串来表示这个棋盘，<code>@</code>代表障碍格子，<code>.</code>代表正常格子，<code>S</code>代表起始格子，<code>E</code>代表终点格子，输出时<code>S</code>到<code>E</code>的最短步数</p>
+<pre class="line-numbers language-Cpp" data-language="Cpp"><code class="language-Cpp">#include &lt;iostream&gt;
+using namespace std;
+
+
+int history[8][8] &#x3D; &#123;0&#125;; 
+char panel[8][8] &#x3D; &#123;&#39;\0&#39;&#125;;
+
+struct position&#123;
+    int x;
+    int y;
+    position *next;
+    position *ahead;
+&#125; source;
+
+
+position *add_position(position *head, int x, int y)&#123;
+    position *temp &#x3D; head;
+    while(temp-&gt;next !&#x3D; NULL) temp &#x3D; temp-&gt;next;
+    temp-&gt;x &#x3D; x;
+    temp-&gt;y &#x3D; y;
+    position *extra &#x3D; new position;
+    temp-&gt;next &#x3D; extra;
+    extra-&gt;ahead &#x3D; temp;
+    extra-&gt;next &#x3D; NULL;
+    return head;
+&#125;
+ 
+position *getLegalMove(position *head, int x, int y)&#123;
+    if(panel[x+1][y] !&#x3D; &#39;b&#39; &amp;&amp; panel[x+1][y] !&#x3D; &#39;@&#39;)&#123;
+        if(panel[x+2][y+1] !&#x3D; &#39;b&#39; &amp;&amp; panel[x+2][y+1] !&#x3D; &#39;@&#39; &amp;&amp; panel[x+2][y+1] !&#x3D; &#39;S&#39;) add_position(head, x+2, y+1);
+        if(panel[x+2][y-1] !&#x3D; &#39;b&#39; &amp;&amp; panel[x+2][y-1] !&#x3D; &#39;@&#39; &amp;&amp; panel[x+2][y-1] !&#x3D; &#39;S&#39;) add_position(head, x+2, y-1);
+    &#125;
+    if(panel[x-1][y] !&#x3D; &#39;b&#39; &amp;&amp; panel[x-1][y] !&#x3D; &#39;@&#39;)&#123;
+        if(panel[x-2][y+1] !&#x3D; &#39;b&#39; &amp;&amp; panel[x-2][y+1] !&#x3D; &#39;@&#39; &amp;&amp; panel[x-2][y+1] !&#x3D; &#39;S&#39;) add_position(head, x-2, y+1);
+        if(panel[x-2][y-1] !&#x3D; &#39;b&#39; &amp;&amp; panel[x-2][y-1] !&#x3D; &#39;@&#39; &amp;&amp; panel[x-2][y-1] !&#x3D; &#39;S&#39;) add_position(head, x-2, y-1);
+    &#125;
+    if(panel[x][y+1] !&#x3D; &#39;b&#39; &amp;&amp; panel[x][y+1] !&#x3D; &#39;@&#39;)&#123;
+        if(panel[x-1][y+2] !&#x3D; &#39;b&#39; &amp;&amp; panel[x-1][y+2] !&#x3D; &#39;@&#39; &amp;&amp; panel[x-1][y+2] !&#x3D; &#39;S&#39;) add_position(head, x-1, y+2);
+        if(panel[x+1][y+2] !&#x3D; &#39;b&#39; &amp;&amp; panel[x+1][y+2] !&#x3D; &#39;@&#39; &amp;&amp; panel[x+1][y+2] !&#x3D; &#39;S&#39;) add_position(head, x+1, y+2);
+    &#125;
+    if(panel[x][y-1] !&#x3D; &#39;b&#39; &amp;&amp; panel[x][y-1] !&#x3D; &#39;@&#39;)&#123;
+        if(panel[x-1][y-2] !&#x3D; &#39;b&#39; &amp;&amp; panel[x-1][y-2] !&#x3D; &#39;@&#39; &amp;&amp; panel[x-1][y-2] !&#x3D; &#39;S&#39;) add_position(head, x-1, y-2);
+        if(panel[x+1][y-2] !&#x3D; &#39;b&#39; &amp;&amp; panel[x+1][y-2] !&#x3D; &#39;@&#39; &amp;&amp; panel[x+1][y-2] !&#x3D; &#39;S&#39;) add_position(head, x+1, y-2);
+    &#125;
+    return head;
+&#125;
+
+int step(position des)&#123;
+    int R &#x3D; 100, Q &#x3D; 100;
+    position *head &#x3D; new position, *temp;
+    position mainsource &#x3D; source;
+    head-&gt;next &#x3D; NULL;
+    head &#x3D; getLegalMove(head, source.x, source.y);
+    temp &#x3D; head; 
+    while(temp-&gt;next!&#x3D;NULL)&#123;
+        if(history[temp-&gt;x][temp-&gt;y] !&#x3D; -1)&#123;
+            Q &#x3D; history[temp-&gt;x][temp-&gt;y];
+        &#125;
+        else&#123;
+            if (panel[temp-&gt;x][temp-&gt;y] &#x3D;&#x3D; &#39;E&#39;)
+            &#123;
+                return 1;
+            &#125;
+            source.x &#x3D; temp -&gt; x;
+            source.y &#x3D; temp -&gt; y;
+            panel[temp-&gt;x][temp-&gt;y] &#x3D; &#39;S&#39;;
+            Q &#x3D; step(des);
+            history[temp-&gt;x][temp-&gt;y] &#x3D; Q;
+            source &#x3D; mainsource;
+            panel[temp-&gt;x][temp-&gt;y] &#x3D; &#39;.&#39;;
+        &#125;
+        if(R &gt; Q) 
+            R &#x3D; Q;
+        temp &#x3D; temp-&gt;next;
+    &#125;
+    return R+1;
+&#125;
+
+int main()&#123;
+    for (int i &#x3D; 1; i &lt; 7; i++)
+    &#123;
+        for (int j &#x3D; 1; j &lt; 7; j++)
+        &#123;
+            cin&gt;&gt;panel[i][j];
+        &#125;
+    &#125;
+    
+    for(int i &#x3D; 0; i &lt; 8; i++)&#123;
+        for(int j &#x3D; 0; j &lt; 8; j++)&#123;
+            if(panel[i][j] &#x3D;&#x3D; &#39;S&#39;)&#123;
+                source.x &#x3D; i;
+                source.y &#x3D; j;
+            &#125;
+            if(i &#x3D;&#x3D; 0 || i &#x3D;&#x3D; 7 || j &#x3D;&#x3D; 0 || j &#x3D;&#x3D;7) panel[i][j] &#x3D; &#39;b&#39;;
+            history[i][j] &#x3D; -1;
+        &#125;
+    &#125;
+    position e &#x3D; &#123;1, 6&#125;;
+    cout &lt;&lt; step(e);
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Coldeye
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://coldeye2020.monster/Tech/Cpp/cpp_grammar_intermediate_2.html" title="Cpp(二)Cpp中级语法">https://coldeye2020.monster/Tech/Cpp/cpp_grammar_intermediate_2.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Cpp/" rel="tag"><i class="fa fa-tag"></i> Cpp</a>
+              <a href="/tags/STL/" rel="tag"><i class="fa fa-tag"></i> STL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Tech/Cpp/Pid/smart_car.html" rel="prev" title="Cpp项目(一)寻迹小车PID设计">
+                  <i class="fa fa-chevron-left"></i> Cpp项目(一)寻迹小车PID设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Coldeye</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">143k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:10</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://coldeye2020.monster/Tech/Cpp/cpp_grammar_intermediate_2.html',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"09tInux3xJRlMs2A008PDeuP-MdYXbMMI","appKey":"PIFdCFbjTxC8EPP53JdDhrKO","serverURLs":null,"placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[]}, {
+      el: '#valine-comments',
+      path: "/Tech/Cpp/cpp_grammar_intermediate_2.html",
+      serverURLs: "https://09tinux3.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":450,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

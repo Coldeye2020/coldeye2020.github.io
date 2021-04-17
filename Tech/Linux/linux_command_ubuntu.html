@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon-32x32.png" color="#222">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="google-site-verification" content="vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k">
+  <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"coldeye2020.monster","root":"/","images":"/images","scheme":"Gemini","version":"8.2.2","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="说明 本文是在大二下学期因疫情缘故无法返校时看韩顺平linux网课所做笔记，后并未勘误，如有错误，请谅解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux命令(一)Ubuntu基础命令">
+<meta property="og:url" content="https://coldeye2020.monster/Tech/Linux/linux_command_ubuntu.html">
+<meta property="og:site_name" content="Doki Doki">
+<meta property="og:description" content="说明 本文是在大二下学期因疫情缘故无法返校时看韩顺平linux网课所做笔记，后并未勘误，如有错误，请谅解">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20200328165526.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329142823572.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329142833796.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329170700425.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329171204112.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329184234373.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329184553477.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329193752382.png">
+<meta property="article:published_time" content="2020-03-01T12:43:52.000Z">
+<meta property="article:modified_time" content="2021-04-17T04:33:10.992Z">
+<meta property="article:author" content="Coldeye">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Command">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20200328165526.png">
+
+
+<link rel="canonical" href="https://coldeye2020.monster/Tech/Linux/linux_command_ubuntu.html">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+<title>linux命令(一)Ubuntu基础命令 | Doki Doki</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-193945147-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-193945147-1');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?166a4bbbc38e0e94b738a7cc1785a0ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Doki Doki</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog about life and tech sharing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E6%93%8D%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">实操篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vim-%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1 vim 快捷键使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E8%A1%8C"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">拷贝行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B2%98%E8%B4%B4%E8%A1%8C"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">粘贴行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%A1%8C"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">删除行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E5%85%B3%E9%94%AE%E8%AF%8D-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">查找关键词 &#x2F;关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%A1%8C%E5%8F%B7"><span class="nav-number">1.1.0.5.</span> <span class="nav-text">设置行号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%96%E6%B6%88%E8%A1%8C%E5%8F%B7"><span class="nav-number">1.1.0.6.</span> <span class="nav-text">取消行号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E6%A0%87%E5%88%B0%E8%BE%BE%E6%9C%80%E4%BD%8E%E8%A1%8C"><span class="nav-number">1.1.0.7.</span> <span class="nav-text">光标到达最低行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%B0%E8%BE%BE%E9%A6%96%E8%A1%8C"><span class="nav-number">1.1.0.8.</span> <span class="nav-text">到达首行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E6%A0%87%E5%90%91%E4%B8%8B%E7%A7%BB%E5%8A%A8n%E8%A1%8C"><span class="nav-number">1.1.0.9.</span> <span class="nav-text">光标向下移动n行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%92%A4%E9%94%80"><span class="nav-number">1.1.0.10.</span> <span class="nav-text">撤销</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E5%86%99"><span class="nav-number">1.1.0.11.</span> <span class="nav-text">重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E6%A0%87%E5%88%B0%E8%BE%BE%E6%8C%87%E5%AE%9A%E8%A1%8C"><span class="nav-number">1.1.0.12.</span> <span class="nav-text">光标到达指定行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8A%E8%BF%B0%E6%89%80%E6%9C%89%E6%93%8D%E4%BD%9C%E5%9D%87%E5%9C%A8%E6%AD%A3%E5%B8%B8%E6%A8%A1%E5%BC%8F%E4%B8%8B%E8%BF%9B%E8%A1%8C"><span class="nav-number">1.1.0.12.1.</span> <span class="nav-text">上述所有操作均在正常模式下进行</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%9C%BA%E9%87%8D%E5%90%AF%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86%E6%B3%A8%E9%94%80%E7%AF%87"><span class="nav-number">1.2.</span> <span class="nav-text">2 开机重启+用户登陆注销篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%9C%BA%E9%87%8D%E5%90%AF"><span class="nav-number">1.2.1.</span> <span class="nav-text">开机重启</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shutdown"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">shutdown</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#halt"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">halt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reboot"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">reboot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sync"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">sync</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%92%8C%E6%B3%A8%E9%94%80%E5%AF%B9%E4%BA%8E%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB3%E4%B8%8B%E6%9C%89%E6%95%88%E5%A6%82xshell%E6%97%B6%E6%9D%A5%E8%AF%B4"><span class="nav-number">1.2.2.</span> <span class="nav-text">用户登录和注销（对于运行级别3下有效，如：Xshell时来说）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%84%8F%E4%B9%89"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E6%88%90%E7%AE%A1%E7%90%86%E5%91%98"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">切换成管理员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E9%94%80"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">注销</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">3 用户管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">1 基本用户管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">添加用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E6%88%96%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">指定或修改密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">删除用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">查询用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">切换用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">查看当前用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.2.</span> <span class="nav-text">2 用户组管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E7%BB%84"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">增加组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E7%BB%84"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">删除组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E7%94%A8%E6%88%B7%E5%88%B0%E6%8C%87%E5%AE%9A%E7%BB%84"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">增加用户到指定组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7%E7%BB%84"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">修改用户组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E5%82%A8%E5%AD%98"><span class="nav-number">1.3.3.</span> <span class="nav-text">3 用户信息储存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">用户信息配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E4%BF%A1%E6%81%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">组信息配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%A3%E4%BB%A4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">口令配置文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">4 实用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="nav-number">1.4.1.</span> <span class="nav-text">运行级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">运行级别配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E5%88%B0%E6%8C%87%E5%AE%9A%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">切换到指定运行级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%BE%E5%9B%9Eroot%E5%AF%86%E7%A0%81"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">找回root密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%AE%E5%8A%A9%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.2.</span> <span class="nav-text">帮助指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.3.</span> <span class="nav-text">文件目录指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E7%AE%A1%E7%90%86%E5%92%8C%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">5 组管理和权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.1.</span> <span class="nav-text">组管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.2.</span> <span class="nav-text">权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">权限详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90-chmod"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">修改文件权限-chmod</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6"><span class="nav-number">1.6.</span> <span class="nav-text">6 任务调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">1.6.1.</span> <span class="nav-text">基本命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%BC%96%E8%BE%91%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">1.6.2.</span> <span class="nav-text">任务调度编辑基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E9%83%A8%E5%88%86-%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E9%83%A8%E5%88%86"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">时间部分 + 任务执行部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E9%83%A8%E5%88%86"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">时间部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E9%83%A8%E5%88%86"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">任务执行部分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E5%92%8C%E6%8C%82%E8%BD%BDmount"><span class="nav-number">1.7.</span> <span class="nav-text">7 磁盘分区和挂载(mount)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%A3%81%E7%9B%98%E4%BF%A1%E6%81%AF"><span class="nav-number">1.7.1.</span> <span class="nav-text">1 查看系统中磁盘信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%88%96%E7%A7%BB%E9%99%A4%E7%A3%81%E7%9B%98%E5%8C%85%E5%90%AB%E6%8C%82%E8%BD%BD"><span class="nav-number">1.7.2.</span> <span class="nav-text">2 添加或移除磁盘(包含挂载)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%99%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%B0%E6%B7%BB%E5%8A%A0%E7%A7%BB%E9%99%A4%E7%A1%AC%E7%9B%98"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">给虚拟机台添加&#x2F;移除硬盘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E7%A1%AC%E7%9B%98%E7%A9%BA%E9%97%B4%E5%88%86%E5%8C%BA"><span class="nav-number">1.7.2.2.</span> <span class="nav-text">将硬盘空间分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">1.7.2.3.</span> <span class="nav-text">格式化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E6%8C%82%E8%BD%BD%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.7.2.4.</span> <span class="nav-text">临时挂载&#x2F;卸载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B0%B8%E4%B9%85%E6%8C%82%E8%BD%BD%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.7.2.5.</span> <span class="nav-text">永久挂载&#x2F;卸载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E6%95%B4%E4%BD%93%E6%83%85%E5%86%B5"><span class="nav-number">1.7.3.</span> <span class="nav-text">3 查看系统磁盘使用整体情况</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%95%B4%E4%BD%93%E6%83%85%E5%86%B5"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">查看整体情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95%E5%8D%A0%E7%94%A8%E6%83%85%E5%86%B5%E6%83%85%E5%86%B5-du"><span class="nav-number">1.7.3.2.</span> <span class="nav-text">查看指定目录占用情况情况 du</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8-du--ach---max-depthn-%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="nav-number">1.7.3.3.</span> <span class="nav-text">常用 du -ach --max-depth&#x3D;n 文件目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">1.7.4.</span> <span class="nav-text">4 工作实用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1home%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">统计&#x2F;home文件夹下文件的个数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1home%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E7%9B%AE%E5%BD%95%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="nav-number">1.7.4.2.</span> <span class="nav-text">统计&#x2F;home文件夹下目录的个数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1home%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%AA%E6%95%B0%E5%8C%85%E6%8B%AC%E5%AD%90%E6%96%87%E4%BB%B6%E5%A4%B9%E9%87%8C%E7%9A%84"><span class="nav-number">1.7.4.3.</span> <span class="nav-text">统计&#x2F;home文件夹下所有文件的个数，包括子文件夹里的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1home%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%AA%E6%95%B0%E5%8C%85%E6%8B%AC%E5%AD%90%E6%96%87%E4%BB%B6%E5%A4%B9%E9%87%8C%E7%9A%84-1"><span class="nav-number">1.7.4.4.</span> <span class="nav-text">统计&#x2F;home文件夹下所有文件的个数，包括子文件夹里的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E6%A0%91%E7%8A%B6%E7%BB%93%E6%9E%84%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95"><span class="nav-number">1.7.4.5.</span> <span class="nav-text">以树状结构查看目录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="nav-number">1.8.</span> <span class="nav-text">8 网络配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2ip%E4%BF%A1%E6%81%AF"><span class="nav-number">1.8.1.</span> <span class="nav-text">1 查询ip信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#windows"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">windows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#linux"><span class="nav-number">1.8.1.2.</span> <span class="nav-text">linux</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%98%AF%E5%90%A6%E8%81%94%E9%80%9A"><span class="nav-number">1.8.2.</span> <span class="nav-text">2 查询是否联通</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.8.3.</span> <span class="nav-text">3 网络环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%8E%B7%E5%8F%96"><span class="nav-number">1.8.3.1.</span> <span class="nav-text">自动获取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.8.3.2.</span> <span class="nav-text">手动设置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">1.9.</span> <span class="nav-text">9 进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%9F%A5%E7%9C%8B"><span class="nav-number">1.9.1.</span> <span class="nav-text">1 进程查看</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ps"><span class="nav-number">1.9.1.1.</span> <span class="nav-text">ps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E8%BF%9B%E7%A8%8B%E4%BF%A1%E6%81%AF"><span class="nav-number">1.9.1.2.</span> <span class="nav-text">查看所有进程信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E7%88%B6%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.9.1.3.</span> <span class="nav-text">查看所有父进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%BA%9B%E8%BF%9B%E7%A8%8B%E4%BF%A1%E6%81%AF"><span class="nav-number">1.9.1.4.</span> <span class="nav-text">查看某些进程信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E6%A0%91%E6%9B%B4%E5%8A%A0%E7%9B%B4%E8%A7%82"><span class="nav-number">1.9.1.5.</span> <span class="nav-text">查看进程树(更加直观)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%88%E6%AD%A2"><span class="nav-number">1.9.2.</span> <span class="nav-text">2 进程终止</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#kill-%E8%BF%9B%E7%A8%8B%E5%8F%B7pid"><span class="nav-number">1.9.2.1.</span> <span class="nav-text">kill 进程号(PID)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#killall-%E8%BF%9B%E7%A8%8B%E5%90%8D%E7%A7%B0%E4%B8%80%E8%88%AC%E6%98%AF%E7%88%B6%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.9.2.2.</span> <span class="nav-text">killall 进程名称(一般是父进程)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%9F%A5%E7%9C%8B"><span class="nav-number">1.9.3.</span> <span class="nav-text">3 服务查看</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E8%BF%9B%E8%A1%8C%E6%9F%A5%E7%9C%8B"><span class="nav-number">1.9.3.1.</span> <span class="nav-text">打开图形界面进行查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E6%9C%8D%E5%8A%A1%E5%8F%8A%E5%85%B6%E7%8A%B6%E6%80%81"><span class="nav-number">1.9.3.2.</span> <span class="nav-text">查看所有服务及其状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8D%95%E4%B8%AA%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">1.9.3.3.</span> <span class="nav-text">查看单个服务的状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-number">1.9.4.</span> <span class="nav-text">4 服务管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E8%BF%9B%E8%A1%8C%E7%AE%A1%E7%90%86%E6%B0%B8%E4%B9%85%E7%94%9F%E6%95%88%E4%B8%8B%E6%AC%A1%E5%BC%80%E6%9C%BA%E5%90%8E%E4%B8%8D%E4%BC%9A%E8%BF%98%E5%8E%9F"><span class="nav-number">1.9.4.1.</span> <span class="nav-text">打开图形界面进行管理（永久生效:下次开机后不会还原）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E6%93%8D%E4%BD%9C%E4%B8%B4%E6%97%B6%E7%94%9F%E6%95%88%E4%B8%8B%E6%AC%A1%E5%BC%80%E6%9C%BA%E5%90%8E%E4%BC%9A%E8%BF%98%E5%8E%9F"><span class="nav-number">1.9.4.2.</span> <span class="nav-text">终端操作（临时生效:下次开机后会还原）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E6%93%8D%E4%BD%9C%E6%B0%B8%E4%B9%85%E7%94%9F%E6%95%88"><span class="nav-number">1.9.4.3.</span> <span class="nav-text">终端操作（永久生效）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E5%9C%A8win%E4%B8%8A%E8%BF%9B%E8%A1%8C%E6%A3%80%E6%B5%8B%E7%AB%AF%E5%8F%A3%E6%98%AF%E5%90%A6%E8%A2%AB%E7%9B%91%E5%90%AC%E4%B8%8D%E5%90%8C%E6%9C%8D%E5%8A%A1%E5%AF%B9%E5%BA%94%E4%B8%8D%E5%90%8C%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.9.4.4.</span> <span class="nav-text">可以在win上进行检测端口是否被监听（不同服务对应不同端口）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E4%B8%8D%E5%90%8C%E6%9C%8D%E5%8A%A1%E4%B8%8B%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="nav-number">1.9.5.</span> <span class="nav-text">5 在不同服务下的服务自启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%9B%91%E6%8E%A7%E8%BF%9B%E7%A8%8B%E4%B8%8Eps%E7%9A%84%E5%8C%BA%E5%88%AB%E5%9C%A8%E4%BA%8E%E5%85%B6%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0"><span class="nav-number">1.9.6.</span> <span class="nav-text">6 动态监控进程（与ps的区别在于其实时更新）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rpm-%E4%B8%8Eyum"><span class="nav-number">1.10.</span> <span class="nav-text">10 RPM 与YUM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#prmredhat-package-manager"><span class="nav-number">1.10.1.</span> <span class="nav-text">PRM（REDHAT Package Manager）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rpm%E5%8C%85%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.10.1.1.</span> <span class="nav-text">rpm包的查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rpm%E5%8C%85%E7%9A%84%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.10.1.2.</span> <span class="nav-text">rpm包的卸载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rpm%E5%8C%85%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">1.10.1.3.</span> <span class="nav-text">rpm包的安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rpm%E5%8C%85%E5%A5%BD%E5%83%8F%E6%9C%89%E7%82%B9%E9%BA%BB%E7%83%A6%E4%B8%8D%E8%A6%81%E7%BB%86%E7%A9%B6%E4%BA%86"><span class="nav-number">1.10.1.4.</span> <span class="nav-text">RPM包好像有点麻烦，不要细究了</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yumyellow-dog-updater-modified"><span class="nav-number">1.10.2.</span> <span class="nav-text">YUM（Yellow dog Updater , Modified）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5java%E7%89%88%E6%9C%AC"><span class="nav-number">1.10.2.1.</span> <span class="nav-text">2 检查java版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E8%8B%A5%E6%B2%A1%E6%9C%89%E6%98%BE%E7%A4%BA%E5%B9%B6%E6%8F%90%E7%A4%BAjava%E4%B8%8D%E6%98%AF%E5%91%BD%E4%BB%A4"><span class="nav-number">1.10.2.2.</span> <span class="nav-text">3 手动配置全局变量（若没有显示，并提示java不是命令）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%AB%8B%E5%8D%B3%E7%94%9F%E6%95%88"><span class="nav-number">1.10.2.3.</span> <span class="nav-text">4 全局变量立即生效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5java%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="nav-number">1.10.2.4.</span> <span class="nav-text">5 检查java是否生效</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat%E5%AE%89%E8%A3%85"><span class="nav-number">1.11.</span> <span class="nav-text">2 tomcat安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shell%E7%BC%96%E7%A8%8B%E7%AF%87"><span class="nav-number">2.</span> <span class="nav-text">SHELL编程篇</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ubuntu"><span class="nav-number">3.</span> <span class="nav-text">Ubuntu</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Coldeye"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Coldeye</p>
+  <div class="site-description" itemprop="description">Finnally, you will find nothing is irreplaceable,</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/coldeye2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;coldeye2020" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:948283368.coldeye@gamil.com" title="E-Mail → mailto:948283368.coldeye@gamil.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/948283368" title="QQ → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;948283368" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+<!-- Insert Clustrmaps -->
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=200&t=tt&d=-ZnRDnKizjAkFSMaMv_zwM1vK_yTeDc1r3Pr34sq6a8&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://coldeye2020.monster/Tech/Linux/linux_command_ubuntu.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Coldeye">
+      <meta itemprop="description" content="Finnally, you will find nothing is irreplaceable,">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doki Doki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux命令(一)Ubuntu基础命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-03-01 20:43:52" itemprop="dateCreated datePublished" datetime="2020-03-01T20:43:52+08:00">2020-03-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-17 12:33:10" itemprop="dateModified" datetime="2021-04-17T12:33:10+08:00">2021-04-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/Tech/Linux/linux_command_ubuntu.html" class="post-meta-item leancloud_visitors" data-flag-title="linux命令(一)Ubuntu基础命令" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note info"><p><strong>说明</strong></p>
+<p>本文是在<code>大二下学期</code>因疫情缘故无法返校时看韩顺平<code>linux</code>网课所做笔记，后并未勘误，如有错误，请谅解</p>
+</div>
+<span id="more"></span>
+<pre class="line-numbers language-shell" data-language="shell"><div class="caption"><span>常用基础命令</span></div><code class="language-shell"># change directory，切换目录
+cd
+
+# 删除文件
+rm -rf 文件名
+
+# 查看网络配置
+ifconfig
+
+# 新建文件
+touch 文件名
+
+# 列出当前文件夹下面的目录
+ls
+
+# 写+退出
+wq
+
+# 查看文件内容
+cat 文件名
+
+# 使用vim编辑器编辑文件
+vim 文件名		<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="实操篇">实操篇</h1>
+<hr />
+<h2 id="vim-快捷键使用">1 vim 快捷键使用</h2>
+<h4 id="拷贝行">拷贝行</h4>
+<ul>
+<li>yy 拷贝当前行 5yy 拷贝自上而下5行</li>
+</ul>
+<h4 id="粘贴行">粘贴行</h4>
+<ul>
+<li>p</li>
+</ul>
+<h4 id="删除行">删除行</h4>
+<ul>
+<li>dd 删除当前行 5dd 删除自上而下5行</li>
+</ul>
+<h4 id="查找关键词-关键字">查找关键词 /关键字</h4>
+<ul>
+<li>/关键字</li>
+<li>找到后再按n跳转到下一个关键字</li>
+</ul>
+<h4 id="设置行号">设置行号</h4>
+<ul>
+<li>:set nu</li>
+</ul>
+<h4 id="取消行号">取消行号</h4>
+<ul>
+<li>:set nonu</li>
+</ul>
+<h4 id="光标到达最低行">光标到达最低行</h4>
+<ul>
+<li>G(shift+g) （本质是光标移动但之前没有输入数字，系统默认移动到最下面）</li>
+</ul>
+<h4 id="到达首行">到达首行</h4>
+<ul>
+<li>gg 本质控制光标移动但之前没有输入数字，系统默认移动到最上面</li>
+</ul>
+<h4 id="光标向下移动n行">光标向下移动n行</h4>
+<ul>
+<li>数字n+回车或加下方向键</li>
+</ul>
+<h4 id="撤销">撤销</h4>
+<ul>
+<li>u</li>
+</ul>
+<h4 id="重写">重写</h4>
+<ul>
+<li>ctrl+r</li>
+</ul>
+<h4 id="光标到达指定行">光标到达指定行</h4>
+<ol type="1">
+<li>设置行号 :set nu</li>
+<li>输入数字</li>
+<li>使用gg或者shift+g</li>
+</ol>
+<h5 id="上述所有操作均在正常模式下进行">上述所有操作均在正常模式下进行</h5>
+<hr />
+<h2 id="开机重启用户登陆注销篇">2 开机重启+用户登陆注销篇</h2>
+<h3 id="开机重启">开机重启</h3>
+<h4 id="shutdown">shutdown</h4>
+<ul>
+<li>shutdown -h now:表示立即关机</li>
+<li>shutdown -h 1:表示1分钟后关机</li>
+<li>shutdown -r now:立即重启</li>
+</ul>
+<h4 id="halt">halt</h4>
+<ul>
+<li>halt:效果等价于关机</li>
+</ul>
+<h4 id="reboot">reboot</h4>
+<ul>
+<li>reboot:效果等价于重启</li>
+</ul>
+<h4 id="sync">sync</h4>
+<ul>
+<li>sync:把内存的数据储存到磁盘
+<ul>
+<li>重启时最好先执行sync指令</li>
+</ul></li>
+</ul>
+<h3 id="用户登录和注销对于运行级别3下有效如xshell时来说">用户登录和注销（对于运行级别3下有效，如：Xshell时来说）</h3>
+<h4 id="意义">意义</h4>
+<ul>
+<li>root 用户权限太高，可能会删除一些核心文件</li>
+<li>我们常用普通用户登录，登陆后再使用“su -用户名”命令来切换成管理员</li>
+</ul>
+<h4 id="切换成管理员">切换成管理员</h4>
+<ul>
+<li>su -用户名</li>
+</ul>
+<h4 id="注销">注销</h4>
+<ul>
+<li>logout</li>
+</ul>
+<hr />
+<h2 id="用户管理">3 用户管理</h2>
+<h3 id="基本用户管理">1 基本用户管理</h3>
+<h4 id="添加用户">添加用户</h4>
+<ul>
+<li>useradd 用户名
+<ul>
+<li>创建了一个用户和一个与用户同名的组，并将用户放进此组中</li>
+<li>将用户放进一个新创建的文件夹名与用户名相同的家目录中</li>
+</ul></li>
+<li>useradd -d 目录 用户名
+<ul>
+<li>创建一个用户和一个与用户同名的组，并将用户放进此组中</li>
+<li>将用户放进一个新创建的文件夹名为指定名字的家目录中</li>
+</ul></li>
+</ul>
+<h4 id="指定或修改密码">指定或修改密码</h4>
+<ul>
+<li>passwd 用户名
+<ul>
+<li>输入时密码不会显示，且要输入两次</li>
+</ul></li>
+</ul>
+<h4 id="删除用户">删除用户</h4>
+<ul>
+<li>userdel 用户名
+<ul>
+<li>删除用户+保留家目录</li>
+</ul></li>
+<li>userdel -r 用户名
+<ul>
+<li>删除用户+删除家目录</li>
+</ul></li>
+</ul>
+<h4 id="查询用户信息">查询用户信息</h4>
+<ul>
+<li>id 用户名
+<ul>
+<li>显示的是用户基本信息</li>
+</ul></li>
+</ul>
+<h4 id="切换用户">切换用户</h4>
+<ul>
+<li>su - 用户名
+<ul>
+<li>注意空格（CentOS7后不需要加 - 了）</li>
+<li>从权限高用户切换到权限低用户时，需要密码，反之不用</li>
+<li>当需要返回原来用户时，使用exit</li>
+</ul></li>
+</ul>
+<h4 id="查看当前用户">查看当前用户</h4>
+<ul>
+<li>whoami
+<ul>
+<li>显示名字</li>
+</ul></li>
+</ul>
+<h3 id="用户组管理">2 用户组管理</h3>
+<h4 id="增加组">增加组</h4>
+<ul>
+<li>groupadd 组名</li>
+</ul>
+<h4 id="删除组">删除组</h4>
+<ul>
+<li>groupdel 组名</li>
+</ul>
+<h4 id="增加用户到指定组">增加用户到指定组</h4>
+<ul>
+<li>useradd -g 用户组名 用户名
+<ul>
+<li>将新增用户指定到某个组</li>
+</ul></li>
+</ul>
+<h4 id="修改用户组">修改用户组</h4>
+<ul>
+<li>usermod -g 用户组名 用户名
+<ul>
+<li>将已存在用户更改到指定组</li>
+</ul></li>
+</ul>
+<h3 id="用户信息储存">3 用户信息储存</h3>
+<h4 id="用户信息配置文件">用户信息配置文件</h4>
+<ul>
+<li>用户名:口令(用户密码):用户标识号:组标识号:注释性描述:主目录:登录 shell</li>
+<li>位置：/ect/passwd</li>
+</ul>
+<h4 id="组信息配置文件">组信息配置文件</h4>
+<ul>
+<li>组名:口令:组标识号:组内用户列表</li>
+<li>位置：/ect/group</li>
+</ul>
+<h4 id="口令配置文件">口令配置文件</h4>
+<ul>
+<li>密码和登录信息，属于加密文件</li>
+<li>登录名:加密口令:最后一次修改时间:最小时间间隔:最大时间间隔:警告时间:不活动时间:失效时间:标志</li>
+<li>位置：/ect/shadow</li>
+</ul>
+<h2 id="实用指令">4 实用指令</h2>
+<h3 id="运行级别">运行级别</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20200328165526.png" /></p>
+<h4 id="运行级别配置文件">运行级别配置文件</h4>
+<ul>
+<li>位置：/etc/inittab</li>
+<li>这个文件是可以用vim编辑的哟，所以也可以将其指定内容设置为不同级别（但是CentOS7及以上是使用其他方式了）</li>
+</ul>
+<h4 id="切换到指定运行级别">切换到指定运行级别</h4>
+<ul>
+<li>init 数字（0-6之间的一个）
+<ul>
+<li>每次切换运行级别后将需要重新登录（出了单用户模式）</li>
+</ul></li>
+</ul>
+<h4 id="找回root密码">找回root密码</h4>
+<ul>
+<li>每个系统和不同版本都不同（自行百度）https://blog.csdn.net/shanvlang/article/details/80385913</li>
+</ul>
+<h3 id="帮助指令">帮助指令</h3>
+<ul>
+<li>man 某个指令
+<ul>
+<li>获取该指令帮助信息</li>
+</ul></li>
+<li>help 某个指令
+<ul>
+<li>获得shell内置命令的帮助信息</li>
+</ul></li>
+<li>百度或谷歌</li>
+</ul>
+<h3 id="文件目录指令">文件目录指令</h3>
+<p>之后复习再做整理</p>
+<hr />
+<h2 id="组管理和权限管理">5 组管理和权限管理</h2>
+<h3 id="组管理">组管理</h3>
+<ul>
+<li><p>意义</p>
+<ul>
+<li>对于每一个linux用户，至少要属于一个组，不能独立于组外</li>
+<li>对于每一个linux文件（包括目录），有所有者，所在组和其他组的概念</li>
+<li>一般来说文件的所有者就是创建者，所在组就是创建者的组。其他组代指其所有者用户，所在组的用户之外的所有用户</li>
+</ul></li>
+<li><p>文件操作（包括目录）</p>
+<ul>
+<li>查看文件的所有者以及所在组
+<ul>
+<li>ls -ahl</li>
+</ul></li>
+<li>修改文件的所有者
+<ul>
+<li>chown 用户名 文件名</li>
+</ul></li>
+<li>同时改变文件的所有者以及文件的所在组
+<ul>
+<li>chown 用户名:组名 文件名</li>
+</ul></li>
+<li>改变目录以及其下所有文件的信息(递归)
+<ul>
+<li>chown -R 用户名:组名 文件名</li>
+</ul></li>
+<li>修改文件的所在组
+<ul>
+<li>chgrp 组名 文件名</li>
+</ul></li>
+</ul></li>
+<li><p>用户操作</p>
+<ul>
+<li>查看用户信息
+<ul>
+<li>id 用户名</li>
+</ul></li>
+<li>修改用户所在组
+<ul>
+<li>usermod -g 组名</li>
+<li>usermod -d 家目录名</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="权限管理">权限管理</h3>
+<h4 id="权限详解">权限详解</h4>
+<p>ls-l中显示的内容-rwxrw-r-- 1 root root 1213 Feb 2 09:39 abc</p>
+<ul>
+<li><p>0-9位说明</p>
+<p>1)第0位确定文件类型(d,-,l,c,b)</p>
+<p>2)第1-3位确定所有者（该文件的所有者）拥有该文件的权限。---User</p>
+<p>3)第4-6位确定所属组（同用户组的）拥有该文件的权限，---Group</p>
+<p>4)第7-9位确定其他用户拥有该文件的权限---Other</p>
+<ul>
+<li><p>rwx作用到文件</p>
+<p>1)[r]代表可读(read):可以读取,查看</p>
+<p>2)[w]代表可写(write):可以修改,但是不代表可以删除该文件,删除一个文件的前提条件是对该文件所在的目录有写权限，才能删除该文件.</p>
+<p>3)[x]代表可执行(execute):可以被执行</p></li>
+<li><p>rwx作用到目录</p>
+<p>1)[r]代表可读(read):可以读取，ls查看目录内容</p>
+<p>2)[w]代表可写(write):可以修改,目录内创建+删除+重命名目录</p>
+<p>3)[x]代表可执行(execute):可以进入该目录</p></li>
+<li><p>可用数字表示为:r=4,w=2,x=1因此rwx=4+2+1=7</p></li>
+</ul></li>
+<li><p>第10位</p>
+<ul>
+<li>作用于目录时 代表目录下子目录数量（包括隐藏的）</li>
+<li>作用于文件时 硬链接数</li>
+</ul></li>
+</ul>
+<h4 id="修改文件权限-chmod">修改文件权限-chmod</h4>
+<ul>
+<li><p>+、-、=变更权限</p>
+<ul>
+<li><p>u:所有者 g:所有组 o:其他人 a:所有人(u、g、o的总和)</p>
+<p>1)chmod u=rwx,g=rx,o=x 文件目录名</p>
+<p>2)chmod o+w 文件目录名</p>
+<p>3)chmod a-x 文件目录名</p></li>
+</ul></li>
+<li><p>数字更变权限</p>
+<ul>
+<li>r=4 w=2 x=1 , rwx=4+2+1=7，rx=5</li>
+<li>chmod u=rwx,g=rx,o=x 文件目录名 相当于 chmod 751 文件目录名</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="任务调度">6 任务调度</h2>
+<h3 id="基本命令">基本命令</h3>
+<ul>
+<li>编辑任务调度
+<ul>
+<li>crontab -e</li>
+</ul></li>
+<li>查看当前任务调度
+<ul>
+<li>crontab -l</li>
+</ul></li>
+<li>终止（删除）当前任务调度
+<ul>
+<li>crontab -r</li>
+</ul></li>
+<li>重启任务调度
+<ul>
+<li>service crond restart</li>
+</ul></li>
+</ul>
+<h3 id="任务调度编辑基本语法">任务调度编辑基本语法</h3>
+<ul>
+<li><h4 id="时间部分-任务执行部分">时间部分 + 任务执行部分</h4></li>
+<li><h4 id="时间部分">时间部分</h4>
+<ul>
+<li>5个部分：分钟 小时 日期 月份 星期</li>
+<li><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329142823572.png" /></li>
+</ul></li>
+</ul>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329142833796.png" /></p>
+<ul>
+<li><h4 id="任务执行部分">任务执行部分</h4>
+<ul>
+<li><p>对于较简单的命令：可以直接在 crontab -e的编辑器下直接写</p></li>
+<li><p>对于较为复杂的命令：先写好一个包含完整操作指令的shell文件(.sh)，并将该文件的权限设置为可执行文件(744)</p>
+<p>再到crontab -e编辑器下直接运行</p></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="磁盘分区和挂载mount">7 磁盘分区和挂载(mount)</h2>
+<h3 id="查看系统中磁盘信息">1 查看系统中磁盘信息</h3>
+<ul>
+<li>查看系统分区及挂载情况
+<ul>
+<li>lsblk -f（老师不离开）</li>
+</ul></li>
+<li>查看磁盘基本信息（包括大小）
+<ul>
+<li>lsblk</li>
+</ul></li>
+</ul>
+<h3 id="添加或移除磁盘包含挂载">2 添加或移除磁盘(包含挂载)</h3>
+<ul>
+<li><h4 id="给虚拟机台添加移除硬盘">给虚拟机台添加/移除硬盘</h4>
+<ul>
+<li>在VM软件中实现</li>
+</ul></li>
+<li><h4 id="将硬盘空间分区">将硬盘空间分区</h4>
+<ul>
+<li>fdisk /dev/sdb
+<ul>
+<li>m显示命令列表 p显示磁盘分区同 fdisk –l n新增分区 d删除分区 w写入并退出</li>
+</ul></li>
+<li>开始分区后输入n，新增分区，然后选择p(rimary)，分区类型为主分区。两次回车默认剩余全部空间。最后输入w写入分区并退出，若不保存退出输入q。</li>
+</ul></li>
+<li><h4 id="格式化">格式化</h4>
+<ul>
+<li>mkfs -t ext4 /dev/sdb1
+<ul>
+<li>其中ext4为分区类型</li>
+</ul></li>
+</ul></li>
+<li><h4 id="临时挂载卸载">临时挂载/卸载</h4>
+<ul>
+<li>mount 设备(位置和名称) 挂载目录</li>
+<li>umount 设备(位置和名称) or 挂载目录
+<ul>
+<li>对于卸载任意选择其中一个系统就可以识别</li>
+</ul></li>
+</ul></li>
+<li><h4 id="永久挂载卸载">永久挂载/卸载</h4>
+<ul>
+<li>vim /etc/fstab</li>
+<li>模仿其他行的书写格式写上
+<ul>
+<li>设备(位置和名称) 或者 UUID 挂载目录 分区格式 defaults 0 0</li>
+</ul></li>
+<li>mount –a
+<ul>
+<li>使挂载立即生效</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="查看系统磁盘使用整体情况">3 查看系统磁盘使用整体情况</h3>
+<ul>
+<li><h4 id="查看整体情况">查看整体情况</h4>
+<ul>
+<li>df -h</li>
+</ul></li>
+<li><h4 id="查看指定目录占用情况情况-du">查看指定目录占用情况情况 du</h4>
+<ul>
+<li><p>du -h 带计量单位</p></li>
+<li><p>du -s 指定目录占用大小汇总</p></li>
+<li><p>du -a 含文件</p></li>
+<li><p>du --max-depth=1 子目录深度为1</p></li>
+<li><p>du -c 列出明细的同时，增加汇总值</p></li>
+<li><h4 id="常用-du--ach---max-depthn-文件目录">常用 du -ach --max-depth=n 文件目录</h4></li>
+</ul></li>
+</ul>
+<h3 id="工作实用指令">4 工作实用指令</h3>
+<ul>
+<li><h4 id="统计home文件夹下文件的个数">统计/home文件夹下文件的个数</h4>
+<ul>
+<li>ls -l /home | grep "^-" | wc -l</li>
+</ul></li>
+<li><h4 id="统计home文件夹下目录的个数">统计/home文件夹下目录的个数</h4>
+<ul>
+<li>ls -l /home | grep "^d" | wc -l</li>
+</ul></li>
+<li><h4 id="统计home文件夹下所有文件的个数包括子文件夹里的">统计/home文件夹下所有文件的个数，包括子文件夹里的</h4>
+<ul>
+<li>ls -lR /home | grep "^-" | wc -l</li>
+</ul></li>
+<li><h4 id="统计home文件夹下所有文件的个数包括子文件夹里的-1">统计/home文件夹下所有文件的个数，包括子文件夹里的</h4>
+<ul>
+<li>ls -lR /home | grep "^d" | wc -l</li>
+</ul></li>
+<li><h4 id="以树状结构查看目录">以树状结构查看目录</h4>
+<ul>
+<li>tree 文件目录</li>
+<li>如果没有就用 yum stall tree安装</li>
+</ul></li>
+</ul>
+<h2 id="网络配置">8 网络配置</h2>
+<h3 id="查询ip信息">1 查询ip信息</h3>
+<ul>
+<li><h4 id="windows">windows</h4>
+<ul>
+<li>ipconfig</li>
+</ul></li>
+<li><h4 id="linux">linux</h4>
+<ul>
+<li>ifconfig</li>
+</ul></li>
+</ul>
+<h3 id="查询是否联通">2 查询是否联通</h3>
+<ul>
+<li>ping ipaddress 或者 网址域名</li>
+</ul>
+<h3 id="网络环境配置">3 网络环境配置</h3>
+<ul>
+<li><h4 id="自动获取">自动获取</h4>
+<ul>
+<li>方式
+<ul>
+<li>可以直接在运行级别5环境下进行操作，即勾选DHCP</li>
+<li><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329170700425.png" alt="image-20200329170700425" style="zoom:50%;" /></li>
+</ul></li>
+<li>缺点
+<ul>
+<li>自动获取会导致ip地址是动态的，无法作为服务器</li>
+</ul></li>
+</ul></li>
+<li><h4 id="手动设置">手动设置</h4>
+<ul>
+<li>方式
+<ul>
+<li>vim /etc/sysconfig/network-scripts/ifcfg-eth33
+<ul>
+<li>注意，不同的版本文件可能名字不同，位置不同，需要具体查询</li>
+</ul></li>
+<li>具体需要注意几个点：IPADDR, GATEWAY, DNS1, BOOTPROTO, ONBOOT</li>
+<li><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329171204112.png" /></li>
+<li>service network restart
+<ul>
+<li>重启网络服务</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="进程管理">9 进程管理</h2>
+<h3 id="进程查看">1 进程查看</h3>
+<ul>
+<li><h4 id="ps">ps</h4>
+<ul>
+<li>-a 显示当前终端的所有进程信息</li>
+<li>-u 以用户的格式显示进程信息</li>
+<li>-x 显示后台进程运行的参数</li>
+<li>-e 显示所有进程</li>
+<li>-f 全格式</li>
+</ul></li>
+<li><h4 id="查看所有进程信息">查看所有进程信息</h4>
+<ul>
+<li>ps -aux</li>
+</ul></li>
+<li><h4 id="查看所有父进程">查看所有父进程</h4>
+<ul>
+<li>ps -ef | more</li>
+</ul></li>
+<li><h4 id="查看某些进程信息">查看某些进程信息</h4>
+<ul>
+<li>ps -aux | grep XXX(进程相关信息) | more</li>
+</ul></li>
+<li><h4 id="查看进程树更加直观">查看进程树(更加直观)</h4>
+<ul>
+<li>pstree
+<ul>
+<li>-p 显示进程PID</li>
+<li>-u 显示进程所属用户</li>
+</ul></li>
+</ul>
+<img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329184234373.png" alt="image-20200329184234373" style="zoom:50%;" /></li>
+</ul>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329184553477.png" alt="image-20200329184553477" style="zoom:50%;" /></p>
+<h3 id="进程终止">2 进程终止</h3>
+<ul>
+<li><h4 id="kill-进程号pid">kill 进程号(PID)</h4>
+<ul>
+<li>-9 表示强迫进程立即停止</li>
+</ul></li>
+<li><h4 id="killall-进程名称一般是父进程">killall 进程名称(一般是父进程)</h4>
+<ul>
+<li>支持通配符</li>
+<li>删除进程下所有的子进程</li>
+</ul></li>
+</ul>
+<h3 id="服务查看">3 服务查看</h3>
+<ul>
+<li><p>服务的本质也是进程</p></li>
+<li><h4 id="打开图形界面进行查看">打开图形界面进行查看</h4>
+<ul>
+<li>setup</li>
+</ul></li>
+<li><h4 id="查看所有服务及其状态">查看所有服务及其状态</h4>
+<ul>
+<li>systemctl list-unit-files</li>
+<li>/etc/init.d/服务名称 <strong>(CentOS7之后就不行了)</strong>
+<ul>
+<li>常用 ls -l /ect/init.d</li>
+</ul></li>
+</ul></li>
+<li><h4 id="查看单个服务的状态">查看单个服务的状态</h4>
+<ul>
+<li>systemctl status 服务名称（新）</li>
+<li>service 服务名称 status（旧）</li>
+</ul></li>
+</ul>
+<h3 id="服务管理">4 服务管理</h3>
+<ul>
+<li><h4 id="打开图形界面进行管理永久生效下次开机后不会还原">打开图形界面进行管理（永久生效:下次开机后不会还原）</h4>
+<ul>
+<li>setup</li>
+</ul></li>
+<li><h4 id="终端操作临时生效下次开机后会还原">终端操作（临时生效:下次开机后会还原）</h4>
+<ul>
+<li>service 服务名 [start|stop|restart|reload|status]</li>
+<li>systemctl [start|stop|restart|reload|status] 服务名</li>
+</ul></li>
+<li><h4 id="终端操作永久生效">终端操作（永久生效）</h4>
+<ul>
+<li>chkconfig 指令</li>
+</ul></li>
+<li><h4 id="可以在win上进行检测端口是否被监听不同服务对应不同端口">可以在win上进行检测端口是否被监听（不同服务对应不同端口）</h4>
+<ul>
+<li>telnet ipaddress 服务对应端口</li>
+</ul></li>
+</ul>
+<h3 id="在不同服务下的服务自启动">5 在不同服务下的服务自启动</h3>
+<ul>
+<li>由于每个系统的指令不一样
+<ul>
+<li>这里就不展开了</li>
+</ul></li>
+</ul>
+<h3 id="动态监控进程与ps的区别在于其实时更新">6 动态监控进程（与ps的区别在于其实时更新）</h3>
+<ul>
+<li>top
+<ul>
+<li><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200329193752382.png" /></li>
+<li>交互指令
+<ul>
+<li>u 输入用户名，并只显示属于该用户的进程</li>
+<li>k 输入PID，并终止进程</li>
+<li>P 以CPU使用率进行排序</li>
+<li>M 以占用内存进行排序</li>
+<li>N 以PID顺序进行排序</li>
+<li>q 退出</li>
+</ul></li>
+<li>参数
+<ul>
+<li>-d 数字 每多少秒更新一次</li>
+<li>-i 使不显示僵死或限制进程</li>
+<li>-p PID 指定监控某个进程</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="rpm-与yum">10 RPM 与YUM</h2>
+<ul>
+<li><h3 id="prmredhat-package-manager">PRM（REDHAT Package Manager）</h3>
+<ul>
+<li><h4 id="rpm包的查询">rpm包的查询</h4>
+<ul>
+<li>rpm -qa
+<ul>
+<li>查询所有已经安装的rpm列表</li>
+</ul></li>
+<li>rpm -qa | grep 软件包名
+<ul>
+<li>查询单个包的安装信息</li>
+</ul></li>
+<li>rpm -q 软件包名
+<ul>
+<li>查询软件包是否安装</li>
+</ul></li>
+<li>rpm -qi 软件包名
+<ul>
+<li>查询软件包信息</li>
+</ul></li>
+<li>rpm -ql 软件包名
+<ul>
+<li>查询软件包中的文件</li>
+</ul></li>
+<li>rpm -qf 文件全路径名
+<ul>
+<li>查询文件所属的软件包（反过来查）</li>
+</ul></li>
+</ul></li>
+<li><h4 id="rpm包的卸载">rpm包的卸载</h4>
+<ul>
+<li>rpm -e 软件包名
+<ul>
+<li>删除rpm软件包</li>
+</ul></li>
+<li>rpm -e -nodeps 软件包名
+<ul>
+<li>强制删除</li>
+</ul></li>
+</ul></li>
+<li><h4 id="rpm包的安装">rpm包的安装</h4>
+<ul>
+<li>rpm -ivh RPM包全路径
+<ul>
+<li>i=install 安装</li>
+<li>v=verbose 提示</li>
+<li>h=hash 进度条</li>
+</ul></li>
+</ul></li>
+<li><h4 id="rpm包好像有点麻烦不要细究了">RPM包好像有点麻烦，不要细究了</h4></li>
+</ul></li>
+<li><h3 id="yumyellow-dog-updater-modified">YUM（Yellow dog Updater , Modified）</h3>
+<ul>
+<li><p>查询yum服务器中是否有rpm包</p>
+<ul>
+<li>yum -list | grep 软件包名</li>
+</ul></li>
+<li><p>安装rpm包</p>
+<ul>
+<li>yum install 软件包名</li>
+</ul></li>
+<li><p>一些参数指令</p>
+<ul>
+<li>-y 安装过程一律yes</li>
+</ul></li>
+<li><p>查看yum安装软件位置</p>
+<ul>
+<li>``` cat /etc/yum.conf | grep cachedir <pre class="line-numbers language-none"><code class="language-none">
+      
+
+
+
+# JAVAEE 定制篇
+
+## 1 环境搭建 
+
+#### 	1 下载java
+
+&#96;&#96;&#96;shell
+yum -y install java<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="检查java版本">2 检查java版本</h4>
+<pre class="line-numbers language-none"><code class="language-none">java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>显示</li>
+</ul>
+<pre class="line-numbers language-none"><code class="language-none">openjdk version &quot;1.8.0_242&quot;
+OpenJDK Runtime Environment (build 1.8.0_242-b08)
+OpenJDK 64-Bit Server VM (build 25.242-b08, mixed mode)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="手动配置全局变量若没有显示并提示java不是命令">3 手动配置全局变量（若没有显示，并提示java不是命令）</h4>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">vi &#x2F;etc&#x2F;profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>增加到末尾（目录根据实际的情况自行调整）</li>
+</ul>
+<pre class="line-numbers language-none"><code class="language-none">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.171-8.b10.el6_9.x86_64
+export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;jre&#x2F;lib&#x2F;rt.jar:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar
+export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="全局变量立即生效">4 全局变量立即生效</h4>
+<pre class="line-numbers language-none"><code class="language-none">source &#x2F;etc&#x2F;profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="检查java是否生效">5 检查java是否生效</h4>
+<pre class="line-numbers language-none"><code class="language-none">java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="tomcat安装">2 tomcat安装</h2>
+<h1 id="shell编程篇">SHELL编程篇</h1>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#!&#x2F;bin&#x2F;bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>source</p>
+<p>$()=``</p>
+<p>unset</p>
+<p>readonly</p>
+<p>export</p>
+<pre class="line-numbers language-none"><code class="language-none">:&lt;&lt;!
+ffagjkasj
+!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>$</p>
+<p>后台运行程序</p>
+<pre class="line-numbers language-none"><code class="language-none">可执行文件 &amp;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="ubuntu">Ubuntu</h1>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sudo apt-get update					 更新源
+sudo apt-get install package		  安装包
+sudo apt-get remove package			  删除包
+sudo apt-cache search package          搜索软件包
+sudo apt-cache show package            获取包的相关信息，如说明、大小、版本等
+sudo apt-get install package--reinstall重新安装包
+sudo apt-get-f install 				  修复安装
+sudo apt-get remove package--purge	   删除包，包括配置文件等
+sudo apt-get build-deppackage		  安装相关的编译环境
+sudo apt-get upgrade                   更新已安装的包
+sudo apt-get dist-upgrade              升级系统
+sudo apt-cache depends package         了解使用该包依赖那些包
+sudo apt-cache rdepends package        查看该包被哪些包依赖
+sudo apt-get source package            下载该包的源代码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Coldeye
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://coldeye2020.monster/Tech/Linux/linux_command_ubuntu.html" title="linux命令(一)Ubuntu基础命令">https://coldeye2020.monster/Tech/Linux/linux_command_ubuntu.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Command/" rel="tag"><i class="fa fa-tag"></i> Command</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/Tech/Latex/latex_characters.html" rel="next" title="Latex基础(一)Latex特殊字符表">
+                  Latex基础(一)Latex特殊字符表 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Coldeye</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">143k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:10</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://coldeye2020.monster/Tech/Linux/linux_command_ubuntu.html',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"09tInux3xJRlMs2A008PDeuP-MdYXbMMI","appKey":"PIFdCFbjTxC8EPP53JdDhrKO","serverURLs":null,"placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[]}, {
+      el: '#valine-comments',
+      path: "/Tech/Linux/linux_command_ubuntu.html",
+      serverURLs: "https://09tinux3.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":450,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

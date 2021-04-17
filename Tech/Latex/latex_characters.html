@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon-32x32.png" color="#222">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="google-site-verification" content="vBZBS_Ucyk1uWpkEaY8rOwJx0vIi2CVILoSATSjHr-k">
+  <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"coldeye2020.monster","root":"/","images":"/images","scheme":"Gemini","version":"8.2.2","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="说明 本文主要记录了Latex中常用的特殊字符  注意 如果可能的话尽量避免在公式中出现大括号#以及类似的字符(这是保留字符)，这会导致渲染错误，处理起来比较麻烦  字体表 \begin&amp;#123;array&amp;#125;&amp;#123;ll|l&amp;#125;  \texttt&amp;#123;&quot;normal&quot;&amp;#125;      &amp;\texttt&amp;#123;&amp;#125;         &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Latex基础(一)Latex特殊字符表">
+<meta property="og:url" content="https://coldeye2020.monster/Tech/Latex/latex_characters.html">
+<meta property="og:site_name" content="Doki Doki">
+<meta property="og:description" content="说明 本文主要记录了Latex中常用的特殊字符  注意 如果可能的话尽量避免在公式中出现大括号#以及类似的字符(这是保留字符)，这会导致渲染错误，处理起来比较麻烦  字体表 \begin&amp;#123;array&amp;#125;&amp;#123;ll|l&amp;#125;  \texttt&amp;#123;&quot;normal&quot;&amp;#125;      &amp;\texttt&amp;#123;&amp;#125;         &amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151609176.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151628633.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151701880.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151727539.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151743230.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151755631.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151807633.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151824258.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151849212.png">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120814709">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120845203">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120857003">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120908923">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120921290">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120934677">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120948160">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121000205">
+<meta property="og:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121011781">
+<meta property="article:published_time" content="2020-03-01T12:43:52.000Z">
+<meta property="article:modified_time" content="2021-04-17T04:33:10.992Z">
+<meta property="article:author" content="Coldeye">
+<meta property="article:tag" content="Latex">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151609176.png">
+
+
+<link rel="canonical" href="https://coldeye2020.monster/Tech/Latex/latex_characters.html">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+<title>Latex基础(一)Latex特殊字符表 | Doki Doki</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-193945147-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-193945147-1');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?166a4bbbc38e0e94b738a7cc1785a0ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Doki Doki</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog about life and tech sharing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">字体表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%89%B2%E5%BD%A9%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">色彩表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">连分数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">线性代数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="nav-number">5.</span> <span class="nav-text">数学符号表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%BC%8F%E9%87%8D%E9%9F%B3%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">数学模式重音符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%86%99%E5%B8%8C%E8%85%8A%E5%AD%97%E6%AF%8D"><span class="nav-number">5.2.</span> <span class="nav-text">小写希腊字母</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%86%99%E5%B8%8C%E8%85%8A%E5%AD%97%E6%AF%8D"><span class="nav-number">5.3.</span> <span class="nav-text">大写希腊字母</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E5%85%B3%E7%B3%BB%E7%AC%A6"><span class="nav-number">5.4.</span> <span class="nav-text">二元关系符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.5.</span> <span class="nav-text">二元运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%B0%BA%E5%AF%B8%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.6.</span> <span class="nav-text">大尺寸运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4"><span class="nav-number">5.7.</span> <span class="nav-text">箭头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E7%95%8C%E7%AC%A6"><span class="nav-number">5.8.</span> <span class="nav-text">定界符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%B0%BA%E5%AF%B8%E5%AE%9A%E7%95%8C%E7%AC%A6"><span class="nav-number">5.9.</span> <span class="nav-text">大尺寸定界符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.10.</span> <span class="nav-text">其他符号</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E6%95%B0%E5%AD%A6%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.10.1.</span> <span class="nav-text">非数学符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E5%AE%9A%E7%95%8C%E7%AC%A6"><span class="nav-number">5.10.2.</span> <span class="nav-text">AMS 定界符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E5%B8%8C%E8%85%8A%E5%92%8C%E5%B8%8C%E4%BC%AF%E6%9D%A5%E5%AD%97%E6%AF%8D"><span class="nav-number">5.10.3.</span> <span class="nav-text">AMS 希腊和希伯来字母</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E4%BA%8C%E5%85%83%E5%85%B3%E7%B3%BB%E7%AC%A6"><span class="nav-number">5.10.4.</span> <span class="nav-text">AMS 二元关系符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E7%AE%AD%E5%A4%B4"><span class="nav-number">5.10.5.</span> <span class="nav-text">AMS 箭头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E4%BA%8C%E5%85%83%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E7%AC%A6%E5%92%8C%E7%AE%AD%E5%A4%B4"><span class="nav-number">5.10.6.</span> <span class="nav-text">AMS 二元否定关系符和箭头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.10.7.</span> <span class="nav-text">AMS 二元运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ams-%E5%85%B6%E5%AE%83%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.10.8.</span> <span class="nav-text">AMS 其它符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%AD%97%E6%AF%8D"><span class="nav-number">5.10.9.</span> <span class="nav-text">数学字母</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Coldeye"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Coldeye</p>
+  <div class="site-description" itemprop="description">Finnally, you will find nothing is irreplaceable,</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/coldeye2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;coldeye2020" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:948283368.coldeye@gamil.com" title="E-Mail → mailto:948283368.coldeye@gamil.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/948283368" title="QQ → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;948283368" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+<!-- Insert Clustrmaps -->
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=200&t=tt&d=-ZnRDnKizjAkFSMaMv_zwM1vK_yTeDc1r3Pr34sq6a8&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://coldeye2020.monster/Tech/Latex/latex_characters.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Coldeye">
+      <meta itemprop="description" content="Finnally, you will find nothing is irreplaceable,">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doki Doki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Latex基础(一)Latex特殊字符表
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-03-01 20:43:52" itemprop="dateCreated datePublished" datetime="2020-03-01T20:43:52+08:00">2020-03-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-17 12:33:10" itemprop="dateModified" datetime="2021-04-17T12:33:10+08:00">2021-04-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/Latex/" itemprop="url" rel="index"><span itemprop="name">Latex</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/Tech/Latex/latex_characters.html" class="post-meta-item leancloud_visitors" data-flag-title="Latex基础(一)Latex特殊字符表" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note info"><p><strong>说明</strong></p>
+<p>本文主要记录了<code>Latex</code>中常用的特殊字符</p>
+</div>
+<div class="note warning"><p><strong>注意</strong></p>
+<p>如果可能的话尽量避免在公式中出现<code>大括号#</code>以及类似的字符(这是保留字符)，这会导致渲染错误，处理起来比较麻烦</p>
+</div>
+<h2 id="字体表">字体表</h2>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>ll|l<span class="token punctuation">&#125;</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span>"normal"<span class="token punctuation">&#125;</span>      <span class="token punctuation">&amp;</span><span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>         <span class="token punctuation">&amp;</span> ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span>"blackboard"<span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathbb</span><span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\mathbb</span><span class="token punctuation">&#123;</span>ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span>"boldface"<span class="token punctuation">&#125;</span>    <span class="token punctuation">&amp;</span><span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathbf</span><span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\mathbf</span><span class="token punctuation">&#123;</span>ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span>"typewriter"<span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathtt</span><span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\mathtt</span><span class="token punctuation">&#123;</span>ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span>"roman"<span class="token punctuation">&#125;</span>       <span class="token punctuation">&amp;</span><span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathrm</span><span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\mathrm</span><span class="token punctuation">&#123;</span>ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span>"sans-serif"<span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathsf</span><span class="token punctuation">&#125;</span>  <span class="token punctuation">&amp;</span><span class="token function selector">\mathsf</span><span class="token punctuation">&#123;</span>ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{array}{ll|l}
+ \texttt{&quot;normal&quot;}      &amp;\texttt{}         &amp; ABCDEFGHIJKLMNOPQRSTUVWXYZ\\
+ \texttt{&quot;blackboard&quot;}  &amp;\texttt{\mathbb}  &amp;\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
+ \texttt{&quot;boldface&quot;}    &amp;\texttt{\mathbf}  &amp;\mathbf{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
+ \texttt{&quot;typewriter&quot;}  &amp;\texttt{\mathtt}  &amp;\mathtt{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
+ \texttt{&quot;roman&quot;}       &amp;\texttt{\mathrm}  &amp;\mathrm{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
+ \texttt{&quot;sans-serif&quot;}  &amp;\texttt{\mathsf}  &amp;\mathsf{ABCDEFGHIJKLMNOPQRSTUVWXYZ}\\
+\end{array}
+\]</span></p>
+<span id="more"></span>
+<div class="note primary"><p><strong>说明</strong></p>
+<p>因为本文需要渲染公式较多，如果出现了公式未渲染的情况，请等待一会后刷新网页。</p>
+</div>
+<h2 id="色彩表">色彩表</h2>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>|lc|<span class="token punctuation">&#125;</span>
+<span class="token function selector">\hline</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>black<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>黑色<span class="token punctuation">&#125;</span>   <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>darkgray<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>深灰<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>gray<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>灰色<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>silver<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>银色<span class="token punctuation">&#125;</span>  <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>lightgray<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>浅灰<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>white<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>白色<span class="token punctuation">&#125;</span>   <span class="token function selector">\\</span>
+<span class="token function selector">\hline</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>brown<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>棕色<span class="token punctuation">&#125;</span>   <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>maroon<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>栗色<span class="token punctuation">&#125;</span>  <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>red<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>红色<span class="token punctuation">&#125;</span>     <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>fuchsia<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>桃红<span class="token punctuation">&#125;</span> <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>magenta<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>品红<span class="token punctuation">&#125;</span> <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>pink<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>粉红<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>orange<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>橙色<span class="token punctuation">&#125;</span>  <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>yellow<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>黄色<span class="token punctuation">&#125;</span>  <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>lime<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>青柠<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>olive<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>橄榄<span class="token punctuation">&#125;</span>   <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>green<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>绿色<span class="token punctuation">&#125;</span>   <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>aqua<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>水绿<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>cyan<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>青色<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>teal<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>靛青<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>blue<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>蓝色<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>navy<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>海蓝<span class="token punctuation">&#125;</span>    <span class="token function selector">\\</span>
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>purple<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>罗兰<span class="token punctuation">&#125;</span>  <span class="token function selector">\\</span> 
+<span class="token function selector">\color</span><span class="token punctuation">&#123;</span>purple<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>紫色<span class="token punctuation">&#125;</span>  <span class="token function selector">\\</span> 
+<span class="token function selector">\hline</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{array}{|lc|}
+\hline
+\color{black}{黑色}   \\
+\color{darkgray}{深灰}\\
+\color{gray}{灰色}    \\
+\color{silver}{银色}  \\
+\color{lightgray}{浅灰}\\
+\color{white}{白色}   \\
+\hline
+\color{brown}{棕色}   \\
+\color{maroon}{栗色}  \\
+\color{red}{红色}     \\
+\color{fuchsia}{桃红} \\
+\color{magenta}{品红} \\
+\color{pink}{粉红}    \\
+\color{orange}{橙色}  \\
+\color{yellow}{黄色}  \\
+\color{lime}{青柠}    \\
+\color{olive}{橄榄}   \\
+\color{green}{绿色}   \\
+\color{aqua}{水绿}    \\
+\color{cyan}{青色}    \\
+\color{teal}{靛青}    \\
+\color{blue}{蓝色}    \\
+\color{navy}{海蓝}    \\
+\color{purple}{罗兰}  \\ 
+\color{purple}{紫色}  \\ 
+\hline
+\end{array}
+\]</span></p>
+<h2 id="连分数">连分数</h2>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex">x = a_0 + <span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>1^2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_1
+        + <span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>2^2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_2
+        + <span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>3^2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_3 
+        + <span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>4^4<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_4 + <span class="token function selector">\cdots</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+x = a_0 + \cfrac{1^2}{a_1
+        + \cfrac{2^2}{a_2
+        + \cfrac{3^2}{a_3 
+        + \cfrac{4^4}{a_4 + \cdots}}}}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\underset</span><span class="token punctuation">&#123;</span>j=1<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token function selector">\overset</span><span class="token punctuation">&#123;</span><span class="token function selector">\infty</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token function selector">\LARGE</span><span class="token function selector">\mathrm</span> K<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>a_j<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>b_j<span class="token punctuation">&#125;</span>
+=<span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>a_1<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>b_1
++<span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>a_2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>b_2
++<span class="token function selector">\cfrac</span><span class="token punctuation">&#123;</span>a_3<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>b_3
++<span class="token function selector">\ddots</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\underset{j=1}{\overset{\infty}{\LARGE\mathrm K}}\frac{a_j}{b_j}
+=\cfrac{a_1}{b_1
++\cfrac{a_2}{b_2
++\cfrac{a_3}{b_3
++\ddots}}}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex">x = a_0 + <span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>1^2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_1<span class="token punctuation">&#125;</span>+
+          <span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>2^2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_2<span class="token punctuation">&#125;</span>+
+          <span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>3^2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_3<span class="token punctuation">&#125;</span>+
+          <span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>4^4<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>a_4<span class="token punctuation">&#125;</span>+ <span class="token function selector">\cdots</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+x = a_0 + \frac{1^2}{a_1}+
+          \frac{2^2}{a_2}+
+          \frac{3^2}{a_3}+
+          \frac{4^4}{a_4}+ \cdots
+\]</span></p>
+<h2 id="线性代数">线性代数</h2>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>ll<span class="token punctuation">&#125;</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\overline</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\overline</span><span class="token punctuation">&#123;</span>AAA<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\underline</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\underline</span><span class="token punctuation">&#123;</span>BBB<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\widetilde</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\widetilde</span><span class="token punctuation">&#123;</span>CCC<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\widehat</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\widehat</span><span class="token punctuation">&#123;</span>DDD<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\fbox</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\fbox</span><span class="token punctuation">&#123;</span>EEE<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\hline</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\vec</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\vec</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\ </span><span class="token function selector">\mathrm</span><span class="token punctuation">&#123;</span>or<span class="token punctuation">&#125;</span><span class="token function selector">\ </span><span class="token function selector">\vec</span><span class="token punctuation">&#123;</span>AB<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\check</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\check</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\acute</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\acute</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\grave</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\grave</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\bar</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\bar</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\hat</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\hat</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\tilde</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\tilde</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathring</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\mathring</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\dot</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\dot</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\ddot</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\ddot</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\dddot</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\dddot</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{array}{ll}
+ \texttt{\overline}&amp;\overline{AAA}\\
+ \texttt{\underline}&amp;\underline{BBB}\\
+ \texttt{\widetilde}&amp;\widetilde{CCC}\\
+ \texttt{\widehat}&amp;\widehat{DDD}\\
+ \texttt{\fbox}&amp;\fbox{EEE}\\
+\hline
+ \texttt{\vec}&amp;\vec{x}\ \mathrm{or}\ \vec{AB}\\
+ \texttt{\check}&amp;\check{x}\\
+ \texttt{\acute}&amp;\acute{x}\\
+ \texttt{\grave}&amp;\grave{x}\\
+ \texttt{\bar}&amp;\bar{x}\\
+ \texttt{\hat}&amp;\hat{x}\\
+ \texttt{\tilde}&amp;\tilde{x}\\
+ \texttt{\mathring}&amp;\mathring{x}\\
+ \texttt{\dot}&amp;\dot{x}\\
+ \texttt{\ddot}&amp;\ddot{x}\\
+ \texttt{\dddot}&amp;\dddot{x}\\
+\end{array}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">pmatrix</span><span class="token punctuation">&#125;</span>
+ 1 <span class="token punctuation">&amp;</span> a_1 <span class="token punctuation">&amp;</span> a_1^2 <span class="token punctuation">&amp;</span> <span class="token function selector">\cdots</span> <span class="token punctuation">&amp;</span> a_1^n <span class="token function selector">\\</span>
+ 1 <span class="token punctuation">&amp;</span> a_2 <span class="token punctuation">&amp;</span> a_2^2 <span class="token punctuation">&amp;</span> <span class="token function selector">\cdots</span> <span class="token punctuation">&amp;</span> a_2^n <span class="token function selector">\\</span>
+ <span class="token function selector">\vdots</span>  <span class="token punctuation">&amp;</span> <span class="token function selector">\vdots</span><span class="token punctuation">&amp;</span> <span class="token function selector">\vdots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\ddots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\vdots</span> <span class="token function selector">\\</span>
+ 1 <span class="token punctuation">&amp;</span> a_m <span class="token punctuation">&amp;</span> a_m^2 <span class="token punctuation">&amp;</span> <span class="token function selector">\cdots</span> <span class="token punctuation">&amp;</span> a_m^n <span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">pmatrix</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{pmatrix}
+ 1 &amp; a_1 &amp; a_1^2 &amp; \cdots &amp; a_1^n \\
+ 1 &amp; a_2 &amp; a_2^2 &amp; \cdots &amp; a_2^n \\
+ \vdots  &amp; \vdots&amp; \vdots &amp; \ddots &amp; \vdots \\
+ 1 &amp; a_m &amp; a_m^2 &amp; \cdots &amp; a_m^n \\
+\end{pmatrix}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>ll<span class="token punctuation">&#125;</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\overline</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\overline</span><span class="token punctuation">&#123;</span>AAA<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\underline</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\underline</span><span class="token punctuation">&#123;</span>BBB<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\widetilde</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\widetilde</span><span class="token punctuation">&#123;</span>CCC<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\widehat</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\widehat</span><span class="token punctuation">&#123;</span>DDD<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\fbox</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\fbox</span><span class="token punctuation">&#123;</span>EEE<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\hline</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\vec</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\vec</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\ </span><span class="token function selector">\mathrm</span><span class="token punctuation">&#123;</span>or<span class="token punctuation">&#125;</span><span class="token function selector">\ </span><span class="token function selector">\vec</span><span class="token punctuation">&#123;</span>AB<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\check</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\check</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\acute</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\acute</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\grave</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\grave</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\bar</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\bar</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\hat</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\hat</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\tilde</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\tilde</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\mathring</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\mathring</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\dot</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\dot</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\ddot</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\ddot</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\texttt</span><span class="token punctuation">&#123;</span><span class="token function selector">\dddot</span><span class="token punctuation">&#125;</span><span class="token punctuation">&amp;</span><span class="token function selector">\dddot</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{array}{ll}
+ \texttt{\overline}&amp;\overline{AAA}\\
+ \texttt{\underline}&amp;\underline{BBB}\\
+ \texttt{\widetilde}&amp;\widetilde{CCC}\\
+ \texttt{\widehat}&amp;\widehat{DDD}\\
+ \texttt{\fbox}&amp;\fbox{EEE}\\
+\hline
+ \texttt{\vec}&amp;\vec{x}\ \mathrm{or}\ \vec{AB}\\
+ \texttt{\check}&amp;\check{x}\\
+ \texttt{\acute}&amp;\acute{x}\\
+ \texttt{\grave}&amp;\grave{x}\\
+ \texttt{\bar}&amp;\bar{x}\\
+ \texttt{\hat}&amp;\hat{x}\\
+ \texttt{\tilde}&amp;\tilde{x}\\
+ \texttt{\mathring}&amp;\mathring{x}\\
+ \texttt{\dot}&amp;\dot{x}\\
+ \texttt{\ddot}&amp;\ddot{x}\\
+ \texttt{\dddot}&amp;\dddot{x}\\
+\end{array}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">pmatrix</span><span class="token punctuation">&#125;</span>
+ 1 <span class="token punctuation">&amp;</span> a_1 <span class="token punctuation">&amp;</span> a_1^2 <span class="token punctuation">&amp;</span> <span class="token function selector">\cdots</span> <span class="token punctuation">&amp;</span> a_1^n <span class="token function selector">\\</span>
+ 1 <span class="token punctuation">&amp;</span> a_2 <span class="token punctuation">&amp;</span> a_2^2 <span class="token punctuation">&amp;</span> <span class="token function selector">\cdots</span> <span class="token punctuation">&amp;</span> a_2^n <span class="token function selector">\\</span>
+ <span class="token function selector">\vdots</span>  <span class="token punctuation">&amp;</span> <span class="token function selector">\vdots</span><span class="token punctuation">&amp;</span> <span class="token function selector">\vdots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\ddots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\vdots</span> <span class="token function selector">\\</span>
+ 1 <span class="token punctuation">&amp;</span> a_m <span class="token punctuation">&amp;</span> a_m^2 <span class="token punctuation">&amp;</span> <span class="token function selector">\cdots</span> <span class="token punctuation">&amp;</span> a_m^n <span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">pmatrix</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{pmatrix}
+ 1 &amp; a_1 &amp; a_1^2 &amp; \cdots &amp; a_1^n \\
+ 1 &amp; a_2 &amp; a_2^2 &amp; \cdots &amp; a_2^n \\
+ \vdots  &amp; \vdots&amp; \vdots &amp; \ddots &amp; \vdots \\
+ 1 &amp; a_m &amp; a_m^2 &amp; \cdots &amp; a_m^n \\
+\end{pmatrix}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\left</span><span class="token punctuation">[</span>
+<span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>cc|c<span class="token punctuation">&#125;</span>
+  1<span class="token punctuation">&amp;</span>2<span class="token punctuation">&amp;</span>3<span class="token function selector">\\</span>
+  4<span class="token punctuation">&amp;</span>5<span class="token punctuation">&amp;</span>6<span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span>
+<span class="token function selector">\right</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+  1&amp;2&amp;3\\
+  4&amp;5&amp;6\\
+\end{array}
+\right]
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">cases</span><span class="token punctuation">&#125;</span>
+<span class="token comment">%线性方程组加\\[2ex],不然会挤在一起.</span>
+ a_1x+b_1y+c_1z=<span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>p_1<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>q_1<span class="token punctuation">&#125;</span> <span class="token function selector">\\</span><span class="token punctuation">[</span>2ex<span class="token punctuation">]</span> 
+ a_2x+b_2y+c_2z=<span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>p_2<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>q_2<span class="token punctuation">&#125;</span> <span class="token function selector">\\</span><span class="token punctuation">[</span>2ex<span class="token punctuation">]</span> 
+ a_3x+b_3y+c_3z=<span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>p_3<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>q_3<span class="token punctuation">&#125;</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">cases</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\begin{cases}
+ a_1x+b_1y+c_1z=\frac{p_1}{q_1} \\[2ex] 
+ a_2x+b_2y+c_2z=\frac{p_2}{q_2} \\[2ex] 
+ a_3x+b_3y+c_3z=\frac{p_3}{q_3}
+\end{cases}
+\]</span></p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token comment">%约去符,删除线</span>
+<span class="token function selector">\require</span><span class="token punctuation">&#123;</span>cancel<span class="token punctuation">&#125;</span>
+<span class="token function selector">\require</span><span class="token punctuation">&#123;</span>enclose<span class="token punctuation">&#125;</span>
+<span class="token function selector">\begin</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>ll<span class="token punctuation">&#125;</span>
+ <span class="token function selector">\verb</span>|y+<span class="token function selector">\cancel</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> y+<span class="token function selector">\cancel</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|y+<span class="token function selector">\bcancel</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> y+<span class="token function selector">\bcancel</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|y+<span class="token function selector">\xcancel</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> y+<span class="token function selector">\xcancel</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|y+<span class="token function selector">\cancelto</span><span class="token punctuation">&#123;</span>0<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> y+<span class="token function selector">\cancelto</span><span class="token punctuation">&#123;</span>0<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>+<span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>1<span class="token function selector">\cancel</span>9<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token function selector">\cancel</span>95<span class="token punctuation">&#125;</span> = <span class="token function selector">\frac</span>15+<span class="token punctuation">&amp;</span> <span class="token function selector">\frac</span><span class="token punctuation">&#123;</span>1<span class="token function selector">\cancel</span>9<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token function selector">\cancel</span>95<span class="token punctuation">&#125;</span> = <span class="token function selector">\frac</span>15 <span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|<span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>horizontalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x+y<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> <span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>horizontalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x+y<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|<span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>verticalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token function selector">\frac</span> xy<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> <span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>verticalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token function selector">\frac</span> xy<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|<span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>updiagonalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x+y<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> <span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>updiagonalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x+y<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+ <span class="token function selector">\verb</span>|<span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>downdiagonalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x+y<span class="token punctuation">&#125;</span>| <span class="token punctuation">&amp;</span> <span class="token function selector">\enclose</span><span class="token punctuation">&#123;</span>downdiagonalstrike<span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span>x+y<span class="token punctuation">&#125;</span><span class="token function selector">\\</span>
+<span class="token function selector">\end</span><span class="token punctuation">&#123;</span><span class="token keyword">array</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\require{cancel}
+\require{enclose}
+\begin{array}{ll}
+ \verb|y+\cancel{x}| &amp; y+\cancel{x}\\
+ \verb|y+\bcancel{x}| &amp; y+\bcancel{x}\\
+ \verb|y+\xcancel{x}| &amp; y+\xcancel{x}\\
+ \verb|y+\cancelto{0}{x}| &amp; y+\cancelto{0}{x}\\
+ \verb+\frac{1\cancel9}{\cancel95} = \frac15+&amp; \frac{1\cancel9}{\cancel95} = \frac15 \\
+ \verb|\enclose{horizontalstrike}{x+y}| &amp; \enclose{horizontalstrike}{x+y}\\
+ \verb|\enclose{verticalstrike}{\frac xy}| &amp; \enclose{verticalstrike}{\frac xy}\\
+ \verb|\enclose{updiagonalstrike}{x+y}| &amp; \enclose{updiagonalstrike}{x+y}\\
+ \verb|\enclose{downdiagonalstrike}{x+y}| &amp; \enclose{downdiagonalstrike}{x+y}\\
+\end{array}
+\]</span></p>
+<h2 id="数学符号表">数学符号表</h2>
+<h3 id="数学模式重音符">数学模式重音符</h3>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\hat</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\check</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\tilde</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\acute</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span>
+<span class="token function selector">\grave</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\dot</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\ddot</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\breve</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span>
+<span class="token function selector">\bar</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\vec</span><span class="token punctuation">&#123;</span>a<span class="token punctuation">&#125;</span> <span class="token function selector">\widehat</span><span class="token punctuation">&#123;</span>A<span class="token punctuation">&#125;</span> <span class="token function selector">\widetilde</span><span class="token punctuation">&#123;</span>A<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><span class="math display">\[
+\hat{a} \check{a} \tilde{a} \acute{a}
+\grave{a} \dot{a} \ddot{a} \breve{a}
+\bar{a} \vec{a} \widehat{A} \widetilde{A}
+\]</span></p>
+<h3 id="小写希腊字母">小写希腊字母</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151609176.png" /></p>
+<h3 id="大写希腊字母">大写希腊字母</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151628633.png" /></p>
+<h3 id="二元关系符">二元关系符</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151701880.png" /></p>
+<h3 id="二元运算符">二元运算符</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151727539.png" /></p>
+<h3 id="大尺寸运算符">大尺寸运算符</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151743230.png" /></p>
+<h3 id="箭头">箭头</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151755631.png" /></p>
+<h3 id="定界符">定界符</h3>
+<figure>
+<img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151807633.png" alt="image-20200320151807633" /><figcaption aria-hidden="true">image-20200320151807633</figcaption>
+</figure>
+<h3 id="大尺寸定界符">大尺寸定界符</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151824258.png" /></p>
+<h3 id="其他符号">其他符号</h3>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20200320151849212.png" /></p>
+<h4 id="非数学符号">非数学符号</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120814709" /></p>
+<h4 id="ams-定界符">AMS 定界符</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120845203" /></p>
+<h4 id="ams-希腊和希伯来字母">AMS 希腊和希伯来字母</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120857003" /></p>
+<h4 id="ams-二元关系符">AMS 二元关系符</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120908923" /></p>
+<h4 id="ams-箭头">AMS 箭头</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120921290" /></p>
+<h4 id="ams-二元否定关系符和箭头">AMS 二元否定关系符和箭头</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120934677" /></p>
+<h4 id="ams-二元运算符">AMS 二元运算符</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110120948160" /></p>
+<h4 id="ams-其它符号">AMS 其它符号</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121000205" /></p>
+<h4 id="数学字母">数学字母</h4>
+<p><img data-src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/20180110121011781" /></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Coldeye
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://coldeye2020.monster/Tech/Latex/latex_characters.html" title="Latex基础(一)Latex特殊字符表">https://coldeye2020.monster/Tech/Latex/latex_characters.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Latex/" rel="tag"><i class="fa fa-tag"></i> Latex</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Tech/Linux/linux_command_ubuntu.html" rel="prev" title="linux命令(一)Ubuntu基础命令">
+                  <i class="fa fa-chevron-left"></i> linux命令(一)Ubuntu基础命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Tech/Cpp/cpp_grammar_intermediate.html" rel="next" title="Cpp(一)Cpp中级语法">
+                  Cpp(一)Cpp中级语法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Coldeye</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">143k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:10</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+<script data-pjax>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'none'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.bootcdn.net/ajax/libs/mathjax/3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://coldeye2020.monster/Tech/Latex/latex_characters.html',]
+      });
+      });
+  </script>
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"09tInux3xJRlMs2A008PDeuP-MdYXbMMI","appKey":"PIFdCFbjTxC8EPP53JdDhrKO","serverURLs":null,"placeholder":"Just go go","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[]}, {
+      el: '#valine-comments',
+      path: "/Tech/Latex/latex_characters.html",
+      serverURLs: "https://09tinux3.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":300,"height":450,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
