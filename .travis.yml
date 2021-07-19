@@ -27,7 +27,8 @@ before_script:
 
 install:
 - npm install
-- npm install hexo-deployer-git --save
+- npm i hexo-deployer-git@3.0.0
+
 
 script:
 - hexo clean
