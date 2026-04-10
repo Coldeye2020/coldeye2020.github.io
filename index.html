@@ -181,7 +181,7 @@
         <h1>👋 Welcome to this blog</h1>
     </header>
     <div class="entry-content">
-        Hi, this is Coldeye and OuhaoTen. This blog mainly involves learning notes about Recommendation and Autonomous driving.
+        Hi, this is Coldeye and OuhaoTen.
     </div>
     <footer class="entry-footer">
         <div class="social-icons" >
@@ -265,7 +265,8 @@ fetch('https://coldeye.goatcounter.com/counter/\/think\/2024-12-15-introduction\
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
         <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    </span> · 
+    <span>Visitors: <span id="gc-total">–</span></span>
 
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
@@ -273,6 +274,15 @@ fetch('https://coldeye.goatcounter.com/counter/\/think\/2024-12-15-introduction\
         <path d="M12 6H0l6-6z" />
     </svg>
 </a>
+<script>
+fetch('https://coldeye.goatcounter.com/counter/TOTAL.json')
+  .then(r => r.json())
+  .then(d => {
+    var el = document.getElementById('gc-total');
+    if (el && d && d.count) el.textContent = d.count;
+  }).catch(function(){});
+</script>
+
 
 <script>
     let menu = document.getElementById('menu')
