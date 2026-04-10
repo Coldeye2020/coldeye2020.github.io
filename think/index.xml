@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Thought on Co&#39;Log</title>
+    <link>https://coldeye2020.github.io/think/</link>
+    <description>Recent content in Thought on Co&#39;Log</description>
+    <generator>Hugo -- 0.139.4</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 15 Dec 2024 01:39:39 +0800</lastBuildDate>
+    <atom:link href="https://coldeye2020.github.io/think/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The begining</title>
+      <link>https://coldeye2020.github.io/think/2024-12-15-introduction/</link>
+      <pubDate>Sun, 15 Dec 2024 01:39:39 +0800</pubDate>
+      <guid>https://coldeye2020.github.io/think/2024-12-15-introduction/</guid>
+      <description>&lt;h2 id=&#34;作为这个blog-的开始&#34;&gt;作为这个blog 的开始&lt;/h2&gt;</description>
+    </item>
+  </channel>
+</rss>

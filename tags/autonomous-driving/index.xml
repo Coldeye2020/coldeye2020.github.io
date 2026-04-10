@@ -10,14 +10,14 @@
     <atom:link href="https://coldeye2020.github.io/tags/autonomous-driving/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OmniDrive 论文解读</title>
-      <link>https://coldeye2020.github.io/posts/2024-12-15-omnidrive/</link>
+      <link>https://coldeye2020.github.io/tech/2024-12-15-omnidrive/</link>
       <pubDate>Sun, 15 Dec 2024 11:42:16 +0800</pubDate>
-      <guid>https://coldeye2020.github.io/posts/2024-12-15-omnidrive/</guid>
+      <guid>https://coldeye2020.github.io/tech/2024-12-15-omnidrive/</guid>
       <description>&lt;h1 id=&#34;一论文总览&#34;&gt;一.论文总览&lt;/h1&gt;
 &lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214214025876-20241215112414825.png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;问题背景&#34;&gt;问题背景：&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：“询问当前车道是否可以左转”，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。&lt;/li&gt;
+&lt;li&gt;现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：&amp;ldquo;询问当前车道是否可以左转&amp;rdquo;，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。&lt;/li&gt;
 &lt;li&gt;现有 MLLM 模型按照对图像的处理方式的不同，可以分为两种流派：一种是以 Flamingo 、BLIP-2、Qwen等方法为代表，以交叉注意力机制为基础，特点是不论图像分辨率都处理成统一长度的 token 序列，而另一种是以 Vit、 BLIP、LLAVA 为代表，以自注意力机制为基础，每个 token 用于代表固定像素大小的图像局部信息，这意味着不同的分辨率图像对应变长的 token 序列。对于自动驾驶场景而言，多视角、高分辨率、连续帧（视频）是感知任务的数据特点，而变长序列代表时延、不稳定。所以作者以 BLIP-2 结构为基础，引入 Stream-PETR（作者之前的工作），构建用于自动驾驶场景的 3D MLLM。&lt;/li&gt;
 &lt;li&gt;过去的 Benchmark 大多采用简单的 QA 的形式进行评测，已有工作证明端到端自动驾驶目前 open-loop 评测方式的局限性。另外，这种评测方式驱动的方法也无法完全利用到大语言模型强大的涌现能力。对于自动驾驶场景，类似于世界模型的反事实推断能力是更符合人类思考方式和习惯的。作者希望仿照 LLAVA 的做法，提出一种高效的数据构建方式，用于构建大规模 VQA 数据集，一方面用于 MLLM 的 Instruction-tuning 训练，另一方面用于评测。&lt;/li&gt;
 &lt;/ul&gt;
