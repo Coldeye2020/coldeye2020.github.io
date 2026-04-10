@@ -21,3 +21,7 @@
 .post-content p {
     font-size: 16px;
 }
+
+.meta-item-inline {
+    display: inline;
+}
