@@ -21,11 +21,19 @@
     {{- end }}
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta">
-      {{- partial "post_meta.html" . -}}
+      {{- partial "post_meta.html" . -}} | Readers: <span id="gc-page">–</span>
       <!-- {{- partial "translation_list.html" . -}}
       {{- partial "edit_post.html" . -}}
       {{- partial "post_canonical.html" . -}} -->
     </div>
+    <script>
+    fetch('https://coldeye.goatcounter.com/counter/{{ .RelPermalink | strings.TrimRight "/" | safeJS }}.json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var el = document.getElementById('gc-page');
+        if (el && d && d.count) el.textContent = d.count;
+      }).catch(function(){});
+    </script>
     {{- end }}
   </header>
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
