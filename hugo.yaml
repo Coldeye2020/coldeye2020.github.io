@@ -77,7 +77,7 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "\U0001F44B Welcome to this blog"
-    Content: Hi, this is Coldeye and OuhaoTen. This blog mainly involves learning notes about Recommendation and Autonomous driving.
+    Content: Hi, this is Coldeye and OuhaoTen.
 
   socialIcons:
     - name: email

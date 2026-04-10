@@ -1,0 +1,10 @@
+{{- if .IsHome }}
+<script>
+fetch('https://coldeye.goatcounter.com/counter/TOTAL.json')
+  .then(r => r.json())
+  .then(d => {
+    var el = document.getElementById('gc-total');
+    if (el && d && d.count) el.textContent = d.count;
+  }).catch(function(){});
+</script>
+{{- end }}

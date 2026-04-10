@@ -20,6 +20,11 @@
         <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 
+    {{- if .IsHome }}
+    {{- print " · "}}
+    <span>Visitors: <span id="gc-total">–</span></span>
+    {{- end }}
+
 </footer>
 {{- end }}
 
