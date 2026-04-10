@@ -21,7 +21,7 @@
 {{- end -}}
 {{- if eq .Kind "page" }} | Readers: <span id="gc-page">–</span>
 <script>
-fetch('https://coldeye.goatcounter.com/counter/{{ .RelPermalink | safeJS }}index.json')
+fetch('https://coldeye.goatcounter.com/counter/{{ .RelPermalink | strings.TrimRight "/" | safeJS }}.json')
   .then(function(r){ return r.json(); })
   .then(function(d){
     var el = document.getElementById('gc-page');
