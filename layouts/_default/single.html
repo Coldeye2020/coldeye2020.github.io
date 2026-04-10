@@ -22,12 +22,6 @@
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta">
       {{- partial "post_meta.html" . -}}
-      <!-- busuanzi -->
-      {{ if .Site.Params.busuanzi.enable -}}
-      <div class="meta-item meta-item-inline">
-        &nbsp;| <span id="busuanzi_container_page_pv">Visits: <span id="busuanzi_value_page_pv"></span></span>
-      </div>
-      {{- end }}
       <!-- {{- partial "translation_list.html" . -}}
       {{- partial "edit_post.html" . -}}
       {{- partial "post_canonical.html" . -}} -->
@@ -61,7 +55,18 @@
     {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
     {{- partial "share_icons.html" . -}}
     {{- end }}
+    <div class="post-footer-meta">
+      <span>Readers: <span id="gc-page">–</span></span>
+    </div>
   </footer>
+  <script>
+  fetch('https://coldeye.goatcounter.com/counter/{{ .RelPermalink | safeJS }}index.json')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var el = document.getElementById('gc-page');
+      if (el && d && d.count) el.textContent = d.count;
+    }).catch(function(){});
+  </script>
 
   {{- if (.Param "comments") }}
   {{- partial "comments.html" . }}

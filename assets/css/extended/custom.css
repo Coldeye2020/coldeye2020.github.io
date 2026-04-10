@@ -1,3 +1,9 @@
+.post-footer-meta {
+    margin-top: 0.5rem;
+    font-size: 14px;
+    color: var(--secondary);
+}
+
 .post-content h1 {
     margin: 28px auto 20px;
     font-size: 28px;
