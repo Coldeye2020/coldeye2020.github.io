@@ -1,0 +1,406 @@
+{{- define "main" }}
+
+{{/* ── Build heatmap data from all posts ── */}}
+{{- $allPages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- if site.Params.ShowAllPagesInArchive }}
+{{- $allPages = site.RegularPages }}
+{{- end }}
+
+{{- $scratch := newScratch }}
+{{- $scratch.Set "years" slice }}
+{{- range $allPages }}
+  {{- $dateKey := .Date.Format "2006-01-02" }}
+  {{- $y       := .Date.Format "2006" }}
+  {{- if not (in ($scratch.Get "years") $y) }}
+    {{- $scratch.Set "years" (($scratch.Get "years") | append $y) }}
+  {{- end }}
+  {{- $cKey := printf "%s_c" $dateKey }}
+  {{- $oKey := printf "%s_o" $dateKey }}
+  {{- range (.Params.author | default slice) }}
+    {{- $a := . | lower }}
+    {{- if eq $a "coldeye" }}
+      {{- $scratch.Add $cKey 1 }}
+    {{- else if eq $a "ouhaoten" }}
+      {{- $scratch.Add $oKey 1 }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{/* Year range: from 2024 to current year */}}
+{{- $years := slice }}
+{{- $currentYear := now.Year }}
+{{- range seq 2024 $currentYear }}
+  {{- $years = $years | append (printf "%d" .) }}
+{{- end }}
+
+{{/* Build JSON string manually to avoid jsonify nesting issues */}}
+{{- $jsonParts := slice }}
+{{- range $allPages }}
+  {{- $dateKey := .Date.Format "2006-01-02" }}
+  {{- $c := $scratch.Get (printf "%s_c" $dateKey) | default 0 }}
+  {{- $o := $scratch.Get (printf "%s_o" $dateKey) | default 0 }}
+  {{- $jsonParts = $jsonParts | append (printf "%q:{\"coldeye\":%d,\"ouhaoten\":%d}" $dateKey $c $o) }}
+{{- end }}
+{{- $hmJSON := printf "{%s}" (delimit (uniq $jsonParts) ",") }}
+
+<div class="archives-layout">
+  <div class="archives-main">
+
+    <header class="page-header">
+      <h1>
+        {{ .Title }}
+        {{- if (.Param "ShowRssButtonInSectionTermList") }}
+        {{- $rss := (.OutputFormats.Get "rss") }}
+        {{- if (eq .Kind `page`) }}{{- $rss = (.Parent.OutputFormats.Get "rss") }}{{- end }}
+        {{- with $rss }}
+        <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="23">
+            <path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/>
+            <circle cx="5" cy="19" r="1"/>
+          </svg>
+        </a>
+        {{- end }}
+        {{- end }}
+      </h1>
+      {{- if .Description }}
+      <div class="post-description">{{ .Description }}</div>
+      {{- end }}
+    </header>
+
+    {{- range $allPages.GroupByPublishDate "2006" }}
+    {{- if ne .Key "0001" }}
+    <div class="archive-year">
+      {{- $year := replace .Key "0001" "" }}
+      <h2 class="archive-year-header" id="{{ $year }}">
+        <a class="archive-header-link" href="#{{ $year }}">{{- $year -}}</a>
+        <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
+      </h2>
+      {{- range .Pages.GroupByDate "January" }}
+      <div class="archive-month">
+        <h3 class="archive-month-header" id="{{ $year }}-{{ .Key }}">
+          <a class="archive-header-link" href="#{{ $year }}-{{ .Key }}">{{- .Key -}}</a>
+          <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
+        </h3>
+        <div class="archive-posts">
+          {{- range .Pages }}
+          {{- if eq .Kind "page" }}
+          <div class="archive-entry"
+            data-tags="{{ delimit (.Params.tags | default slice) "," | lower }}"
+            data-title="{{ .Title | lower }}">
+            <h3 class="archive-entry-title entry-hint-parent">
+              {{- .Title | markdownify }}
+              {{- if .Draft }}
+              <span class="entry-hint" title="Draft">
+                <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 -960 960 960" fill="currentColor">
+                  <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/>
+                </svg>
+              </span>
+              {{- end }}
+            </h3>
+            <div class="archive-meta">{{- partial "post_meta.html" . -}}</div>
+            <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+          </div>
+          {{- end }}
+          {{- end }}
+        </div>
+      </div>
+      {{- end }}
+    </div>
+    {{- end }}
+    {{- end }}
+
+  </div>{{/* end archives-main */}}
+
+  <aside class="archives-sidebar">
+
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">Search</h3>
+      <div id="searchbox">
+        <input id="searchInput" placeholder="Search..." aria-label="search"
+          type="search" autocomplete="off" maxlength="64">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">
+        Tags
+        <button id="tag-clear" class="tag-clear-btn" style="display:none" aria-label="clear tag filter">×</button>
+      </h3>
+      <div class="sidebar-tags">
+        {{- range site.Taxonomies.tags.ByCount }}
+        <span class="sidebar-tag" data-tag="{{ .Page.Title | lower }}">
+          {{ .Page.Title }}&nbsp;<sup>{{ .Count }}</sup>
+        </span>
+        {{- end }}
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">Activity</h3>
+      <div class="heatmap-compact">
+        <div class="heatmap-compact-nav">
+          <button class="year-btn" id="year-prev" aria-label="previous year">‹</button>
+          <span id="year-display" class="year-display-text"></span>
+          <button class="year-btn" id="year-next" aria-label="next year">›</button>
+        </div>
+        <div class="heatmap-compact-legend">
+          <span class="legend-dot legend-coldeye"></span><span class="legend-label">Coldeye</span>
+          <span class="legend-dot legend-ouhaoten"></span><span class="legend-label">OuhaoTen</span>
+          <span class="legend-dot legend-both"></span><span class="legend-label">Both</span>
+        </div>
+        <div class="heatmap-compact-wrap">
+          <div class="heatmap-compact-grid" id="heatmap-grid"></div>
+        </div>
+        <div id="heatmap-tooltip" class="heatmap-tooltip" style="display:none"></div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>{{/* end archives-layout */}}
+
+<script>var _hmData={{ $hmJSON | safeJS }};var _hmYears={{ $years | jsonify | safeJS }};</script>
+
+{{- $fusejs := resources.Get "js/fuse.basic.min.js" }}
+<script src="{{ $fusejs.RelPermalink }}"></script>
+
+<script>
+(function () {
+  // ── Shared filter state ───────────────────────────────────────────────────
+  const entries  = Array.from(document.querySelectorAll('.archive-entry'));
+  const months   = document.querySelectorAll('.archive-month');
+  const yearDivs = document.querySelectorAll('.archive-year');
+  let activeTag  = null;
+
+  function applyFilters(matchedTitles) {
+    entries.forEach(el => {
+      let show = true;
+      if (activeTag) {
+        const tags = el.dataset.tags ? el.dataset.tags.split(',').filter(Boolean) : [];
+        if (!tags.includes(activeTag)) show = false;
+      }
+      if (show && matchedTitles !== null) {
+        show = matchedTitles.has(el.dataset.title);
+      }
+      el.style.display = show ? '' : 'none';
+    });
+    months.forEach(m => {
+      const vis = Array.from(m.querySelectorAll('.archive-entry')).some(e => e.style.display !== 'none');
+      m.style.display = vis ? '' : 'none';
+    });
+    yearDivs.forEach(y => {
+      const vis = Array.from(y.querySelectorAll('.archive-month')).some(m => m.style.display !== 'none');
+      y.style.display = vis ? '' : 'none';
+    });
+  }
+
+  // ── Search ────────────────────────────────────────────────────────────────
+  const sInput = document.getElementById('searchInput');
+  let fuse = null;
+
+  fetch('{{ "/" | absURL }}index.json')
+    .then(r => r.json())
+    .then(data => {
+      fuse = new Fuse(data, {
+        isCaseSensitive: false,
+        shouldSort: true,
+        threshold: 0.4,
+        ignoreLocation: true,
+        keys: ['title', 'summary', 'content']
+      });
+    });
+
+  sInput.addEventListener('input', function () {
+    const q = this.value.trim();
+    if (!q) {
+      applyFilters(null);
+      return;
+    }
+    if (fuse) {
+      const results = fuse.search(q, { limit: 50 });
+      const matched = new Set(results.map(r => r.item.title.toLowerCase()));
+      applyFilters(matched);
+    }
+  });
+
+  sInput.addEventListener('search', function () {
+    if (!this.value) applyFilters(null);
+  });
+
+  // ── Tag filter ────────────────────────────────────────────────────────────
+  const tagBtns = document.querySelectorAll('.sidebar-tag');
+  const clearBtn = document.getElementById('tag-clear');
+
+  tagBtns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      const tag = this.dataset.tag;
+      if (activeTag === tag) {
+        activeTag = null;
+        tagBtns.forEach(b => b.classList.remove('active'));
+        clearBtn.style.display = 'none';
+      } else {
+        activeTag = tag;
+        tagBtns.forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
+        clearBtn.style.display = 'inline';
+      }
+      const q = sInput.value.trim();
+      if (q && fuse) {
+        const results = fuse.search(q, { limit: 50 });
+        const matched = new Set(results.map(r => r.item.title.toLowerCase()));
+        applyFilters(matched);
+      } else {
+        applyFilters(null);
+      }
+    });
+  });
+
+  clearBtn.addEventListener('click', function () {
+    activeTag = null;
+    tagBtns.forEach(b => b.classList.remove('active'));
+    this.style.display = 'none';
+    applyFilters(null);
+  });
+
+  // ── Heatmap ───────────────────────────────────────────────────────────────
+  const hmData  = (typeof _hmData  !== 'undefined') ? _hmData  : {};
+  const hmYears = (typeof _hmYears !== 'undefined') ? _hmYears : [];
+  if (!hmYears.length) return;
+
+  let curIdx  = hmYears.length - 1;
+  const grid     = document.getElementById('heatmap-grid');
+  const yearDisp = document.getElementById('year-display');
+  const prevBtn  = document.getElementById('year-prev');
+  const nextBtn  = document.getElementById('year-next');
+  const tooltip  = document.getElementById('heatmap-tooltip');
+
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function makeCell(iso) {
+    const cell = document.createElement('div');
+    cell.className = 'hm-cell';
+    if (iso) {
+      const entry = hmData[iso];
+      const c = entry ? (entry.coldeye  || 0) : 0;
+      const o = entry ? (entry.ouhaoten || 0) : 0;
+      if (c > 0 || o > 0) {
+        cell.classList.add(c > 0 && o > 0 ? 'hm-cell--both' : c > 0 ? 'hm-cell--coldeye' : 'hm-cell--ouhaoten');
+        cell.dataset.date     = iso;
+        cell.dataset.coldeye  = c;
+        cell.dataset.ouhaoten = o;
+      }
+      cell.addEventListener('mouseenter', function () {
+        if (!this.dataset.date) return;
+        const c = parseInt(this.dataset.coldeye  || 0);
+        const o = parseInt(this.dataset.ouhaoten || 0);
+        let txt = this.dataset.date;
+        if (c) txt += ` · Coldeye ×${c}`;
+        if (o) txt += ` · OuhaoTen ×${o}`;
+        tooltip.textContent   = txt;
+        tooltip.style.display = 'block';
+      });
+      cell.addEventListener('mousemove', function (e) {
+        tooltip.style.left = (e.pageX + 10) + 'px';
+        tooltip.style.top  = (e.pageY - 32) + 'px';
+      });
+      cell.addEventListener('mouseleave', function () { tooltip.style.display = 'none'; });
+    } else {
+      cell.classList.add('hm-cell--out');
+    }
+    return cell;
+  }
+
+  function buildHeatmap(year) {
+    grid.innerHTML = '';
+    yearDisp.textContent = year;
+    prevBtn.disabled = (curIdx === 0);
+    nextBtn.disabled = (curIdx === hmYears.length - 1);
+
+    const yr = parseInt(year);
+    // 12 month-columns layout
+    const table = document.createElement('div');
+    table.className = 'hm-month-grid';
+
+    for (let m = 0; m < 12; m++) {
+      const col = document.createElement('div');
+      col.className = 'hm-month-col';
+
+      // Month label
+      const lbl = document.createElement('div');
+      lbl.className = 'hm-month-lbl';
+      lbl.textContent = MONTHS[m];
+      col.appendChild(lbl);
+
+      // Collect weeks in this month
+      // Week 1 = days 1-7, Week 2 = days 8-14, etc. (simple week-of-month grouping)
+      const daysInMonth = new Date(yr, m + 1, 0).getDate();
+      // Group days into weeks of up to 7, Monday-aligned
+      // Find weeks that overlap with this month
+      const firstDay = new Date(yr, m, 1);
+      // Monday of the week containing firstDay
+      const dow = firstDay.getDay(); // 0=Sun
+      const backtrack = dow === 0 ? 6 : dow - 1;
+      const weekStart = new Date(firstDay);
+      weekStart.setDate(weekStart.getDate() - backtrack);
+
+      // Collect all weeks that contain at least one day in this month
+      const weeks = [];
+      let ws = new Date(weekStart);
+      while (ws <= new Date(yr, m, daysInMonth)) {
+        weeks.push(new Date(ws));
+        ws.setDate(ws.getDate() + 7);
+      }
+
+      // Each week = one cell
+      weeks.forEach((wStart, wi) => {
+        // Aggregate posts for this week that fall in this month
+        let c = 0, o = 0;
+        let firstIso = null;
+        for (let d = 0; d < 7; d++) {
+          const day = new Date(wStart);
+          day.setDate(day.getDate() + d);
+          if (day.getMonth() !== m || day.getFullYear() !== yr) continue;
+          const iso = day.toISOString().slice(0, 10);
+          if (!firstIso) firstIso = iso;
+          const entry = hmData[iso];
+          if (entry) { c += entry.coldeye || 0; o += entry.ouhaoten || 0; }
+        }
+
+        const cell = document.createElement('div');
+        cell.className = 'hm-cell';
+        if (c > 0 || o > 0) {
+          cell.classList.add(c > 0 && o > 0 ? 'hm-cell--both' : c > 0 ? 'hm-cell--coldeye' : 'hm-cell--ouhaoten');
+          cell.dataset.coldeye  = c;
+          cell.dataset.ouhaoten = o;
+          // Label: week start date in the month
+          const wLabel = `${year}-${String(m+1).padStart(2,'0')} W${wi+1}`;
+          cell.dataset.label = wLabel;
+          cell.addEventListener('mouseenter', function () {
+            let txt = this.dataset.label;
+            const c = parseInt(this.dataset.coldeye  || 0);
+            const o = parseInt(this.dataset.ouhaoten || 0);
+            if (c) txt += ` · Coldeye ×${c}`;
+            if (o) txt += ` · OuhaoTen ×${o}`;
+            tooltip.textContent   = txt;
+            tooltip.style.display = 'block';
+          });
+          cell.addEventListener('mousemove', function (e) {
+            tooltip.style.left = (e.pageX + 10) + 'px';
+            tooltip.style.top  = (e.pageY - 32) + 'px';
+          });
+          cell.addEventListener('mouseleave', function () { tooltip.style.display = 'none'; });
+        }
+        col.appendChild(cell);
+      });
+
+      table.appendChild(col);
+    }
+    grid.appendChild(table);
+  }
+
+  buildHeatmap(hmYears[curIdx]);
+  prevBtn.addEventListener('click', function () { if (curIdx > 0)                  { curIdx--; buildHeatmap(hmYears[curIdx]); } });
+  nextBtn.addEventListener('click', function () { if (curIdx < hmYears.length - 1) { curIdx++; buildHeatmap(hmYears[curIdx]); } });
+})();
+</script>
+
+{{- end }}{{/* end main */}}

@@ -12,10 +12,12 @@ googleAnalytics: "G-8HN6RSNM2B"
 
 minify:
   disableXML: true
+  disableHTML: true
   minifyOutput: true
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  mainSections: ["tech", "invest", "think"]
   title: Co'Log
   description: "Learning notes about Recommendation and Autonomous driving"
   keywords: [Blog, Learning notes, Recommendation, Autonomous driving]
@@ -40,8 +42,8 @@ params:
   hideSummary: false
   showtoc: true
   tocopen: false
-  busuanzi: 
-    enable: true
+  busuanzi:
+    enable: false
 
   assets:
     favicon: "/favicon.ico"
@@ -116,25 +118,21 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
-    - identifier: Posts
-      name: Posts
-      url: /posts/
+    - identifier: Tech
+      name: Tech
+      url: /tech/
       weight: 10
+    - identifier: Invest
+      name: Invest
+      url: /invest/
+      weight: 20
+    - identifier: Thought
+      name: Thought
+      url: /think/
+      weight: 30
     - identifier: Archives
       name: Archives
       url: /archives/
-      weight: 20
-    - identifier: Search
-      name: Search
-      url: /search/
-      weight: 20
-    - identifier: Categories
-      name: Categories
-      url: /categories/
-      weight: 30
-    - identifier: Tags
-      name: Tags
-      url: /tags/
       weight: 40
     - identifier: example
       name: xkcd.com
@@ -154,7 +152,6 @@ markup:
     # style: monokai
 
 taxonomies:
-  category: categories
   tag: tags
 
 

@@ -25,3 +25,236 @@
 .meta-item-inline {
     display: inline;
 }
+
+/* Archives page with sidebar */
+.archives-layout {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.archives-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.archives-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 80px;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.archives-sidebar #searchbox input {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--entry);
+    color: var(--primary);
+    box-sizing: border-box;
+}
+
+.archives-sidebar #searchResults {
+    margin-top: 0.5rem;
+    list-style: none;
+    padding: 0;
+    font-size: 13px;
+}
+
+.archives-sidebar #searchResults li a {
+    display: block;
+    padding: 4px 0;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.archives-sidebar #searchResults li a:hover {
+    text-decoration: underline;
+}
+
+.sidebar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sidebar-tag {
+    font-size: 13px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.sidebar-tag:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.sidebar-tag.active {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--entry);
+}
+
+.tag-clear-btn {
+    font-size: 14px;
+    line-height: 1;
+    padding: 0 4px;
+    border: none;
+    background: none;
+    color: var(--secondary);
+    cursor: pointer;
+}
+
+.tag-clear-btn:hover {
+    color: var(--primary);
+}
+
+/* ── Compact heatmap (sidebar) ── */
+.heatmap-compact-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.year-display-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.year-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--primary);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.year-btn:hover:not(:disabled) { border-color: var(--primary); }
+.year-btn:disabled { opacity: 0.3; cursor: default; }
+
+.heatmap-compact-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--secondary);
+    margin-bottom: 6px;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.legend-coldeye  { background: #2da44e; }
+.legend-ouhaoten { background: #e5534b; }
+.legend-both     { background: #a371f7; }
+
+.legend-label { margin-right: 4px; }
+
+.heatmap-compact-wrap {
+    overflow-x: auto;
+}
+
+.heatmap-compact-grid {
+    width: 100%;
+}
+
+/* 12-month grid: one column per month */
+.hm-month-grid {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+}
+
+.hm-month-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.hm-month-lbl {
+    font-size: 7px;
+    color: var(--secondary);
+    text-align: center;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: visible;
+    letter-spacing: -0.03em;
+}
+
+.hm-cell {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: var(--entry);
+    cursor: default;
+    min-height: 10px;
+}
+
+.hm-cell--out      { background: transparent; }
+.hm-cell--coldeye  { background: #2da44e; cursor: pointer; }
+.hm-cell--ouhaoten { background: #e5534b; cursor: pointer; }
+.hm-cell--both     { background: #a371f7; cursor: pointer; }
+
+.heatmap-tooltip {
+    position: fixed;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--primary);
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .archives-layout {
+        flex-direction: column;
+    }
+    .archives-sidebar {
+        width: 100%;
+        position: static;
+    }
+}
