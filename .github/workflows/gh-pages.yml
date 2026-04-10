@@ -27,8 +27,7 @@ jobs:
         - name: Deploy Web
           uses: peaceiris/actions-gh-pages@v4
           with:
-              PERSONAL_TOKEN: ${{ secrets.GH_TOKEN }}
-              EXTERNAL_REPOSITORY: OuhaoTen/ouhaoten.github.io
+              github_token: ${{ secrets.GITHUB_TOKEN }}
               PUBLISH_BRANCH: gh-pages
               PUBLISH_DIR: ./public
               commit_message: auto deploy

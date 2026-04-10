@@ -1,4 +1,4 @@
-baseURL: "https://ouhaoten.github.io"
+baseURL: "https://coldeye2020.github.io"
 title: Co'Log
 paginate: 5
 theme: PaperMod
@@ -83,7 +83,7 @@ params:
     - name: rss
       url: /index.xml
     - name: github
-      url: "https://github.com/OuhaoTen"
+      url: "https://github.com/Coldeye2020"
 
   analytics:
     google:
