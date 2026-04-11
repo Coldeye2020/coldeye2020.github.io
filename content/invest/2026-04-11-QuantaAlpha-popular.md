@@ -5,6 +5,12 @@ author: ["Coldeye"]
 tags: ["LLM", "Agent Quant"]
 ---
 
+>论文：[QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining](https://arxiv.org/abs/2602.07085)（arXiv 2602.07085）
+>
+>GitHub：[QuantaAlpha/QuantaAlpha](https://github.com/QuantaAlpha/QuantaAlpha)
+>
+>如果对QuantAlpha的代码感兴趣，可以试试配套[互动代码教程](/course/quantaalpha/)。
+
 如果你听说过"量化基金""AI 炒股"这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？
 
 这篇文章想借一篇 2026 年的论文——**QuantaAlpha**——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样**自己想出预测方法，然后不断进化改进**。
@@ -588,8 +594,5 @@ CSI300 上挖出的因子，**不做任何修改，直接部署到 CSI500 和 S&
 
 ---
 
-**参考资料**
 
-- 论文：[QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining](https://arxiv.org/abs/2602.07085)（arXiv 2602.07085）
-- GitHub：[QuantaAlpha/QuantaAlpha](https://github.com/QuantaAlpha/QuantaAlpha)
-- 配套[互动代码教程](/course/quantaalpha/)
+
