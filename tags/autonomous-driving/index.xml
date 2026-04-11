@@ -14,7 +14,7 @@
       <pubDate>Sun, 15 Dec 2024 11:42:16 +0800</pubDate>
       <guid>https://coldeye2020.github.io/tech/2024-12-15-omnidrive/</guid>
       <description>&lt;h1 id=&#34;一论文总览&#34;&gt;一.论文总览&lt;/h1&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214214025876-20241215112414825.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214214025876-20241215112414825.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;问题背景&#34;&gt;问题背景：&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：&amp;ldquo;询问当前车道是否可以左转&amp;rdquo;，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。&lt;/li&gt;
@@ -27,7 +27,7 @@
 &lt;li&gt;一种基于 GPT-4o 的数据构建方法，用于生成自动驾驶场景的 VQA 问答数据，包括反事实推断形式的问答。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1 id=&#34;二方法&#34;&gt;二.方法&lt;/h1&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214220821479.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214220821479.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;结构总览&#34;&gt;结构总览：&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;图像编码器：作者采用的是基于 Clip 结构的 Eva-02 模型作为图像编码器，通过多视角图像特征提取 3d 信息，这一部分没太多需要讲的。&lt;/li&gt;

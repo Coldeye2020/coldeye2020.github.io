@@ -13,7 +13,12 @@
       <link>https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/</link>
       <pubDate>Sat, 11 Apr 2026 14:00:00 +0800</pubDate>
       <guid>https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/</guid>
-      <description>&lt;p&gt;如果你听说过&amp;quot;量化基金&amp;quot;&amp;ldquo;AI 炒股&amp;quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？&lt;/p&gt;
+      <description>&lt;blockquote&gt;
+&lt;p&gt;论文：&lt;a href=&#34;https://arxiv.org/abs/2602.07085&#34;&gt;QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining&lt;/a&gt;（arXiv 2602.07085）&lt;/p&gt;
+&lt;p&gt;GitHub：&lt;a href=&#34;https://github.com/QuantaAlpha/QuantaAlpha&#34;&gt;QuantaAlpha/QuantaAlpha&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;如果对QuantAlpha的代码感兴趣，可以试试配套&lt;a href=&#34;https://coldeye2020.github.io/course/quantaalpha/&#34;&gt;互动代码教程&lt;/a&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果你听说过&amp;quot;量化基金&amp;quot;&amp;ldquo;AI 炒股&amp;quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？&lt;/p&gt;
 &lt;p&gt;这篇文章想借一篇 2026 年的论文——&lt;strong&gt;QuantaAlpha&lt;/strong&gt;——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样&lt;strong&gt;自己想出预测方法，然后不断进化改进&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。&lt;/p&gt;
 &lt;hr&gt;

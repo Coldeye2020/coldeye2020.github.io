@@ -32,7 +32,7 @@ Q-Former3D:
 作为最能体现作者贡献的模块，这一部分选择 Stream-PETR 出于以下考虑：PETR 所代表的稀疏 BEV 建模方式，适用于检测任务，相比于需要构建 dense bev feature 的方法来说，需要更小的计算量，同时加快模型的推理速度，毕竟OmniDrive 的核心在于多模态大模型的能力，检测任务仅作为辅助监督，所以尽量简化降低存在感。">
 <meta name="author" content="OuhaoTen">
 <link rel="canonical" href="https://coldeye2020.github.io/tech/2024-12-15-omnidrive/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.730159cb963c92ac36d8c1fd343f8d9c45befd96ec83237a5783790c16a78113.css" integrity="sha256-cwFZy5Y8kqw22MH9ND&#43;NnEW&#43;/ZbsgyN6V4N5DBangRM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d0784a2ef06027d361657fa5790ed70e981b46c4ae3f202cbf6e14fd7041798e.css" integrity="sha256-0HhKLvBgJ9NhZX&#43;leQ7XDpgbRsSuPyAsv24U/XBBeY4=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://coldeye2020.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://coldeye2020.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://coldeye2020.github.io/favicon-32x32.png">
@@ -280,7 +280,7 @@ Q-Former3D:
     <h1 class="post-title entry-hint-parent">
       OmniDrive 论文解读
     </h1>
-    <div class="post-meta">  <span title='2024-12-15 11:42:16 +0800 +0800'>Date: December 15, 2024 | Reading Time: 10 min | Author: OuhaoTen| Readers: <span id="gc-page">–</span>
+    <div class="post-meta">  <span title='2024-12-15 11:42:16 +0800 +0800'>Date: December 15, 2024</span> | Reading Time: 10 min | Author: OuhaoTen| Readers: <span id="gc-page">–</span>
       
     </div>
     <script>
@@ -326,7 +326,7 @@ Q-Former3D:
 </div>
 
   <div class="post-content"><h1 id="一论文总览">一.论文总览<a hidden class="anchor" aria-hidden="true" href="#一论文总览">#</a></h1>
-<p><img loading="lazy" src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214214025876-20241215112414825.png"></p>
+<p><img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214214025876-20241215112414825.png" alt="" loading="lazy"></p>
 <h2 id="问题背景">问题背景：<a hidden class="anchor" aria-hidden="true" href="#问题背景">#</a></h2>
 <ul>
 <li>现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：&ldquo;询问当前车道是否可以左转&rdquo;，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。</li>
@@ -339,7 +339,7 @@ Q-Former3D:
 <li>一种基于 GPT-4o 的数据构建方法，用于生成自动驾驶场景的 VQA 问答数据，包括反事实推断形式的问答。</li>
 </ul>
 <h1 id="二方法">二.方法<a hidden class="anchor" aria-hidden="true" href="#二方法">#</a></h1>
-<p><img loading="lazy" src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214220821479.png"></p>
+<p><img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214220821479.png" alt="" loading="lazy"></p>
 <h2 id="结构总览">结构总览：<a hidden class="anchor" aria-hidden="true" href="#结构总览">#</a></h2>
 <ul>
 <li>图像编码器：作者采用的是基于 Clip 结构的 Eva-02 模型作为图像编码器，通过多视角图像特征提取 3d 信息，这一部分没太多需要讲的。</li>
@@ -394,9 +394,9 @@ $$
 <p>以上就是对整体方法框架的解读，可以看出的是：模型整体的3d 能力核心实际是在于 Q-Former3D 模块，另外复现发现方法整体对于学习率的设置比较敏感，并且在检测任务明显未达到收敛时，LLM  的planning任务的损失已有明显的收敛倾向，作者在 issue 中有提到，检测任务的收敛需要 24 个 epoch 左右，而最终作者提供的训练配置只有 6 个 epoch，猜测这一现象是与 Q-Former3D 的微调阶段的大学习率设置有关。</p>
 <h1 id="三-结果">三. 结果<a hidden class="anchor" aria-hidden="true" href="#三-结果">#</a></h1>
 <p>由于作者主要的卖点在于端到端自动驾驶在3d 场景的效果和反事实推断能力，所以作者并没有列出目标检测的指标，主要的卖点还是以 planning 为导向的端到端场景，所以对比的主要指标是 open-loop planning 轨迹的 l2 误差、object碰撞率、以及boundary 碰撞率
-<img loading="lazy" src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241215003745511.png"></p>
+<img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241215003745511.png" alt="" loading="lazy"></p>
 <p>另外，关于作者提出的 benchmark，作者也进行了详细的消融实验来证明各类型数据的作用：</p>
-<p><img loading="lazy" src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241215004030137.png"></p>
+<p><img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241215004030137.png" alt="" loading="lazy"></p>
 <h1 id="四数据生成逻辑解读">四.数据生成逻辑解读<a hidden class="anchor" aria-hidden="true" href="#四数据生成逻辑解读">#</a></h1>
 <p>该工作的另一大贡献是基于 GPT-4o 的数据生成方法，虽然总体上与 LLAVA 的做法相似，但作者对于自动驾驶场景中的任务做了一些别出心裁的设计，这一部分会详细解读作者是如何处理 Nuscenes 数据集信息，提供给 GPT 作为 prompt，用于生成包含反事实推断的对话。</p>
 <p>首先，作者提供的示例图中，将提供的 prompt 分为以下几种信息:</p>
@@ -411,7 +411,7 @@ $$
 </ol>
 </li>
 </ol>
-<p><img alt="image-20241214234509477" loading="lazy" src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214234509477.png"></p>
+<p><img src="https://picgo-1301748200.cos.ap-chengdu.myqcloud.com/image-20241214234509477.png" alt="image-20241214234509477" loading="lazy"></p>
 <h2 id="代码解读">代码解读<a hidden class="anchor" aria-hidden="true" href="#代码解读">#</a></h2>
 <p>总览：</p>
 <ul>

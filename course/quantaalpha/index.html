@@ -1,0 +1,2776 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuantaAlpha 互动课程</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --color-accent:       #2A7B9B;
+      --color-accent-hover: #1F6280;
+      --color-accent-light: #E4F2F7;
+      --color-accent-muted: #5A9DB8;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">QuantaAlpha 互动课程</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="这是什么？" role="tab" aria-label="Module 1: 这是什么？"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="五位主角" role="tab" aria-label="Module 2: 五位主角"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="一轮挖掘的旅程" role="tab" aria-label="Module 3: 一轮挖掘的旅程"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="进化的秘密" role="tab" aria-label="Module 4: 进化的秘密"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="质量守门员" role="tab" aria-label="Module 5: 质量守门员"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="如何驾驭它" role="tab" aria-label="Module 6: 如何驾驭它"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <!-- Module Header -->
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">这是什么？<br>当你输入一句话，背后发生了什么</h1>
+      <p class="module-subtitle">从一条命令出发，认识 QuantaAlpha 的整个世界</p>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 1: 开场——你遇到了什么问题？
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">你遇到了什么问题？</h2>
+
+      <div class="stagger-children">
+        <p class="animate-in">
+          <span class="term" data-definition="量化投资：用数学模型和程序代替人工判断，在市场数据中系统性地寻找赚钱机会。">量化投资</span>
+          的核心挑战只有一句话：<strong>在噪声中找到真正的信号。</strong>
+          股票市场每天产生海量数据，大部分都是随机涨跌的"噪声"——真正能预测未来走势的规律，往往藏得很深。
+        </p>
+
+        <div class="pattern-cards animate-in">
+          <div class="pattern-card">
+            <div class="pattern-icon" style="background: var(--color-error-light)">😓</div>
+            <p class="pattern-title">传统方式</p>
+            <p class="pattern-desc">研究员手工阅读研报、设计公式、反复调参。一个有价值的因子可能需要数周甚至数月。</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-icon" style="background: var(--color-success-light)">⚡</div>
+            <p class="pattern-title">QuantaAlpha 的方式</p>
+            <p class="pattern-desc">你只需告诉系统一个方向，剩下的——提假设、写代码、跑回测、筛选结果——全部交给 AI 自动完成。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <span class="callout-title">QuantaAlpha 是什么？</span>
+            <p>
+              一个由
+              <span class="term" data-definition="LLM（Large Language Model）：大型语言模型，如 GPT-4、Claude 等，能理解和生成自然语言，也能写代码和推理。">LLM</span>
+              驱动的
+              <span class="term" data-definition="Alpha 因子：量化投资中，能预测股票相对涨跌的数学信号或指标。「Alpha」代表超越市场平均的超额收益。">Alpha 因子</span>
+              挖掘系统。你输入一个探索方向，它自动产出一批经过
+              <span class="term" data-definition="回测：用历史市场数据模拟运行某个策略或因子，验证它在过去是否有效。历史表现好不保证未来，但是筛选因子的必要步骤。">回测</span>
+              验证的因子，存入因子库等待下游模型使用。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 2: 什么是 Alpha 因子？
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">什么是 Alpha 因子？</h2>
+
+      <div class="stagger-children">
+        <p class="animate-in">
+          想象一位天气预报员。他不能控制明天的天气，但他能从气压、湿度、云图中找到<strong>"预兆"</strong>——这些预兆就是他的"信号"。
+        </p>
+        <p class="animate-in">
+          <span class="term" data-definition="Alpha 因子：预测股票未来相对涨跌的数学信号。好的因子在历史上与未来收益有稳定的正相关或负相关关系。">Alpha 因子</span>
+          就是量化世界的"预兆"。它是一个数学公式，输入是历史价格、成交量等数据，输出是一个数字信号——这个信号越高，预示股票未来可能表现越好。
+        </p>
+
+        <div class="callout callout-accent animate-in">
+          <span class="callout-icon">📐</span>
+          <div class="callout-content">
+            <span class="callout-title">一个真实的例子：动量因子</span>
+            <p>
+              <code style="font-family: var(--font-mono); background: rgba(0,0,0,0.08); padding: 2px 6px; border-radius: 4px;">(昨日收盘 - 5日前收盘) / 5日前收盘</code>
+              <br><br>
+              这个公式计算了最近5天的涨幅。背后的假设是：<em>近期上涨的股票，短期内可能继续上涨。</em>
+              这就是一个最简单的
+              <span class="term" data-definition="动量（Momentum）：一种量化现象，指近期涨势好的股票往往在未来短期内继续上涨，反之亦然。动量是最早被学术界验证的 Alpha 来源之一。">动量</span>
+              因子。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-cards animate-in">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>提出
+                <span class="term" data-definition="假设（Hypothesis）：量化研究中，对市场规律的一个具体猜测，比如「成交量放大时动量会持续」。假设需要用历史数据验证。">假设</span>
+              </strong>
+              <p>比如："高成交量配合价格上涨，信号更可靠"</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>转化为
+                <span class="term" data-definition="表达式（Expression）：用特定语法写出的因子计算公式，比如 TS_Mean($volume,5)/$volume * Ref($close,-1)/$close，可以被程序直接执行。">表达式</span>
+              </strong>
+              <p>把文字描述变成可计算的数学公式</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>回测验证，看
+                <span class="term" data-definition="IC 值（Information Coefficient）：衡量因子预测能力的指标。IC 是因子值与未来收益的相关系数，绝对值越大越好。通常 |IC| > 0.03 就值得关注。">IC 值</span>
+              </strong>
+              <p>IC 值衡量因子预测能力：越高越好</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 3: 一句命令，触发了什么？（数据流动画）
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">一句命令，触发了什么？</h2>
+
+      <p class="animate-in">
+        当你运行 <code style="font-family: var(--font-mono); background: var(--color-bg-code); color: #A6E3A1; padding: 2px 8px; border-radius: 4px;">python launcher.py mine --direction "价量动量因子"</code>，
+        系统在幕后自动完成了 5 个环节：
+      </p>
+
+      <div class="flow-animation animate-in"
+           data-steps='[{"highlight":"flow-actor-1","label":"你输入一个探索方向，比如：价量动量因子"},{"highlight":"flow-actor-2","packet":true,"from":"actor-1","to":"actor-2","label":"Planning 模块把方向展开成 2-10 个更具体的研究子方向"},{"highlight":"flow-actor-3","packet":true,"from":"actor-2","to":"actor-3","label":"AlphaAgent 为每个方向反复提假设、生成表达式、写代码"},{"highlight":"flow-actor-4","packet":true,"from":"actor-3","to":"actor-4","label":"Qlib 对每个因子做历史回测，算出 IC、年化收益等指标"},{"highlight":"flow-actor-5","packet":true,"from":"actor-4","to":"actor-5","label":"通过质量检查的因子存入因子库，等待下游模型使用"}]'>
+
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon">👤</div>
+            <span>你</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon">🗺️</div>
+            <span>Planning</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon">🤖</div>
+            <span>AlphaAgent</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon">📊</div>
+            <span>Qlib回测</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-5">
+            <div class="flow-actor-icon">🏦</div>
+            <span>因子库</span>
+          </div>
+        </div>
+
+        <div class="flow-packet"></div>
+
+        <div class="flow-step-label">点击"下一步"开始</div>
+
+        <div class="flow-controls">
+          <button class="btn btn-primary flow-next-btn">下一步 →</button>
+          <button class="btn flow-reset-btn">重置</button>
+          <span class="flow-progress">Step 0 / 5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 4: 代码翻译——launcher.py 入口
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">代码翻译：launcher.py 入口</h2>
+
+      <p class="animate-in">
+        你不需要看懂每一行代码，但看懂"入口"很重要。下面是 <code style="font-family: var(--font-mono); background: var(--color-bg-code); color: #CBA6F7; padding: 2px 6px; border-radius: 4px;">launcher.py</code> 文件开头的用法注释——它告诉你这个工具能做什么：
+      </p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">launcher.py</span>
+          <code>
+            <span class="code-line"><span class="code-comment">"""</span></span>
+            <span class="code-line"><span class="code-comment">Usage:</span></span>
+            <span class="code-line">  <span class="code-keyword">python</span> <span class="code-function">launcher.py</span> <span class="code-string">mine</span> <span class="code-operator">--direction</span> <span class="code-string">"price-volume factor mining"</span></span>
+            <span class="code-line">  <span class="code-keyword">python</span> <span class="code-function">launcher.py</span> <span class="code-string">mine</span> <span class="code-operator">--direction</span> <span class="code-string">"momentum reversal"</span> <span class="code-operator">--config</span> <span class="code-value">configs/experiment.yaml</span></span>
+            <span class="code-line">  <span class="code-keyword">python</span> <span class="code-function">launcher.py</span> <span class="code-string">backtest</span> <span class="code-operator">--factor-source</span> <span class="code-value">alpha158_20</span></span>
+            <span class="code-line"><span class="code-comment">"""</span></span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">逐行解读</span>
+          <div class="translation-lines">
+            <div class="tl">
+              <strong>用法一（核心）</strong>：启动因子挖掘，<code style="font-family: var(--font-mono)">--direction</code> 后面跟你想探索的<strong>研究方向</strong>。方向用自然语言写，比如"价量动量因子"。
+            </div>
+            <div class="tl">
+              <strong>用法二（进阶）</strong>：同时指定一个配置文件，控制实验参数（比如回测时间段、迭代次数）。
+            </div>
+            <div class="tl">
+              <strong>用法三（回测模式）</strong>：对已有的因子集合（如 alpha158）重新跑回测，不做新的挖掘。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-content">
+          <span class="callout-title">关键设计：方向用自然语言描述</span>
+          <p>
+            <code style="font-family: var(--font-mono)">--direction</code> 是你和系统对话的界面。你不需要写公式、不需要改代码，只需要告诉系统"想往哪个方向找"——剩下的交给
+            <span class="term" data-definition="LLM（Large Language Model）：大型语言模型。QuantaAlpha 用 LLM 来理解方向描述、提出假设、生成因子代码，是整个系统的智能核心。">LLM</span>
+            来理解和展开。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 5: 组件对话——谁在幕后工作？
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">组件对话：谁在幕后工作？</h2>
+
+      <p class="animate-in">
+        来看一次真实的挖掘过程中，各个组件之间是怎么"说话"的：
+      </p>
+
+      <div class="chat-window animate-in" id="chat-module1">
+        <div class="chat-messages">
+
+          <!-- Message 1: 你 → Planning -->
+          <div class="chat-message" data-sender="你" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+              <p>我想挖掘价量动量相关的因子</p>
+            </div>
+          </div>
+
+          <!-- Message 2: Planning → AlphaAgent -->
+          <div class="chat-message" data-sender="Planning" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">P</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">Planning</span>
+              <p>我把这个方向展开成了 2 个子方向：(1) 成交量突破配合价格动量  (2) 量价背离信号</p>
+            </div>
+          </div>
+
+          <!-- Message 3: AlphaAgent → AlphaAgent (内部) -->
+          <div class="chat-message" data-sender="AlphaAgent" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">A</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">AlphaAgent</span>
+              <p>正在为子方向 1 生成假设："高成交量放大时近期涨幅会持续"……</p>
+            </div>
+          </div>
+
+          <!-- Message 4: AlphaAgent → Qlib回测 -->
+          <div class="chat-message" data-sender="AlphaAgent" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">A</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">AlphaAgent → Qlib回测</span>
+              <p>假设已转化为<span class="term" data-definition="表达式（Expression）：因子的数学公式，用特定语法编写，可被 Qlib 直接执行计算。">表达式</span>：<code style="font-family: var(--font-mono); font-size: 0.8em">TS_Mean($volume,5)/$volume * Ref($close,-1)/$close</code>，请<span class="term" data-definition="回测（Backtest）：用历史数据模拟因子表现，验证其预测能力。Qlib 是微软开源的量化回测框架。">回测</span></p>
+            </div>
+          </div>
+
+          <!-- Message 5: Qlib回测 → AlphaAgent -->
+          <div class="chat-message" data-sender="Qlib回测" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">Q</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">Qlib回测</span>
+              <p>回测完成：<span class="term" data-definition="IC 值（Information Coefficient）：因子预测能力的核心指标，是因子值与未来收益的相关系数。|IC| &gt; 0.03 通常视为有效。">IC</span>=0.042，年化超额收益=8.3%。这个因子通过基本质量门槛 ✓</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="chat-typing" style="display:none">
+          <div class="chat-avatar" id="chat-module1-typing-avatar" style="background: var(--color-actor-1)">你</div>
+          <div class="chat-typing-dots">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn btn-primary chat-next-btn">下一条 →</button>
+          <button class="btn chat-all-btn">全部展示</button>
+          <button class="btn chat-reset-btn">重置</button>
+          <span class="chat-progress">0 / 5 messages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 6: 测验
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">理解检测</h2>
+      <p class="animate-in">试试看你吸收了多少——3 道题，每题只选一个最佳答案。</p>
+
+      <div class="quiz-container animate-in" id="quiz-module1">
+
+        <!-- Q1 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="没错——&apos;方向&apos;只是起点，LLM 会把它展开成有具体内容的研究假设"
+             data-explanation-wrong="再想想——在计算任何数字之前，系统需要先有一个具体想法，这个想法从哪来？">
+          <p class="quiz-question">Q1：你输入 <code style="font-family: var(--font-mono)">--direction "价量动量因子"</code> 后，系统第一步会做什么？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              直接开始回测
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              让 LLM 根据这个方向提出具体假设，比如"成交量突破配合价格动量"
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              下载股票数据
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question-block"
+             data-correct="C"
+             data-explanation-right="对——因子是&apos;信号&apos;，不是&apos;指令&apos;。它告诉模型哪里有机会，最后还需要策略和模型来做决策"
+             data-explanation-wrong="因子本身不操作市场，它只是一个预测信号，想象成天气预报，它预测但不控制天气">
+          <p class="quiz-question">Q2：Alpha 因子的作用是什么？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              让股票价格上涨
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              直接买卖股票
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              预测哪些股票明天可能表现更好（而不是直接操作）
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="完全正确！direction 参数就是你和系统对话的界面，LLM 会根据这个方向去探索"
+             data-explanation-wrong="好消息：你不需要改代码！QuantaAlpha 的设计就是让方向可以用自然语言指定">
+          <p class="quiz-question">Q3：如果你想让 QuantaAlpha 挖掘和财报相关的因子，你应该怎么做？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              修改 <code style="font-family: var(--font-mono)">quantaalpha/factors/proposal.py</code> 里的代码
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              把 <code style="font-family: var(--font-mono)">--direction</code> 改成 "fundamental factors based on earnings"
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              需要重新训练 LLM 模型
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重新作答</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <!-- Module Header -->
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h2 class="module-title">五位主角——谁在做什么？</h2>
+      <p class="module-subtitle">认识 QuantaAlpha 的五个核心组件，理解每个人的职责，这样你就能告诉 AI "把这个逻辑放在 X 里"。</p>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════
+         Screen 1 · 开场比喻——一家量化研究所
+    ══════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">想象一家量化研究所</h3>
+      <p class="animate-in">
+        QuantaAlpha 不是一段"从上到下跑一遍"的脚本——它更像一家分工明确的量化研究所。
+        每位成员各司其职：有人负责提灵感，有人写代码，有人做实验，有人管质量，还有一位导师统筹全局。
+        五个组件，五种角色，缺一不可。
+      </p>
+      <p class="animate-in">
+        认识这五位"主角"之后，你就能准确地告诉 AI：
+        <em>"这段逻辑应该放在 FactorParser 里"</em>，而不是含糊地说"放在某个地方"。
+      </p>
+
+      <div class="pattern-cards stagger-children">
+
+        <!-- Card 1: HypothesisGen -->
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-2) 12%, transparent)">
+            🧠
+          </div>
+          <div class="pattern-title">HypothesisGen</div>
+          <p class="pattern-desc">
+            <strong>提出研究假设</strong><br>
+            读取历史记录，调用 LLM，产出有具体内容的研究方向。就像研究所里那位灵感涌现的科学家，专门负责写"灵感笔记本"。
+          </p>
+        </div>
+
+        <!-- Card 2: FactorParser -->
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-1)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-1) 12%, transparent)">
+            ⚙️
+          </div>
+          <div class="pattern-title">FactorParser</div>
+          <p class="pattern-desc">
+            <strong>把假设变成可运行的代码</strong><br>
+            把自然语言假设翻译成 Qlib 因子表达式，写出 factor.py。像把建筑师图纸翻译成施工图的工程师。
+          </p>
+        </div>
+
+        <!-- Card 3: FactorRunner -->
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-5)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-5) 12%, transparent)">
+            📊
+          </div>
+          <div class="pattern-title">FactorRunner</div>
+          <p class="pattern-desc">
+            <strong>运行代码，拿到真实回测结果</strong><br>
+            执行 factor.py，合并数据，调用 Qlib 做历史<span class="term" data-definition="用历史数据验证策略——就像用过去10年的天气数据测试你的天气预报模型">回测</span>，返回 IC、年化收益等指标。
+          </p>
+        </div>
+
+        <!-- Card 4: EvolutionController -->
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-3)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-3) 12%, transparent)">
+            🔄
+          </div>
+          <div class="pattern-title">EvolutionController</div>
+          <p class="pattern-desc">
+            <strong>决定下一轮探索哪个方向</strong><br>
+            维护<span class="term" data-definition="存储所有已完成实验轨迹的数据结构，进化算法从这里选'父代'进行优化">轨迹池</span>，选出最优父代，触发变异或交叉策略。就像围棋教练，看完每盘棋决定下一步怎么练。
+          </p>
+        </div>
+
+        <!-- Card 5: FactorRegulator -->
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-4)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-4) 12%, transparent)">
+            🛡️
+          </div>
+          <div class="pattern-title">FactorRegulator</div>
+          <p class="pattern-desc">
+            <strong>确保生成的因子不是垃圾</strong><br>
+            在因子进入<span class="term" data-definition="用历史数据验证策略——就像用过去10年的天气数据测试你的天气预报模型">回测</span>前做5重质量检查：冗余度、长度、自由参数、特征数量、语义一致性。
+          </p>
+        </div>
+
+      </div><!-- /pattern-cards -->
+    </div><!-- /screen 1 -->
+
+    <!-- ══════════════════════════════════════════════════════
+         Screen 2 · 架构图——谁向谁汇报？
+    ══════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">架构图——谁向谁汇报？</h3>
+      <p class="animate-in">
+        点击任意组件，查看它的详细职责说明。注意最顶层的 settings.py——它是整个研究所的"人事档案"，决定每个岗位由谁来担任。
+      </p>
+
+      <div class="arch-diagram animate-in">
+
+        <!-- Layer: 配置层 -->
+        <div class="arch-zone">
+          <div class="arch-zone-label">配置层 · Configuration</div>
+          <div style="text-align: center">
+            <span class="arch-component"
+              data-desc="类路径配置中心——通过字符串指定每个组件的实现类，想换组件只改配置，不改代码。这是依赖注入设计模式。">
+              <span class="arch-icon">⚙️</span>
+              settings.py
+            </span>
+          </div>
+        </div>
+
+        <!-- Layer: 主循环 -->
+        <div class="arch-zone">
+          <div class="arch-zone-label">主循环 · Main Loop</div>
+          <div style="text-align: center">
+            <span class="arch-component"
+              data-desc="5步主循环的协调者——propose→construct→calculate→backtest→feedback，每次循环产出一个经过验证的因子">
+              <span class="arch-icon">🔁</span>
+              AlphaAgentLoop
+            </span>
+          </div>
+        </div>
+
+        <!-- Layer: 五个核心组件 -->
+        <div class="arch-zone">
+          <div class="arch-zone-label">核心组件 · Core Components</div>
+          <div style="display:flex; flex-wrap:wrap; justify-content:center">
+            <span class="arch-component"
+              data-desc="连接 LLM 和量化研究的桥梁，把'方向'变成有具体内容的研究假设">
+              <span class="arch-icon">🧠</span>
+              HypothesisGen
+            </span>
+            <span class="arch-component"
+              data-desc="最复杂的组件，用 CoSTEER 迭代策略写出能跑通的 factor.py，失败了会自动修复">
+              <span class="arch-icon">⚙️</span>
+              FactorParser
+            </span>
+            <span class="arch-component"
+              data-desc="执行引擎——并行运行所有因子，合并数据，调用 Qlib 回测框架，返回 IC/ARR/MDD 等指标">
+              <span class="arch-icon">📊</span>
+              FactorRunner
+            </span>
+            <span class="arch-component"
+              data-desc="进化调度器，维护轨迹池，用 best/weighted/random 策略选父代，触发 Mutation 或 Crossover">
+              <span class="arch-icon">🔄</span>
+              EvolutionController
+            </span>
+            <span class="arch-component"
+              data-desc="质量闸门，5重检查，任何一关没过就拒绝这个因子，防止垃圾因子污染因子库">
+              <span class="arch-icon">🛡️</span>
+              FactorRegulator
+            </span>
+          </div>
+        </div>
+
+        <div class="arch-description">← 点击上方任意组件，查看它的职责说明</div>
+
+      </div><!-- /arch-diagram -->
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">💡</span>
+        <div class="callout-content">
+          <span class="callout-title">数据流向</span>
+          <p>
+            HypothesisGen 产出假设 → FactorParser 写代码 → FactorRegulator 质检 → FactorRunner 回测
+            → EvolutionController 决定下一轮方向。这个循环会自动运行数百次，每次都在<span class="term" data-definition="存储所有已完成实验轨迹的数据结构，进化算法从这里选'父代'进行优化">轨迹池</span>里留下记录。
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /screen 2 -->
+
+    <!-- ══════════════════════════════════════════════════════
+         Screen 3 · settings.py 的秘密——依赖注入
+    ══════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">settings.py 的秘密——<span class="term" data-definition="不在代码里写死用哪个组件，而是通过配置文件指定。就像插头和插座，可以随时换不同的电器">依赖注入</span></h3>
+      <p class="animate-in">
+        这是 QuantaAlpha 最聪明的设计之一：五个组件的具体实现类，全部通过字符串路径写在 settings.py 里。
+        主循环从不硬编码"用哪个类"——它只读配置，再用 Python 的 <code>importlib</code> 动态加载。
+      </p>
+      <p class="animate-in">
+        想换一个更好的 HypothesisGen？只改一行配置，不动任何业务逻辑。这就是<span class="term" data-definition="不在代码里写死用哪个组件，而是通过配置文件指定。就像插头和插座，可以随时换不同的电器">依赖注入</span>的魔法。
+      </p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">settings.py · line 48–57</span>
+<span class="code-line"><span class="code-keyword">class</span> <span class="code-function">AlphaAgentFactorBasePropSetting</span>(<span class="code-tag">BasePropSetting</span>):</span>
+<span class="code-line">    <span class="code-comment">"""Main experiment: LLM-driven factor mining."""</span></span>
+<span class="code-line">    <span class="code-property">model_config</span> <span class="code-operator">=</span> <span class="code-function">ExtendedSettingsConfigDict</span>(</span>
+<span class="code-line">        <span class="code-attr">env_prefix</span><span class="code-operator">=</span><span class="code-string">"QLIB_FACTOR_"</span>, <span class="code-attr">protected_namespaces</span><span class="code-operator">=</span>()</span>
+<span class="code-line">    )</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-property">scen</span><span class="code-operator">:</span> <span class="code-tag">str</span> <span class="code-operator">=</span> <span class="code-string">"quantaalpha.factors.experiment.QlibAlphaAgentScenario"</span></span>
+<span class="code-line">    <span class="code-property">hypothesis_gen</span><span class="code-operator">:</span> <span class="code-tag">str</span> <span class="code-operator">=</span> <span class="code-string">"quantaalpha.factors.proposal.AlphaAgentHypothesisGen"</span></span>
+<span class="code-line">    <span class="code-property">hypothesis2experiment</span><span class="code-operator">:</span> <span class="code-tag">str</span> <span class="code-operator">=</span> <span class="code-string">"quantaalpha.factors.proposal.AlphaAgentHypothesis2FactorExpression"</span></span>
+<span class="code-line">    <span class="code-property">coder</span><span class="code-operator">:</span> <span class="code-tag">str</span> <span class="code-operator">=</span> <span class="code-string">"quantaalpha.factors.qlib_coder.QlibFactorParser"</span></span>
+<span class="code-line">    <span class="code-property">runner</span><span class="code-operator">:</span> <span class="code-tag">str</span> <span class="code-operator">=</span> <span class="code-string">"quantaalpha.factors.runner.QlibFactorRunner"</span></span>
+<span class="code-line">    <span class="code-property">summarizer</span><span class="code-operator">:</span> <span class="code-tag">str</span> <span class="code-operator">=</span> <span class="code-string">"quantaalpha.factors.feedback.AlphaAgentQlibFactorHypothesisExperiment2Feedback"</span></span>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">逐行解读</span>
+          <div class="translation-lines">
+            <div class="tl"><strong>model_config</strong> — 读取环境变量前缀为 <code>QLIB_FACTOR_</code>，可以用环境变量覆盖任何配置项</div>
+            <div class="tl"><strong>scen</strong> — 实验场景类，定义"一次实验"的数据结构</div>
+            <div class="tl"><strong>hypothesis_gen</strong> — 👉 HypothesisGen 的完整类路径，这里写谁，主循环就用谁来生成假设</div>
+            <div class="tl"><strong>coder</strong> — 👉 FactorParser 的路径，负责把假设翻译成 factor.py</div>
+            <div class="tl"><strong>runner</strong> — 👉 FactorRunner 的路径，负责执行回测</div>
+            <div class="tl"><strong>summarizer</strong> — 实验完成后生成反馈摘要，供下一轮 HypothesisGen 参考</div>
+          </div>
+        </div>
+      </div><!-- /translation-block -->
+
+      <div class="badge-list animate-in">
+        <div class="badge-item">
+          <span class="badge-code">QlibFactorRunner</span>
+          <span class="badge-desc">来自 <code>quantaalpha/factors/runner.py</code> — 执行 Docker 环境中的因子回测，结果写入 mlflow</span>
+        </div>
+        <div class="badge-item">
+          <span class="badge-code">QlibFactorParser</span>
+          <span class="badge-desc">来自 <code>quantaalpha/factors/qlib_coder/</code> — 使用 <span class="term" data-definition="一种迭代代码改进策略——生成代码、测试、失败了就分析错误再改，循环直到通过">CoSTEER</span> 迭代写出可执行代码</span>
+        </div>
+        <div class="badge-item">
+          <span class="badge-code">AlphaAgentHypothesisGen</span>
+          <span class="badge-desc">来自 <code>quantaalpha/factors/proposal.py</code> — 核心方法 <code>gen(trace)</code> 接收<span class="term" data-definition="轨迹记录——保存所有历史假设、实验和反馈的对象，LLM 通过它了解'之前做过什么、结果如何'">Trace</span>，返回假设对象</span>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🔑</span>
+        <div class="callout-content">
+          <span class="callout-title">关键洞察</span>
+          <p>
+            每个字段存的是<strong>字符串</strong>，不是类本身。主循环用
+            <code>importlib.import_module()</code> 在运行时动态加载。
+            这意味着你可以写自己的 HypothesisGen，只要把类路径填进去，整个系统就会用你的版本——不需要改任何其他代码。
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /screen 3 -->
+
+    <!-- ══════════════════════════════════════════════════════
+         Screen 4 · 组件对话——一个假设是怎么变成代码的
+    ══════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">组件对话——一个假设是怎么变成代码的</h3>
+      <p class="animate-in">
+        让我们跟着一个真实假设，看它如何在五个组件之间流转，最终变成一条有 <span class="term" data-definition="Information Coefficient，信息系数——衡量因子预测能力的核心指标，范围-1到1，越高越好，0.05以上就算不错">IC 值</span>的回测结果。
+        点击"下一条"逐步播放，或点击"全部展示"一次看完。
+      </p>
+
+      <div class="chat-window" id="chat-module2">
+        <div class="chat-messages">
+
+          <!-- Message 1: HypothesisGen → FactorParser -->
+          <div class="chat-message" data-sender="HypothesisGen" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">H</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">HypothesisGen</span>
+              <p>新假设：「当5日均量是当日量的1.5倍以上时，表示资金在积累，预期后续涨幅更大」</p>
+            </div>
+          </div>
+
+          <!-- Message 2: FactorParser internal -->
+          <div class="chat-message" data-sender="FactorParser" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">P</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorParser</span>
+              <p>好的，我来把这个转化成 Qlib <span class="term" data-definition="用 Qlib 专用语法写的数学公式，比如 TS_Mean($close, 20) / $close，描述如何从原始价量数据计算因子值">表达式</span>…<br>
+              <code>(TS_Mean($volume,5)/$volume &gt; 1.5) * Ref($close,-1)/$close - 1</code></p>
+            </div>
+          </div>
+
+          <!-- Message 3: FactorParser → FactorRegulator -->
+          <div class="chat-message" data-sender="FactorParser" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">P</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorParser → FactorRegulator</span>
+              <p>生成了新因子，请做质量检查 🔍</p>
+            </div>
+          </div>
+
+          <!-- Message 4: FactorRegulator → FactorParser -->
+          <div class="chat-message" data-sender="FactorRegulator" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">R</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">FactorRegulator</span>
+              <p>检查通过！冗余度=3（≤8）✅&nbsp; 符号长度=52（≤200）✅&nbsp; 特征数=2（≤6）✅</p>
+            </div>
+          </div>
+
+          <!-- Message 5: FactorParser → FactorRunner -->
+          <div class="chat-message" data-sender="FactorParser" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">P</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorParser → FactorRunner</span>
+              <p>因子通过检查，请执行<span class="term" data-definition="用历史数据验证策略——就像用过去10年的天气数据测试你的天气预报模型">回测</span> 🚀</p>
+            </div>
+          </div>
+
+          <!-- Message 6: FactorRunner → EvolutionController -->
+          <div class="chat-message" data-sender="FactorRunner" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-5)">E</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-5)">FactorRunner → EvolutionController</span>
+              <p>回测完成：<span class="term" data-definition="Information Coefficient，信息系数——衡量因子预测能力的核心指标，范围-1到1，越高越好，0.05以上就算不错">IC</span>=0.038, ARR=6.8%。这条轨迹已保存到<span class="term" data-definition="存储所有已完成实验轨迹的数据结构，进化算法从这里选'父代'进行优化">轨迹池</span> 📦</p>
+            </div>
+          </div>
+
+        </div><!-- /chat-messages -->
+
+        <div class="chat-typing" style="display:none">
+          <div class="chat-avatar" id="chat-module2-typing-avatar" style="background: var(--color-actor-2)">…</div>
+          <div class="chat-typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn btn-primary chat-next-btn">下一条 →</button>
+          <button class="btn chat-all-btn">全部展示</button>
+          <button class="btn chat-reset-btn">重置</button>
+          <span class="chat-progress">0 / 6 messages</span>
+        </div>
+      </div><!-- /chat-window -->
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">📌</span>
+        <div class="callout-content">
+          <span class="callout-title">runner.py 的真实注释</span>
+          <p>
+            QlibFactorRunner 在 Docker 容器里运行，每个因子的 factor.py、config.yaml、价量数据都放在独立文件夹，结果通过 mlflow 持久化——这就是那段注释说的 <em>"Everything in a folder"</em>。
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /screen 4 -->
+
+    <!-- ══════════════════════════════════════════════════════
+         Screen 5 · 拖拽测验——把职责配对
+    ══════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">测验——把职责配对到正确的组件</h3>
+      <p class="animate-in">
+        把上方的组件名称拖拽到下方对应的职责描述里。全对了说明你已经认识这五位主角了！
+      </p>
+
+      <div class="dnd-container animate-in" id="dnd-module2">
+
+        <!-- Chips: 答案标签 -->
+        <div class="dnd-chips">
+          <div class="dnd-chip" draggable="true" data-answer="HypothesisGen">HypothesisGen</div>
+          <div class="dnd-chip" draggable="true" data-answer="FactorParser">FactorParser</div>
+          <div class="dnd-chip" draggable="true" data-answer="FactorRunner">FactorRunner</div>
+          <div class="dnd-chip" draggable="true" data-answer="EvolutionController">EvolutionController</div>
+          <div class="dnd-chip" draggable="true" data-answer="FactorRegulator">FactorRegulator</div>
+        </div>
+
+        <!-- Zones: 职责描述 -->
+        <div class="dnd-zones">
+
+          <div class="dnd-zone" data-correct="HypothesisGen">
+            <div class="dnd-zone-label">根据<span class="term" data-definition="轨迹记录——保存所有历史假设、实验和反馈的对象，LLM 通过它了解'之前做过什么、结果如何'">回测</span>历史和探索方向，调用 LLM 提出新的研究假设</div>
+            <div class="dnd-zone-target">Drop here</div>
+          </div>
+
+          <div class="dnd-zone" data-correct="FactorParser">
+            <div class="dnd-zone-label">把自然语言假设翻译成 Qlib <span class="term" data-definition="用 Qlib 专用语法写的数学公式，比如 TS_Mean($close, 20) / $close，描述如何从原始价量数据计算因子值">表达式</span>，写出可执行的 factor.py</div>
+            <div class="dnd-zone-target">Drop here</div>
+          </div>
+
+          <div class="dnd-zone" data-correct="FactorRunner">
+            <div class="dnd-zone-label">并行执行所有因子代码，合并结果，调用 Qlib 做历史<span class="term" data-definition="用历史数据验证策略——就像用过去10年的天气数据测试你的天气预报模型">回测</span></div>
+            <div class="dnd-zone-target">Drop here</div>
+          </div>
+
+          <div class="dnd-zone" data-correct="EvolutionController">
+            <div class="dnd-zone-label">管理<span class="term" data-definition="存储所有已完成实验轨迹的数据结构，进化算法从这里选'父代'进行优化">轨迹池</span>，决定下一轮用变异还是交叉策略</div>
+            <div class="dnd-zone-target">Drop here</div>
+          </div>
+
+          <div class="dnd-zone" data-correct="FactorRegulator">
+            <div class="dnd-zone-label">检查因子是否重复、太复杂、或与假设不一致，守护<span class="term" data-definition="存放所有经过验证的因子的 JSON 文件，是整个挖掘过程的最终产出">因子库</span>质量</div>
+            <div class="dnd-zone-target">Drop here</div>
+          </div>
+
+        </div><!-- /dnd-zones -->
+
+        <div>
+          <button class="quiz-check-btn" onclick="checkDnD('dnd-module2')">检查答案</button>
+          <button class="quiz-reset-btn" onclick="resetDnD('dnd-module2')">重置</button>
+        </div>
+
+      </div><!-- /dnd-container -->
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-content">
+          <span class="callout-title">下一步</span>
+          <p>
+            认识了这五位主角，下一个模块我们将跟随一轮完整的因子挖掘旅程——从"提出一个假设"到"拿到回测结果"，每一步都有真实代码。
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /screen 5 -->
+
+  </div><!-- /module-content -->
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h2 class="module-title">一轮挖掘的旅程</h2>
+      <p class="module-subtitle">5步循环深度解析——跟着一个假设，从想法到因子值，再到反馈入库</p>
+    </header>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 1：开场——生产流水线比喻
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">想象一条汽车工厂流水线</h3>
+
+      <p class="animate-in">汽车工厂里，一辆车从底盘到出厂，要经过焊接、喷漆、装配、检测、验收5道工位。每个工位只做自己的事，产出交给下一位，整条线循环不止。</p>
+      <p class="animate-in">AlphaAgentLoop 正是这样一条"因子工厂"流水线。每跑一圈，就完成1次完整的探索——</p>
+
+      <div class="icon-rows stagger-children animate-in">
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-accent-light)">💡</div>
+          <div>
+            <strong>每5步 = 1个 Loop</strong>
+            <p>提假设 → 造表达式 → 写代码跑计算 → 回测 → 反馈归档，环环相扣，缺一不可</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-info-light)">🔄</div>
+          <div>
+            <strong>每轮产出 0—N 个候选因子</strong>
+            <p>代码可能失败、因子可能被质量门控过滤，最终存活的才进入因子库</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-success-light)">🧠</div>
+          <div>
+            <strong><span class="term" data-definition="贯穿整个循环的记忆对象，记录所有历史假设、实验结果和 LLM 反馈。就像研究员的实验日志，LLM 每次提假设前都会翻看">Trace</span> 贯穿始终</strong>
+            <p>每轮的假设、结果、反馈都追加到 Trace，下一轮 LLM 提假设时会读取它，形成真正的记忆闭环</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🏭</span>
+        <div class="callout-content">
+          <span class="callout-title">本模块目标</span>
+          <p>我们将跟踪"一个假设从想法到因子值"的完整路径，理解每一步做了什么、交出了什么、为什么这样设计。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 2：步骤 1+2——从想法到表达式
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">Step 1 &amp; 2：从想法到因子表达式</h3>
+
+      <p class="animate-in">流水线的前两个工位负责把一个模糊的"研究直觉"变成一段精确的数学表达式。</p>
+
+      <div class="step-cards stagger-children animate-in">
+        <div class="step-card animate-in">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>factor_propose() — 提假设</strong>
+            <p>
+              调用 <span class="term" data-definition="贯穿整个循环的记忆对象，记录所有历史假设、实验结果和 LLM 反馈。就像研究员的实验日志，LLM 每次提假设前都会翻看">Trace</span>（最多6条历史记录）作为上下文，由 HypothesisGen 向 LLM 提出新假设。
+              输出一个 <code>AlphaAgentHypothesis</code> 对象，包含 hypothesis（假设陈述）、observation（市场观察）、justification（逻辑依据）、specification（实现规格）四个字段。
+            </p>
+          </div>
+        </div>
+        <div class="step-card animate-in">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>factor_construct() — 造表达式</strong>
+            <p>
+              AlphaAgentHypothesis2FactorExpression.convert() 把假设拆解为 FactorTask 列表。每个 FactorTask 包含：
+              factor_name、factor_description、factor_formulation（数学公式）、factor_expression（可执行表达式）。
+              质量门控 FactorRegulator 在此触发——不合规的表达式直接拦截，不进入后续步骤。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">🧠</span>
+        <div class="callout-content">
+          <span class="callout-title">Trace：LLM 的实验日志</span>
+          <p>
+            <span class="term" data-definition="贯穿整个循环的记忆对象，记录所有历史假设、实验结果和 LLM 反馈。就像研究员的实验日志，LLM 每次提假设前都会翻看">Trace</span> 是一个列表，每条记录是 <code>(hypothesis, experiment, feedback)</code> 三元组。LLM 每次提假设前都会读取这份日志——它知道上几轮探索了什么、结果怎样，从而自然地避开已走过的死路，向未探索的方向前进。
+          </p>
+        </div>
+      </div>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">loop.py · L141–149</span>
+          <code>
+            <span class="code-line"><span class="code-property">@measure_time</span></span>
+            <span class="code-line"><span class="code-property">@stop_event_check</span></span>
+            <span class="code-line"><span class="code-keyword">def </span><span class="code-function">factor_propose</span>(self, prev_out: <span class="code-keyword">dict</span>[<span class="code-keyword">str</span>, Any]):</span>
+            <span class="code-line">    <span class="code-string">"""Propose hypothesis as the basis for factor construction."""</span></span>
+            <span class="code-line">    <span class="code-keyword">with</span> logger.<span class="code-function">tag</span>(<span class="code-string">"r"</span>):</span>
+            <span class="code-line">        idea = self.hypothesis_generator.<span class="code-function">gen</span>(self.trace)</span>
+            <span class="code-line">        logger.<span class="code-function">log_object</span>(idea, tag=<span class="code-string">"hypothesis generation"</span>)</span>
+            <span class="code-line">        self._last_hypothesis = idea</span>
+            <span class="code-line">    <span class="code-keyword">return</span> idea</span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">逐行解读</span>
+          <div class="translation-lines">
+            <div class="tl"><code>@measure_time</code> — 自动计时，记录这一步耗时多少秒</div>
+            <div class="tl"><code>@stop_event_check</code> — 收到停止信号时可以优雅中断，不强制杀进程</div>
+            <div class="tl"><code>hypothesis_generator.gen(self.trace)</code> — 把 Trace（历史记忆）传给 LLM，让它提出新假设</div>
+            <div class="tl"><code>log_object(idea, tag="hypothesis generation")</code> — 把假设写入结构化日志，便于事后审查</div>
+            <div class="tl"><code>self._last_hypothesis = idea</code> — 暂存本轮假设，后续步骤通过 <code>prev_out</code> 字典传递</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 3：步骤 3——代码执行的秘密
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">Step 3：代码执行的秘密</h3>
+
+      <p class="animate-in">这是5步中技术细节最密集的一步。factor_calculate() 会为每个 FactorTask 生成一个独立的 <code>factor.py</code>，在隔离的 <span class="term" data-definition="为每个因子创建的独立临时文件夹，防止不同因子的文件互相干扰。就像每位研究员有自己独立的实验台">workspace</span> 文件夹里运行它。</p>
+
+      <div class="pattern-cards stagger-children animate-in">
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-accent-light)">📥</div>
+          <div class="pattern-title">输入：daily_pv.h5</div>
+          <p class="pattern-desc">
+            <span class="term" data-definition="一种高效的科学数据格式（.h5 文件），专为大型数值数组设计，比 CSV 快得多">HDF5</span> 格式的日线价量数据。factor.py 通过符号链接读取，不复制原始文件，节省磁盘空间。
+          </p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-info-light)">⚙️</div>
+          <div class="pattern-title">执行：CoSTEER 自修复</div>
+          <p class="pattern-desc">
+            代码失败时，<span class="term" data-definition="Code Self-Evolving Reinforcement 的缩写，一种让 LLM 迭代修复代码的策略：生成→测试→失败→分析→修复→测试...">CoSTEER</span> 分析错误信息，自动修改代码重试，最多若干次，不让整个流程崩溃。
+          </p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-success-light)">📤</div>
+          <div class="pattern-title">输出：result.h5</div>
+          <p class="pattern-desc">
+            每个因子输出独立的 result.h5，存储因子值——<span class="term" data-definition="pandas 的双层索引——行同时有「日期」和「股票代码」两个维度，可以理解为一张三维表格压扁成二维">MultiIndex</span>（datetime × instrument）格式的二维表，是下一步回测的输入。
+          </p>
+        </div>
+      </div>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">factor.py · L104–113</span>
+          <code>
+            <span class="code-line"><span class="code-keyword">def </span><span class="code-function">execute</span>(self, data_type: <span class="code-keyword">str</span> = <span class="code-string">"Debug"</span>) -&gt; Tuple[<span class="code-keyword">str</span>, pd.DataFrame]:</span>
+            <span class="code-line">    <span class="code-string">"""</span></span>
+            <span class="code-line">    <span class="code-string">execute the implementation and get the factor value</span></span>
+            <span class="code-line">    <span class="code-string">by the following steps:</span></span>
+            <span class="code-line">    <span class="code-string">1. make the directory in workspace path</span></span>
+            <span class="code-line">    <span class="code-string">2. write the code to the file in the workspace path</span></span>
+            <span class="code-line">    <span class="code-string">3. link all the source data to the workspace path folder</span></span>
+            <span class="code-line">    <span class="code-string">if call_factor_py is True:</span></span>
+            <span class="code-line">    <span class="code-string">    4. execute the code</span></span>
+            <span class="code-line">    <span class="code-string">else:</span></span>
+            <span class="code-line">    <span class="code-string">    4. generate a script from template to import the factor.py</span></span>
+            <span class="code-line">    <span class="code-string">5. read the factor value from the output file</span></span>
+            <span class="code-line">    <span class="code-string">"""</span></span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">5步执行流程</span>
+          <div class="translation-lines">
+            <div class="tl">① 为这个因子创建专属 <span class="term" data-definition="为每个因子创建的独立临时文件夹，防止不同因子的文件互相干扰。就像每位研究员有自己独立的实验台">workspace</span> 目录——隔离环境，防止文件冲突</div>
+            <div class="tl">② 把 LLM 生成的因子代码写入该目录下的 factor.py</div>
+            <div class="tl">③ 用符号链接把 daily_pv.h5 接入 workspace，无需复制原始数据</div>
+            <div class="tl">④ 直接执行 factor.py（或生成导入脚本间接调用）</div>
+            <div class="tl">⑤ 从输出文件读取因子值——这就是 result.h5</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">🔁</span>
+        <div class="callout-content">
+          <span class="callout-title">失败是正常的</span>
+          <p>LLM 生成的代码不可能每次都完美。CoSTEER 的存在让"失败→分析→修复"变成自动化循环。就像一位会自我纠错的实习生——不完美，但会学习。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 4：步骤 4+5——回测和反馈闭环
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">Step 4 &amp; 5：回测与反馈闭环</h3>
+
+      <p class="animate-in">前3步把假设变成了因子值，后2步负责"审判"这些因子——量化它们的预测能力，并把结论写回记忆，指导下一轮探索。</p>
+
+      <div class="flow-animation animate-in"
+           data-steps='[
+             {"highlight":"flow-actor-1","label":"factor.py 被写入独立的 workspace 文件夹"},
+             {"highlight":"flow-actor-1","packet":true,"from":"actor-1","to":"actor-2","label":"链接 daily_pv.h5 数据文件到 workspace"},
+             {"highlight":"flow-actor-2","packet":true,"from":"actor-2","to":"actor-3","label":"执行 factor.py，计算因子值，写入 result.h5"},
+             {"highlight":"flow-actor-3","packet":true,"from":"actor-3","to":"actor-4","label":"所有因子的 result.h5 合并成 combined_factors_df.parquet"},
+             {"highlight":"flow-actor-4","packet":true,"from":"actor-4","to":"actor-5","label":"Qlib 读取合并因子，运行 LightGBM 回测，输出 IC/ARR/MDD"}
+           ]'>
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon">📝</div>
+            <span>factor.py</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon">💾</div>
+            <span>daily_pv.h5</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon">🔢</div>
+            <span>result.h5</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon">📦</div>
+            <span>combined.parquet</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-5">
+            <div class="flow-actor-icon">📈</div>
+            <span>Qlib回测</span>
+          </div>
+        </div>
+        <div class="flow-packet"></div>
+        <div class="flow-step-label">点击"下一步"开始追踪数据流</div>
+        <div class="flow-controls">
+          <button class="btn btn-primary flow-next-btn">下一步</button>
+          <button class="btn flow-reset-btn">重置</button>
+          <span class="flow-progress"></span>
+        </div>
+      </div>
+
+      <div class="badge-list stagger-children animate-in">
+        <div class="badge-item animate-in">
+          <span class="badge-code"><span class="term" data-definition="Information Coefficient，信息系数——预测值与实际收益的相关性，是衡量因子质量的首要指标">IC</span> / ICIR</span>
+          <span class="badge-desc">因子预测能力——与未来收益的相关性及其稳定性，是最核心的评价指标</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">ARR</span>
+          <span class="badge-desc">策略年化收益率——使用 <span class="term" data-definition="一种投资组合策略：始终持有预测排名前 K 只股票（这里是50只），每次换仓时替换得分最低的 n 只（这里是5只）">TopkDropoutStrategy</span>（持仓50只，每次换5只）模拟的年化回报</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">MDD</span>
+          <span class="badge-desc">最大回撤——策略在历史区间内从高点到低点的最大亏损幅度，衡量风险</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code"><span class="term" data-definition="微软开发的梯度提升模型，QuantaAlpha 用它把因子值转化为股票收益预测。是目前量化金融最常用的机器学习模型之一">LightGBM</span></span>
+          <span class="badge-desc">将所有因子值作为特征，训练一个股票收益预测模型，驱动选股决策</span>
+        </div>
+      </div>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">loop.py · feedback()</span>
+          <code>
+            <span class="code-line"><span class="code-keyword">def </span><span class="code-function">feedback</span>(self, prev_out: <span class="code-keyword">dict</span>[<span class="code-keyword">str</span>, Any]):</span>
+            <span class="code-line">    feedback = self.summarizer.<span class="code-function">generate_feedback</span>(</span>
+            <span class="code-line">        prev_out[<span class="code-string">"factor_backtest"</span>],</span>
+            <span class="code-line">        prev_out[<span class="code-string">"factor_propose"</span>],</span>
+            <span class="code-line">        self.trace</span>
+            <span class="code-line">    )</span>
+            <span class="code-line">    <span class="code-keyword">with</span> logger.<span class="code-function">tag</span>(<span class="code-string">"ef"</span>):</span>
+            <span class="code-line">        logger.<span class="code-function">log_object</span>(feedback, tag=<span class="code-string">"feedback"</span>)</span>
+            <span class="code-line">    self.trace.hist.<span class="code-function">append</span>((</span>
+            <span class="code-line">        prev_out[<span class="code-string">"factor_propose"</span>],</span>
+            <span class="code-line">        prev_out[<span class="code-string">"factor_backtest"</span>],</span>
+            <span class="code-line">        feedback</span>
+            <span class="code-line">    ))</span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">反馈闭环解读</span>
+          <div class="translation-lines">
+            <div class="tl"><code>generate_feedback(...)</code> — LLM 同时看到：回测指标 + 本轮假设 + 历史 <span class="term" data-definition="贯穿整个循环的记忆对象，记录所有历史假设、实验结果和 LLM 反馈。就像研究员的实验日志，LLM 每次提假设前都会翻看">Trace</span>，生成自然语言反馈</div>
+            <div class="tl"><code>prev_out["factor_backtest"]</code> — 本轮回测对象（含 IC、ARR、MDD 等指标）</div>
+            <div class="tl"><code>prev_out["factor_propose"]</code> — 本轮提出的假设对象</div>
+            <div class="tl"><code>self.trace.hist.append(...)</code> — 把（假设, 实验, 反馈）三元组追加到 Trace 历史</div>
+            <div class="tl">下一轮 <code>factor_propose()</code> 调用 <code>gen(self.trace)</code> 时，会读到这条新记录</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">📚</span>
+        <div class="callout-content">
+          <span class="callout-title">因子库：有价值的成果永久保存</span>
+          <p>通过质量门控的因子会被保存到 <code>all_factors_library.json</code>（FactorLibrary），累积成为后续模型训练的知识资产。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 5：测验——追踪一个假设
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">测验：追踪一个假设</h3>
+      <p class="animate-in">三道场景题，检验你对5步循环的理解。</p>
+
+      <div class="quiz-container animate-in" id="quiz-module-3">
+
+        <!-- Q1 -->
+        <div class="quiz-question-block scenario-block"
+             data-correct="B"
+             data-explanation-right="对！Trace 就是 LLM 的记忆。它会看到「前3轮都是 0.02」这个信息，自然会尝试不同的假设"
+             data-explanation-wrong="Trace 机制的精妙之处在于：它让 LLM 自动学习历史，你不需要手动干预。当然如果真的卡住了，修改配置比改源码更合适">
+          <div class="scenario-context">
+            <span class="scenario-label">场景</span>
+            <p>AlphaAgent 刚运行完第3轮，IC 一直在 0.02 左右，没什么进步。你想让下一轮换个角度探索。</p>
+          </div>
+          <p class="quiz-question">最有效的做法是？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：修改 factor_propose() 函数的代码
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：Trace 会自动把这3轮的反馈告诉 LLM，LLM 会自然地调整方向，你不需要干预
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：清空所有历史，从头开始
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question-block scenario-block"
+             data-correct="C"
+             data-explanation-right="正确！这是 QuantaAlpha 鲁棒性的关键——不完美的代码会被自动修复，而不是让整个流程崩溃"
+             data-explanation-wrong="QuantaAlpha 设计了错误自修复机制。失败是正常的，CoSTEER 会分析错误原因，尝试修复">
+          <div class="scenario-context">
+            <span class="scenario-label">场景</span>
+            <p>factor.py 运行失败了（比如 LLM 生成了含语法错误的代码）。</p>
+          </div>
+          <p class="quiz-question">系统会怎么做？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：整个程序崩溃退出
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：跳过这个因子，继续下一个
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：CoSTEER 分析错误信息，自动修改代码重试，最多若干次
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question-block scenario-block"
+             data-correct="C"
+             data-explanation-right="完全正确！result.h5 是因子计算的中间产物。它把原始价量数据变成了「有预测意义的特征值」"
+             data-explanation-wrong="result.h5 是因子.py 的直接输出——是计算好的因子值，不是原始数据也不是最终指标">
+          <div class="scenario-context">
+            <span class="scenario-label">数据结构</span>
+            <p>Step 3 执行完毕，workspace 目录下出现了 result.h5。</p>
+          </div>
+          <p class="quiz-question">result.h5 里存的是什么？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：回测结果（IC、年化收益等）
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：原始股票价格数据
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：因子值——每个股票每天的数值，格式是"日期×股票代码"的二维表
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module-3')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module-3')">重置</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="module" id="module-4" style="min-height:100dvh; background: var(--color-bg-alt)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h2 class="module-title">进化的秘密</h2>
+      <p class="module-subtitle">从 Original 到 Mutation 到 Crossover——理解 EvolutionController 如何把随机探索变成有记忆的定向搜索</p>
+    </header>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 1：开场——为什么要进化？
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">为什么不用随机搜索？</h3>
+
+      <p class="animate-in">想象你在培育冠军赛马。你不会每次都从马圈里随机挑一匹野马配种——你会找到跑得最快的那两匹，让它们的后代继承双方的优良基因。几代之后，马群整体的速度就会远超随机配种的结果。</p>
+      <p class="animate-in">量化因子挖掘面临同样的问题：因子的可能空间无穷大，如果每次都从头随机生成，大部分尝试都是在浪费时间。<span class="term" data-definition="一类模仿生物进化的优化算法——通过选择、变异、交叉三个操作，让候选解的群体逐代向更优方向进化，而不是漫无目的地随机搜索">进化算法</span>的核心思想是：记住什么管用，然后在这个基础上继续改进。</p>
+
+      <div class="icon-rows stagger-children animate-in">
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-error-light)">🎲</div>
+          <div>
+            <strong>纯随机搜索</strong>
+            <p>每次生成全新因子，没有记忆，没有方向。就像每次都从野生马里随机挑——偶尔运气好，但效率极低。</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-success-light)">🧬</div>
+          <div>
+            <strong>定向进化（QuantaAlpha 的做法）</strong>
+            <p>每一轮都记录哪些因子表现最好，下一轮在这些"优秀父代"的基础上探索变体。搜索空间逐渐收窄到有价值的区域。</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-accent-light)">📚</div>
+          <div>
+            <strong><span class="term" data-definition="存储所有已评估因子轨迹（表达式 + IC 指标 + 元数据）的数据结构，EvolutionController 从这里选最优父代用于 Mutation 和 Crossover">TrajectoryPool</span> 是进化的记忆</strong>
+            <p>每个因子的表现都被存入轨迹池，就像赛马的血统档案。EvolutionController 每轮都会查阅这份档案，决定下一步怎么走。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">💡</span>
+        <div class="callout-content">
+          <span class="callout-title">在软件里，这叫进化算法</span>
+          <p>Evolutionary Algorithm——一个能自我改进的系统。它不需要人类专家告诉它"往哪个方向改"，而是通过积累的实验历史，自动发现有效的探索路径。QuantaAlpha 把这个思想用在了量化因子挖掘上。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 2：三个进化阶段 + 动画
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">三个阶段：Original → Mutation → Crossover</h3>
+
+      <p class="animate-in">每一轮进化，<span class="term" data-definition="进化调度器——决定当前轮次应该运行哪种类型的任务（Original / Mutation / Crossover），并从 TrajectoryPool 中选择父代因子">EvolutionController</span> 会根据历史进展，选择三种策略之一。点击"下一步"追踪一次完整的进化轮次数据流。</p>
+
+      <div class="pattern-cards stagger-children animate-in">
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-2) 12%, transparent)">🌱</div>
+          <div class="pattern-title">Original — 白板探索</div>
+          <p class="pattern-desc">LLM 从零开始提出全新的因子假设。没有任何父代约束，代表"种群初始化"阶段。通常在前几轮使用，建立初始基因库。</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-1)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-1) 12%, transparent)">🔧</div>
+          <div class="pattern-title"><span class="term" data-definition="变异操作——取一个高表现父代因子，改变其中的参数（如时间窗口从5天→10天）、运算符（均值→中位数）或子表达式，生成一个相近但有差异的新因子">Mutation</span> — 微调变异</div>
+          <p class="pattern-desc">取当前最优因子，让 LLM 在它的基础上微调：延长/缩短时间窗口、替换运算符、改变价量变量组合。像给冠军马的后代做定向训练。</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-3)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-3) 12%, transparent)">🔀</div>
+          <div class="pattern-title"><span class="term" data-definition="交叉操作——从 TrajectoryPool 中选两个高表现父代因子，把它们的子表达式结合在一起，生成同时包含两者优势特征的混合因子">Crossover</span> — 基因杂交</div>
+          <p class="pattern-desc">选两个表现都很好的因子，让 LLM 把它们的子表达式组合在一起。就像让两匹冠军马配种，期望后代继承双方优点。</p>
+        </div>
+      </div>
+
+      <div class="flow-animation animate-in"
+           data-steps='[
+             {"highlight":"flow-actor-1","label":"① EvolutionController 开始新一轮，读取 TrajectoryPool 中的历史记录"},
+             {"highlight":"flow-actor-2","packet":true,"from":"actor-1","to":"actor-2","label":"② Phase 1: Original — LLM 生成 2 个全新因子假设，没有父代约束"},
+             {"highlight":"flow-actor-3","packet":true,"from":"actor-2","to":"actor-3","label":"③ AlphaAgentLoop 为每个 Original 因子完整跑一遍（假设→代码→回测→反馈）"},
+             {"highlight":"flow-actor-4","packet":true,"from":"actor-3","to":"actor-4","label":"④ 通过质检的最优因子保存到 TrajectoryPool，IC 最高者成为候选父代"},
+             {"highlight":"flow-actor-2","packet":true,"from":"actor-4","to":"actor-2","label":"⑤ Phase 2: Mutation — EvolutionController 取 top-1 父代，让 LLM 生成变异版本"},
+             {"highlight":"flow-actor-4","packet":true,"from":"actor-3","to":"actor-4","label":"⑥ 变异因子评估完成，加入 TrajectoryPool，池中优秀因子数量增加"},
+             {"highlight":"flow-actor-5","packet":true,"from":"actor-4","to":"actor-5","label":"⑦ Phase 3: Crossover — 取 top-2 父代，LLM 合并子表达式，生成混合因子"},
+             {"highlight":"flow-actor-4","packet":true,"from":"actor-5","to":"actor-4","label":"⑧ 所有轮次结束，TrajectoryPool 存有全部存活因子，供后续模型训练使用"}
+           ]'>
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon">🎯</div>
+            <span>Evolution<br>Controller</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon">💡</div>
+            <span>Hypothesis<br>Gen</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon">🔁</div>
+            <span>Alpha<br>AgentLoop</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon">📚</div>
+            <span>Trajectory<br>Pool</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-5">
+            <div class="flow-actor-icon">🔀</div>
+            <span>Crossover<br>Result</span>
+          </div>
+        </div>
+        <div class="flow-packet"></div>
+        <div class="flow-step-label">点击"下一步"追踪一轮完整进化的数据流</div>
+        <div class="flow-controls">
+          <button class="btn btn-primary flow-next-btn">下一步</button>
+          <button class="btn flow-reset-btn">重置</button>
+          <span class="flow-progress"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 3：真实代码——factor_mining.py
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">代码解读：进化循环的核心逻辑</h3>
+
+      <p class="animate-in">这两段代码来自 <code>quantaalpha/pipeline/factor_mining.py</code>，是整个进化系统的骨架。左边是真实代码，右边是对应的中文解读。</p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">factor_mining.py · run_evolution_loop</span>
+          <code>
+            <span class="code-line"><span class="code-keyword">def </span><span class="code-function">run_evolution_loop</span>(cfg, trace):</span>
+            <span class="code-line">    controller = <span class="code-function">EvolutionController</span>(cfg)</span>
+            <span class="code-line">    <span class="code-keyword">for</span> round_idx <span class="code-keyword">in</span> <span class="code-function">range</span>(cfg.evolution.max_rounds):</span>
+            <span class="code-line">        tasks = controller.<span class="code-function">schedule_tasks</span>(trace)</span>
+            <span class="code-line">        results = <span class="code-function">_run_tasks_parallel</span>(tasks, cfg)</span>
+            <span class="code-line">        <span class="code-keyword">for</span> task, result <span class="code-keyword">in</span> <span class="code-function">zip</span>(tasks, results):</span>
+            <span class="code-line">            trace.<span class="code-function">update_with_result</span>(task, result)</span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">逐行解读</span>
+          <div class="translation-lines">
+            <div class="tl"><code>def run_evolution_loop(cfg, trace):</code> — 定义主进化函数，接收配置（cfg）和共享记忆（<span class="term" data-definition="贯穿整个进化过程的记忆对象，记录所有历史因子、实验结果和 LLM 反馈，EvolutionController 通过它了解当前种群状态">Trace</span>）</div>
+            <div class="tl"><code>controller = EvolutionController(cfg)</code> — 创建"指挥官"，它根据历史决定每轮跑什么任务</div>
+            <div class="tl"><code>for round_idx in range(cfg.evolution.max_rounds):</code> — 循环指定轮数（默认 3 轮），每轮是一次完整的进化迭代</div>
+            <div class="tl"><code>tasks = controller.schedule_tasks(trace)</code> — 问指挥官：这一轮应该跑哪些实验？返回任务列表</div>
+            <div class="tl"><code>results = _run_tasks_parallel(tasks, cfg)</code> — 同时<span class="term" data-definition="多个任务同时运行，而不是依次排队。就像工厂的流水线同时加工多个零件，大幅提升效率">并行</span>运行所有任务，充分利用计算资源</div>
+            <div class="tl"><code>trace.update_with_result(task, result)</code> — 把每个任务的结果写回共享记忆，供下一轮决策使用</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="animate-in">下面是 <code>schedule_tasks</code> 的核心逻辑——它决定"这一轮用哪种策略"：</p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">factor_mining.py · schedule_tasks</span>
+          <code>
+            <span class="code-line"><span class="code-keyword">def </span><span class="code-function">schedule_tasks</span>(self, trace):</span>
+            <span class="code-line">    phase = self.<span class="code-function">_determine_phase</span>(trace)</span>
+            <span class="code-line">    <span class="code-keyword">if</span> phase == <span class="code-string">"original"</span>:</span>
+            <span class="code-line">        <span class="code-keyword">return</span> self.<span class="code-function">_create_original_tasks</span>()</span>
+            <span class="code-line">    <span class="code-keyword">elif</span> phase == <span class="code-string">"mutation"</span>:</span>
+            <span class="code-line">        parents = trace.<span class="code-function">get_top_factors</span>(n=<span class="code-number">1</span>)</span>
+            <span class="code-line">        <span class="code-keyword">return</span> self.<span class="code-function">_create_mutation_tasks</span>(parents)</span>
+            <span class="code-line">    <span class="code-keyword">else</span>:  <span class="code-comment"># crossover</span></span>
+            <span class="code-line">        parents = trace.<span class="code-function">get_top_factors</span>(n=<span class="code-number">2</span>)</span>
+            <span class="code-line">        <span class="code-keyword">return</span> self.<span class="code-function">_create_crossover_tasks</span>(parents)</span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">逐行解读</span>
+          <div class="translation-lines">
+            <div class="tl"><code>phase = self._determine_phase(trace)</code> — 根据 Trace 历史（跑了几轮、通过了多少因子）判断当前应处于哪个阶段</div>
+            <div class="tl"><code>if phase == "original":</code> — Original 阶段 → 不需要父代，直接从零生成新假设任务</div>
+            <div class="tl"><code>return self._create_original_tasks()</code> — 返回全新任务列表，LLM 用白板思维探索</div>
+            <div class="tl"><code>parents = trace.get_top_factors(n=1)</code> — Mutation 阶段 → 取 <span class="term" data-definition="Information Coefficient，信息系数——因子预测值与实际收益的相关性，越高越好，0.05 以上就算合格">IC</span> 最高的 <strong>1 个</strong>父代因子</div>
+            <div class="tl"><code>return self._create_mutation_tasks(parents)</code> — 把这个最优因子交给 LLM，让它生成变异版本</div>
+            <div class="tl"><code>parents = trace.get_top_factors(n=2)</code> — Crossover 阶段 → 取 IC 最高的 <strong>2 个</strong>父代因子</div>
+            <div class="tl"><code>return self._create_crossover_tasks(parents)</code> — 把两个父代交给 LLM，让它合并各自的子表达式</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">🔑</span>
+        <div class="callout-content">
+          <span class="callout-title">关键设计：父代数量决定阶段类型</span>
+          <p>注意 <code>get_top_factors(n=1)</code> 和 <code>get_top_factors(n=2)</code> 的区别——这一个数字的差异，决定了是"单亲变异"还是"双亲杂交"。Mutation 只需要一个榜样，Crossover 需要两个互补的来源。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 4：进化委员会——群聊场景
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">进化委员会开会——Mutation 阶段现场</h3>
+
+      <p class="animate-in">看看当系统进入 Mutation 阶段时，这几个组件之间是怎么协作的。点击"下一条"逐步播放，或点击"全部展示"一次看完。</p>
+
+      <div class="chat-window" id="chat-evolution">
+        <div class="chat-messages">
+
+          <!-- Message 1: Trace -->
+          <div class="chat-message" data-sender="Trace" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">📚</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">Trace / Memory</span>
+              <p>Round 2 完成。我们有 8 个通过的因子，最佳 <span class="term" data-definition="Information Coefficient，信息系数——因子预测值与实际收益的相关性，越高越好，0.05 以上就算合格">IC</span> = 0.089</p>
+            </div>
+          </div>
+
+          <!-- Message 2: EvolutionController -->
+          <div class="chat-message" data-sender="EvolutionController" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🎯</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">EvolutionController</span>
+              <p>很好。两轮原始探索已完成，现在进入 <span class="term" data-definition="变异操作——取一个高表现父代因子，改变其中的参数（如时间窗口从5天→10天）、运算符（均值→中位数）或子表达式，生成一个相近但有差异的新因子">Mutation</span> 阶段</p>
+            </div>
+          </div>
+
+          <!-- Message 3: EvolutionController -->
+          <div class="chat-message" data-sender="EvolutionController" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🎯</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">EvolutionController</span>
+              <p>Trace，把 IC 最高的那个因子给我</p>
+            </div>
+          </div>
+
+          <!-- Message 4: Trace -->
+          <div class="chat-message" data-sender="Trace" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">📚</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">Trace / Memory</span>
+              <p>最佳因子：<code>(close - Ref(close,5)) / Ref(close,5)</code> — IC=0.089，基于价格动量</p>
+            </div>
+          </div>
+
+          <!-- Message 5: HypothesisGen -->
+          <div class="chat-message" data-sender="HypothesisGen" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">💡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">HypothesisGen</span>
+              <p>收到。我来想想怎么变异它... 也许延长回看窗口到 10 天？或者换成成交量加权？</p>
+            </div>
+          </div>
+
+          <!-- Message 6: EvolutionController -->
+          <div class="chat-message" data-sender="EvolutionController" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🎯</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">EvolutionController</span>
+              <p>两个都试试。生成 2 个变异版本</p>
+            </div>
+          </div>
+
+          <!-- Message 7: HypothesisGen -->
+          <div class="chat-message" data-sender="HypothesisGen" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">💡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">HypothesisGen</span>
+              <p>已生成：<code>(close - Ref(close,10)) / Ref(close,10)</code> 和 <code>(vwap - Ref(vwap,5)) / Ref(vwap,5)</code></p>
+            </div>
+          </div>
+
+          <!-- Message 8: FactorRegulator -->
+          <div class="chat-message" data-sender="FactorRegulator" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">FactorRegulator</span>
+              <p>检查中... 第一个通过，第二个与现有因子 <span class="term" data-definition="抽象语法树（Abstract Syntax Tree）——把因子表达式解析成树形结构，用于检测两个因子是否本质上是同一个东西的不同写法">AST</span> 重叠太多，拒绝</p>
+            </div>
+          </div>
+
+          <!-- Message 9: Trace -->
+          <div class="chat-message" data-sender="Trace" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">📚</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">Trace / Memory</span>
+              <p>保存了 1 个新因子。进入 Crossover 准备就绪</p>
+            </div>
+          </div>
+
+        </div><!-- /chat-messages -->
+
+        <div class="chat-typing" style="display:none">
+          <div class="chat-avatar" id="chat-evolution-typing-avatar" style="background: var(--color-actor-4)">…</div>
+          <div class="chat-typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn btn-primary chat-next-btn">下一条 →</button>
+          <button class="btn chat-all-btn">全部展示</button>
+          <button class="btn chat-reset-btn">重置</button>
+          <span class="chat-progress">0 / 9 messages</span>
+        </div>
+      </div><!-- /chat-window -->
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">🛡️</span>
+        <div class="callout-content">
+          <span class="callout-title">FactorRegulator 也参与进化过程</span>
+          <p>注意消息 8：即使在 Mutation 阶段生成的因子，也要经过 FactorRegulator 的质检。重复的因子（AST 相似度过高）会被直接拒绝，确保每次变异都是真正有价值的探索。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 5：为什么有效？ + 测验
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">进化为什么有效？——以及你学到了什么</h3>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🧬</span>
+        <div class="callout-content">
+          <span class="callout-title">进化 vs 随机搜索</span>
+          <p>随机搜索每次都是在整个因子空间里抓彩票，而进化搜索利用 <span class="term" data-definition="存储所有已评估因子轨迹（表达式 + IC 指标 + 元数据）的数据结构，EvolutionController 从这里选最优父代用于 Mutation 和 Crossover">TrajectoryPool</span> 积累的知识，把探索方向不断收窄到"已知有价值的邻域"。每一轮，搜索空间都在收缩，而不是保持不变。这就是为什么经过几轮进化后，新发现的因子质量会系统性地高于随机生成的结果——不是运气，是<span class="term" data-definition="优化算法中的超参数，控制每轮允许 LLM 生成多少个不同的因子假设。值越大，每轮探索越多样，但计算成本也越高">超参数</span>驱动的定向搜索。</p>
+        </div>
+      </div>
+
+      <div class="badge-list stagger-children animate-in">
+        <div class="badge-item animate-in">
+          <span class="badge-code">Original</span>
+          <span class="badge-desc">建立初始种群 — LLM 自由探索，不受历史约束，覆盖广泛的假设空间</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">Mutation</span>
+          <span class="badge-desc">单点改进 — 在最优因子的邻域深挖，微调参数和运算符，寻找局部最优</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">Crossover</span>
+          <span class="badge-desc">优势融合 — 结合两个不同维度的优质因子，可能跳出局部最优，发现全新组合</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">TrajectoryPool</span>
+          <span class="badge-desc">进化的记忆 — 每轮成果的积累，让下一轮的决策越来越准确，形成良性循环</span>
+        </div>
+      </div>
+
+      <h3 class="screen-heading animate-in" style="margin-top: var(--space-12)">测验：进化机制你掌握了吗？</h3>
+      <p class="animate-in">三道场景题，检验你对进化循环的理解。</p>
+
+      <div class="quiz-container animate-in" id="quiz-module4">
+
+        <!-- Q1 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="对！这就是进化的精髓——不从头开始，而是在已有的最佳成果上继续改进。就像培育良种，而不是每次都从野生品种开始。"
+             data-explanation-wrong="想想进化框架的核心理念——它有记忆，会利用过去的成功经验，而不是每次都从零开始。">
+          <p class="quiz-question">如果第一轮跑了 3 个原始因子，最佳 IC 是 0.05，第二轮会发生什么？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：再次生成 3 个全新的随机因子
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：对最佳因子（IC=0.05）进行变异，探索它附近的变体
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：直接停止，因为 IC 太低了
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="正确！就像生物学中的有性繁殖，需要两个亲本结合各自的优势特征。"
+             data-explanation-wrong="回想一下代码里 get_top_factors(n=?) 的调用——Crossover 需要结合两个因子的优点。">
+          <p class="quiz-question">Crossover 阶段需要几个父代因子？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：1 个
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：2 个
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：3 个
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="聪明！如果搜索空间探索不够充分，增加每轮探索的多样性（更多假设）比简单延长运行时间更有效。"
+             data-explanation-wrong="问题不在于轮数，而在于每轮探索的广度。想想如何让每一轮看到更多不同的可能性。">
+          <p class="quiz-question">你发现系统运行了很多轮但效果没有提升。你会怎么调整进化参数？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：增加 max_rounds，让它运行更久
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：增加 factors_per_hypothesis，每轮探索更多变体
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：关闭进化模式，改用纯随机搜索
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重置</button>
+        </div>
+      </div><!-- /quiz-container -->
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-content">
+          <span class="callout-title">你现在掌握了什么</span>
+          <p>Original → Mutation → Crossover 三阶段进化循环；EvolutionController 如何用 TrajectoryPool 驱动父代选择；以及为什么定向进化比随机搜索在因子挖掘中更高效。下一个模块将深入探索因子质量管控——FactorRegulator 的五道质检门控。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="module" id="module-5" style="min-height:100dvh">
+  <div class="module-content">
+
+    <!-- Module Header -->
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h2 class="module-title">质量守门员<br>The Quality Gatekeeper</h2>
+      <p class="module-subtitle">每一个因子在进入回测之前，都必须通过 FactorRegulator 的五道安检。了解这些规则，你就能更好地引导 AI 生成高质量的候选因子。</p>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 1: 为什么需要质量门控？
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">为什么需要质量门控？</h3>
+
+      <div class="stagger-children">
+        <p class="animate-in">
+          想象一座繁忙机场的安检通道。每一位旅客——不管是外国政要还是背包客——都必须通过同样的安检流程，没有例外，没有快速通道。
+          QuantaAlpha 里，每一个 LLM 提出的<span class="term" data-definition="候选因子（Candidate Factor）：LLM 根据研究假设生成的、尚未经过验证的因子表达式。它可能有价值，也可能是重复或无效的公式。">候选因子</span>也是如此——在进入昂贵的<span class="term" data-definition="回测（Backtest）：用历史市场数据模拟运行某个因子，验证它在过去是否有预测能力。回测需要消耗大量计算资源和时间。">回测</span>之前，必须通过
+          <strong><span class="term" data-definition="FactorRegulator：QuantaAlpha 的质量控制组件，对每个候选因子表达式执行 5 项检查，拒绝冗余或低质量的因子，保护计算资源和因子库的干净度。">FactorRegulator</span></strong>
+          的五道安检。
+        </p>
+
+        <div class="pattern-cards animate-in">
+          <div class="pattern-card">
+            <div class="pattern-icon" style="background: var(--color-error-light)">🗑️</div>
+            <p class="pattern-title">没有质量门控会怎样？</p>
+            <p class="pattern-desc">LLM 会反复生成"换汤不换药"的重复公式，浪费大量回测算力，同时让<span class="term" data-definition="因子库（Factor Zoo）：所有经过验证并保存的因子集合。因子库质量越高，后续的组合优化和策略构建效果越好。">因子库</span>充满冗余，最终污染所有下游分析。</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-icon" style="background: var(--color-success-light)">🛡️</div>
+            <p class="pattern-title">有了质量门控</p>
+            <p class="pattern-desc">低质量因子在进入昂贵回测之前就被拦截，只有真正新颖、结构合理的候选因子才能"登机"，保持因子库的高价值密度。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <span class="callout-icon">🔍</span>
+          <div class="callout-content">
+            <span class="callout-title">FactorRegulator 是因子从提案到测试的最后防线</span>
+            <p>
+              它位于
+              <code style="font-family: var(--font-mono); background: rgba(0,0,0,0.08); padding: 2px 6px; border-radius: 4px;">quantaalpha/factors/regulator/factor_regulator.py</code>，
+              在每一个新因子提交给 Qlib 回测之前执行检查。通过全部五项检查才放行，一项不过即告拒绝。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 2: 五道安检——逐条解析
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">五道安检——逐条解析</h3>
+
+      <p class="animate-in">
+        以下是 <code style="font-family: var(--font-mono); background: var(--color-bg-code); color: #CBA6F7; padding: 2px 6px; border-radius: 4px;">is_expression_acceptable()</code>
+        方法中的五项判断条件。每一项都对应一类常见问题，缺少任何一项，因子库就会被某种"坏因子"悄悄污染。
+      </p>
+
+      <div class="step-cards animate-in">
+
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>去重检测
+              <code style="font-family: var(--font-mono); font-size: var(--text-xs); background: var(--color-bg-code); color: #A6E3A1; padding: 1px 5px; border-radius: 4px;">cond1</code>
+            </strong>
+            <p>
+              与已有因子共享的最大公共<span class="term" data-definition="AST（Abstract Syntax Tree，抽象语法树）：把一个数学表达式解析成树形结构的方式，每个节点代表一个运算符或变量。AST 让计算机能够理解表达式的数学逻辑，而不只是字符串。">AST</span>子树不超过 <strong>8 个节点</strong>。
+              防止"换汤不换药"——即使公式写法不同，只要数学逻辑相同，就会被识别为重复。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>自由参数比例
+              <code style="font-family: var(--font-mono); font-size: var(--text-xs); background: var(--color-bg-code); color: #A6E3A1; padding: 1px 5px; border-radius: 4px;">cond2</code>
+            </strong>
+            <p>
+              公式中的"魔法数字"（<span class="term" data-definition="自由参数（Free Args）：因子表达式中的具体数值常量，比如 0.3、100、0.618 等。自由参数越多，说明公式越像是专门为历史数据量身定制，过拟合风险越高。">自由参数</span>）占比不超过 50%。
+              一个到处是神秘数字的公式如 <code style="font-family: var(--font-mono)">0.382 * close + 0.618 * volume * 1.41</code> 很可能是在<span class="term" data-definition="过拟合（Overfitting）：模型对历史数据记忆得太好，以至于失去了对未来数据的泛化能力。量化因子中，过拟合意味着在历史回测中表现完美，但在实盘中会失效。">过拟合</span>历史数据。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>变量多样性
+              <code style="font-family: var(--font-mono); font-size: var(--text-xs); background: var(--color-bg-code); color: #A6E3A1; padding: 1px 5px; border-radius: 4px;">cond3</code>
+            </strong>
+            <p>
+              独特变量（不同的运算符和函数）占所有符号的比例不超过 50%。
+              这保证公式有足够的"逻辑骨架"——不是一堆随机嵌套，而是有结构意义的表达式。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>符号长度
+              <code style="font-family: var(--font-mono); font-size: var(--text-xs); background: var(--color-bg-code); color: #A6E3A1; padding: 1px 5px; border-radius: 4px;">cond4</code>
+            </strong>
+            <p>
+              因子表达式字符串长度不超过 <strong>300 个字符</strong>。
+              过于复杂的嵌套表达式不仅难以解释，而且几乎肯定是在记忆历史噪声。简洁的因子往往更稳健——想想最经典的动量因子，不超过 30 个字符。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>基础特征数量
+              <code style="font-family: var(--font-mono); font-size: var(--text-xs); background: var(--color-bg-code); color: #A6E3A1; padding: 1px 5px; border-radius: 4px;">cond5</code>
+            </strong>
+            <p>
+              使用的原始<span class="term" data-definition="基础特征（Base Features）：因子表达式中直接引用的原始市场数据字段，比如 close（收盘价）、volume（成交量）、high（最高价）、low（最低价）等。使用太多不同的基础特征往往意味着因子缺乏聚焦。">基础特征</span>（如 close、volume、high）不超过 <strong>6 个</strong>。
+              一个依赖太多不同数据维度的因子往往是"拼凑"出来的，而不是捕捉到了真正的市场逻辑。
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">💡</span>
+        <div class="callout-content">
+          <span class="callout-title">所有五项必须同时满足</span>
+          <p>
+            代码是 <code style="font-family: var(--font-mono)">return cond1 and cond2 and cond3 and cond4 and cond5</code>——任何一项不过，因子直接被拒绝，不会给出部分通过的机会。这是一个"AND 门"，不是"OR 门"。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 3: AST 去重深度解析
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">深度解析：AST 去重是怎么工作的？</h3>
+
+      <div class="stagger-children">
+        <p class="animate-in">
+          五项检查中，最技术也最精妙的是第一项——<span class="term" data-definition="AST 去重（AST Deduplication）：通过比较两个因子表达式的抽象语法树结构，找到它们共享的最大公共子树，以此判断两个因子在数学逻辑上是否过于相似。">AST 去重</span>。
+          普通的字符串比较很容易被骗：<code style="font-family: var(--font-mono)">close/Ref(close,5) - 1</code> 和
+          <code style="font-family: var(--font-mono)">(close - Ref(close,5)) / Ref(close,5)</code> 是同一个动量公式，但字符串完全不同。
+          AST 比较则能看穿表面差异，找到数学本质。
+        </p>
+
+        <p class="animate-in">
+          <strong>食谱比喻：</strong> 想象每个因子是一份菜谱。AST 去重不是对比菜名或配料表格式，而是逐步骤比对操作流程——如果两份菜谱共享了超过 8 个相同的操作步骤，系统就认定它们"本质上是同一道菜"。
+        </p>
+
+        <div class="animate-in" style="background: var(--color-surface); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-md); margin: var(--space-6) 0;">
+          <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-4); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em;">
+            示例：将 <code style="font-size: inherit">(close - Ref(close,5)) / Ref(close,5)</code> 解析为 AST
+          </p>
+
+          <!-- AST tree visual -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-3); font-family: var(--font-mono); font-size: var(--text-sm);">
+
+            <!-- Root node -->
+            <div style="background: var(--color-accent); color: white; padding: var(--space-2) var(--space-5); border-radius: var(--radius-sm); font-weight: 700; box-shadow: var(--shadow-sm);">
+              ÷ <span style="font-size: var(--text-xs); opacity: 0.8; font-family: var(--font-body)">（根节点：除法）</span>
+            </div>
+
+            <!-- Connector lines -->
+            <div style="display: flex; gap: var(--space-16); align-items: flex-start;">
+              <div style="width: 2px; height: var(--space-6); background: var(--color-border); margin: 0 auto;"></div>
+              <div style="width: 2px; height: var(--space-6); background: var(--color-border); margin: 0 auto;"></div>
+            </div>
+
+            <!-- Level 1 -->
+            <div style="display: flex; gap: var(--space-8); align-items: flex-start; width: 100%; justify-content: center;">
+
+              <!-- Left subtree -->
+              <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-3);">
+                <div style="background: var(--color-actor-2); color: white; padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm); font-weight: 700; box-shadow: var(--shadow-sm);">
+                  − <span style="font-size: var(--text-xs); opacity: 0.8; font-family: var(--font-body)">（减法）</span>
+                </div>
+                <div style="display: flex; gap: var(--space-4);">
+                  <div style="width: 2px; height: var(--space-4); background: var(--color-border);"></div>
+                  <div style="width: 2px; height: var(--space-4); background: var(--color-border);"></div>
+                </div>
+                <div style="display: flex; gap: var(--space-4);">
+                  <div style="background: var(--color-bg-warm); border: 1px solid var(--color-border); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-xs);">close</div>
+                  <div style="background: var(--color-info-light); border: 1px solid var(--color-info); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-xs); color: var(--color-info);">Ref(close,5)</div>
+                </div>
+              </div>
+
+              <!-- Right subtree -->
+              <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-3);">
+                <div style="background: var(--color-info-light); border: 2px solid var(--color-info); padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm); font-weight: 700; color: var(--color-info);">
+                  Ref(close,5) <span style="font-size: var(--text-xs); opacity: 0.8; font-family: var(--font-body)">（右叶节点）</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <p style="margin-top: var(--space-5); font-size: var(--text-sm); color: var(--color-text-secondary);">
+            蓝色框 <code style="font-family: var(--font-mono); font-size: var(--text-xs)">Ref(close,5)</code> 在树中出现了 <strong>两次</strong>（左子树的右叶 + 右子树），这是一个内部重复。
+            对外去重时，系统会比较<em>整棵树</em>与已有因子的最大公共子树大小。
+          </p>
+        </div>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">factor_ast.py</span>
+            <code>
+              <span class="code-line"><span class="code-keyword">def</span> <span class="code-function">find_largest_common_subtree</span>(root1, root2):</span>
+              <span class="code-line">    <span class="code-keyword">if</span> root1 <span class="code-keyword">is</span> <span class="code-keyword">None</span> <span class="code-keyword">or</span> root2 <span class="code-keyword">is</span> <span class="code-keyword">None</span>:</span>
+              <span class="code-line">        <span class="code-keyword">return</span> <span class="code-number">0</span></span>
+              <span class="code-line">    <span class="code-keyword">if</span> root1.node_type != root2.node_type:</span>
+              <span class="code-line">        <span class="code-keyword">return</span> <span class="code-number">0</span></span>
+              <span class="code-line">    <span class="code-keyword">if</span> root1.value != root2.value:</span>
+              <span class="code-line">        <span class="code-keyword">return</span> <span class="code-number">0</span></span>
+              <span class="code-line">    size = <span class="code-number">1</span></span>
+              <span class="code-line">    <span class="code-keyword">for</span> c1, c2 <span class="code-keyword">in</span> <span class="code-function">zip</span>(root1.children, root2.children):</span>
+              <span class="code-line">        size += <span class="code-function">find_largest_common_subtree</span>(c1, c2)</span>
+              <span class="code-line">    <span class="code-keyword">return</span> size</span>
+            </code>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行解读</span>
+            <div class="translation-lines">
+              <div class="tl"><strong>第 1 行</strong>：比较两棵因子表达式树，返回它们共享多少个节点</div>
+              <div class="tl"><strong>第 2-3 行</strong>：如果任意一棵树是空的，它们共享 0 个节点</div>
+              <div class="tl"><strong>第 4-5 行</strong>：如果节点类型不匹配（比如一个是函数、另一个是运算符），直接不匹配</div>
+              <div class="tl"><strong>第 6-7 行</strong>：如果节点值不匹配（比如 Ref 对比 Mean），直接不匹配</div>
+              <div class="tl"><strong>第 8 行</strong>：当前节点匹配！计分从 1 开始</div>
+              <div class="tl"><strong>第 9-10 行</strong>：<span class="term" data-definition="递归（Recursion）：函数在执行过程中调用自身。在树结构中，递归非常自然——对每个子节点做同样的比较，最终把所有匹配数加起来。">递归</span>检查所有子节点，累加匹配数量</div>
+              <div class="tl"><strong>第 11 行</strong>：返回这两棵子树的总重叠得分</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <span class="callout-icon">🎯</span>
+          <div class="callout-content">
+            <span class="callout-title">如果得分 &gt; 8，新因子被拒绝</span>
+            <p>
+              现有因子已经覆盖了这片数学领域。继续放行只会浪费算力，并增加因子库中的噪声。
+              这个阈值（默认 8）可以通过配置调整——阈值越大，限制越严格，因子库越干净但也越小。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 4: 角色对话——安检现场
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">安检现场：一次真实的检查过程</h3>
+
+      <p class="animate-in">
+        来看看当 <span class="term" data-definition="HypothesisGen：QuantaAlpha 中负责生成研究假设和因子表达式的组件，通常由 LLM 驱动。">HypothesisGen</span> 提交两个候选因子时，FactorRegulator 是怎么处理的：
+      </p>
+
+      <div class="chat-window animate-in" id="chat-regulator">
+        <div class="chat-messages">
+
+          <!-- Message 1: HypothesisGen -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">💡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">HypothesisGen</span>
+              <p>新因子来了：<code style="font-family: var(--font-mono); font-size: 0.85em">(close - Ref(close,5)) / Ref(close,5) + volume * 0.001</code></p>
+            </div>
+          </div>
+
+          <!-- Message 2: FactorRegulator -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>开始检查... 正在解析 AST 结构</p>
+            </div>
+          </div>
+
+          <!-- Message 3: FactorRegulator — reject -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble" style="border-left: 3px solid var(--color-error);">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>检查 1：与现有因子 <code style="font-family: var(--font-mono); font-size: 0.8em">(close - Ref(close,5)) / Ref(close,5)</code> 对比，公共子树大小 = <strong>11 节点</strong>，超过阈值 8。❌ 拒绝，不进入回测。</p>
+            </div>
+          </div>
+
+          <!-- Message 4: HypothesisGen — new attempt -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">💡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">HypothesisGen</span>
+              <p>明白了。来一个完全不同的：<code style="font-family: var(--font-mono); font-size: 0.85em">(high - low) / (high + low) * Rank(volume, 20)</code></p>
+            </div>
+          </div>
+
+          <!-- Message 5: Check 1 pass -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>检查 1：最大公共子树 = <strong>3 节点</strong>，通过 ✅</p>
+            </div>
+          </div>
+
+          <!-- Message 6: Check 2 pass -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>检查 2：自由参数比例 = 5%（仅 20 这一个数字），通过 ✅</p>
+            </div>
+          </div>
+
+          <!-- Message 7: Check 3 pass -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>检查 3：变量多样性通过 ✅</p>
+            </div>
+          </div>
+
+          <!-- Message 8: Check 4 pass -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>检查 4：符号长度 = <strong>45 字符</strong>，远低于阈值 300，通过 ✅</p>
+            </div>
+          </div>
+
+          <!-- Message 9: Check 5 pass -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>检查 5：基础特征 3 个（high / low / volume），通过 ✅</p>
+            </div>
+          </div>
+
+          <!-- Message 10: All pass -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🔍</div>
+            <div class="chat-bubble" style="border-left: 3px solid var(--color-success);">
+              <span class="chat-sender" style="color: var(--color-actor-1)">FactorRegulator</span>
+              <p>全部 5 项通过！放行到 <span class="term" data-definition="QlibFactorParser：QuantaAlpha 中负责把因子表达式转换成可执行代码并调用 Qlib 框架运行回测的组件。">QlibFactorParser</span> ✅</p>
+            </div>
+          </div>
+
+          <!-- Message 11: QlibFactorParser -->
+          <div class="chat-message" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">⚙️</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">QlibFactorParser</span>
+              <p>收到，开始生成并执行因子计算代码，随后将提交 Qlib 回测框架。</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="chat-typing" style="display:none">
+          <div class="chat-avatar" id="chat-regulator-typing-avatar" style="background: var(--color-actor-1)">🔍</div>
+          <div class="chat-typing-dots">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn btn-primary chat-next-btn">下一条 →</button>
+          <button class="btn chat-all-btn">全部展示</button>
+          <button class="btn chat-reset-btn">重置</button>
+          <span class="chat-progress">0 / 11 messages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 5: 实际意义 + 配置调优 + 测验
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">实际意义：为什么这对你很重要？</h3>
+
+      <div class="stagger-children">
+
+        <div class="callout callout-accent animate-in">
+          <span class="callout-icon">⚖️</span>
+          <div class="callout-content">
+            <span class="callout-title">质量门控的双重价值</span>
+            <p>
+              <strong>① 节省算力：</strong>拒绝一个候选因子的成本接近于零，而一次完整回测需要分钟到小时级的计算时间。早拒绝 = 大省算力。<br><br>
+              <strong>② 保持因子库的信息密度：</strong>下游的<span class="term" data-definition="IC（Information Coefficient，信息系数）：衡量因子预测能力的核心指标，是因子值与未来收益的相关系数。|IC| 越大，预测能力越强。通常 |IC| > 0.03 视为有效。">IC</span>去重和因子组合优化，需要一个"干净"的因子库作为基础。如果因子库里 80% 是重复，后续所有分析的有效性都会大打折扣。
+            </p>
+          </div>
+        </div>
+
+        <p class="animate-in">
+          作为使用这个系统的人，你可以通过调整以下配置参数来控制质量门槛的松紧。了解这些参数的含义，能帮你在"严格"和"宽松"之间找到合适的平衡：
+        </p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <span class="badge-code">duplication_threshold: 8</span>
+            <span class="badge-desc">去重树节点阈值——越大越严格（允许更少的结构相似性）</span>
+          </div>
+          <div class="badge-item">
+            <span class="badge-code">symbol_length_threshold: 300</span>
+            <span class="badge-desc">符号长度上限——降低此值可以强制因子更简洁</span>
+          </div>
+          <div class="badge-item">
+            <span class="badge-code">base_features_threshold: 6</span>
+            <span class="badge-desc">最大基础特征数——限制因子依赖的原始数据维度</span>
+          </div>
+          <div class="badge-item">
+            <span class="badge-code">free_args_ratio: &lt; 0.5</span>
+            <span class="badge-desc">自由参数比例上限——防止因子中充满"魔法数字"</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <span class="callout-icon">🛠️</span>
+          <div class="callout-content">
+            <span class="callout-title">你能用这些知识做什么？</span>
+            <p>
+              当你发现系统一直在拒绝因子时，先看拒绝原因。如果大多数是 cond1（AST重叠），说明 LLM 在生成同质化的公式——你应该在提示词中引导它探索不同的算子组合、不同的时间窗口或不同的价量关系，而不是盲目降低阈值。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         Screen 6: 测验
+    ════════════════════════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">理解检测</h3>
+      <p class="animate-in">3 道题，每题选一个最佳答案。</p>
+
+      <div class="quiz-container animate-in" id="quiz-module5">
+
+        <!-- Q1 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="对！症结在于 LLM 生成了太多相似结构的因子。真正的解决办法是改善提示词，引导 LLM 探索更多元化的数学模式——比如指定不同的算子组合或不同的时间窗口。"
+             data-explanation-wrong="降低阈值虽然短期能通过更多因子，但会让因子库充满冗余。更好的做法是从根源上解决——让 LLM 产生更有创意的因子。">
+          <p class="quiz-question">Q1：你发现系统一直拒绝 LLM 生成的因子，大多是因为 AST 重叠。你会怎么做？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              降低 <code style="font-family: var(--font-mono)">duplication_threshold</code>，让更多因子通过
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              让 HypothesisGen 生成更多样化的因子，探索不同的数学结构
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              完全关闭去重检测
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="准确！过于复杂的公式往往是在「记忆」历史数据的特定模式，而不是发现真正的市场规律。简洁的因子往往更稳健、更持久。这就是为什么有名的量化因子（如动量、价值）都非常简单。"
+             data-explanation-wrong="这不是技术限制。想想金融中「过拟合」的概念——一个 300 个节点的超级复杂因子可能在历史数据上表现完美，但遇到新数据就会失效。">
+          <p class="quiz-question">Q2：为什么 FactorRegulator 要限制公式长度（符号长度 ≤ 300）？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              因为 LLM 生成长公式的准确率更低
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              防止过度复杂的公式过拟合历史数据，无法泛化到未来
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              因为 Qlib 框架不支持长公式
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="正是！AST 去重会把两个因子的数学结构「解构」成语法树，找到它们共享的最大公共子树。即使公式写法不同，只要数学逻辑相同，就会被识别为重复。"
+             data-explanation-wrong="这些检查控制的是复杂度，不是重复性。真正识别「换汤不换药」的是 AST 结构比较——它能看穿表面差异，找到数学本质上的相似性。">
+          <p class="quiz-question">Q3：FactorRegulator 的哪项检查最能防止"换汤不换药"的重复因子？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              符号长度检查（cond4）
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              AST 结构去重（cond1）
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              基础特征数量检查（cond5）
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重新作答</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="module" id="module-6" style="min-height:100dvh; background: var(--color-bg-alt, var(--color-bg-warm))">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h2 class="module-title">如何驾驭它</h2>
+      <p class="module-subtitle">从指挥台到配置文件——学会运行、调参、排错，真正把 QuantaAlpha 用起来</p>
+    </header>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 1：你现在是指挥家
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">你现在站在指挥台上</h3>
+
+      <p class="animate-in">
+        前五个模块，你一直在机器内部探索：看懂了主角、跟完了循环、理解了进化、见识了质量门控。
+        现在是时候走出机器间，走进<strong>指挥台</strong>。
+      </p>
+
+      <div class="icon-rows stagger-children animate-in">
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-accent-light)">🎼</div>
+          <div>
+            <strong>你的控制台：<code>configs/experiment.yaml</code></strong>
+            <p>这个文件是你和 QuantaAlpha 对话的主界面。不需要改代码，只需要调整这里的参数，就能控制系统挖掘的广度、深度、质量标准。</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-info-light)">⌨️</div>
+          <div>
+            <strong>你的启动命令</strong>
+            <p>一切从这一行开始：</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code" style="width:100%">
+          <span class="translation-label">终端 / Terminal</span>
+          <code>
+            <span class="code-line"><span class="code-keyword">python</span> <span class="code-function">launcher.py</span> <span class="code-string">mine</span> \</span>
+            <span class="code-line">  <span class="code-operator">--direction</span> <span class="code-string">"量价动量"</span> \</span>
+            <span class="code-line">  <span class="code-operator">--config_path</span> <span class="code-value">configs/experiment.yaml</span></span>
+          </code>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🚀</span>
+        <div class="callout-content">
+          <span class="callout-title">三行命令，启动一台自动挖掘 alpha 因子的机器</span>
+          <p>
+            <code>launcher.py</code> 是整个系统的入口，<code>--direction</code> 是你给
+            <span class="term" data-definition="Large Language Model，大型语言模型。QuantaAlpha 用它来理解研究方向、生成假设、写因子代码、分析反馈——是整个自动化流程的大脑">LLM</span>
+            的研究方向（自然语言即可），<code>--config_path</code> 指向控制台文件。
+            改变 <code>--direction</code> 就像告诉指挥家"今晚演莫扎特"，改变 <code>experiment.yaml</code> 就像决定乐团规模和排练轮数。
+          </p>
+        </div>
+      </div>
+
+      <div class="badge-list stagger-children animate-in">
+        <div class="badge-item animate-in">
+          <span class="badge-code">launcher.py</span>
+          <span class="badge-desc">读取 <code>.env</code> 环境变量（API Key 等），然后调用 <code>cli.py</code> 执行主流程</span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">cli.py</span>
+          <span class="badge-desc">解析命令行参数，读取 <code>experiment.yaml</code>，构建 EvolutionController 并启动 <code>factor_mining.main()</code></span>
+        </div>
+        <div class="badge-item animate-in">
+          <span class="badge-code">experiment.yaml</span>
+          <span class="badge-desc">你唯一需要编辑的文件——控制探索广度、进化轮数、质量门控开关等所有关键参数</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 2：控制面板——核心参数详解
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">控制面板——你最需要了解的参数</h3>
+
+      <p class="animate-in">
+        <code>configs/experiment.yaml</code> 有数十个参数，但真正需要调整的只有这几组。
+        下面是配置文件的真实结构，配上每个参数的中文解释。
+      </p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">configs/experiment.yaml（核心节选）</span>
+          <code>
+            <span class="code-line"><span class="code-property">planning</span>:</span>
+            <span class="code-line">  <span class="code-attr">num_directions</span><span class="code-operator">:</span> <span class="code-value">2</span>   <span class="code-comment"># 论文使用 10</span></span>
+            <span class="code-line">  <span class="code-attr">direction_template</span><span class="code-operator">:</span> <span class="code-string">"价量因子挖掘，专注于{direction}"</span></span>
+            <span class="code-line"></span>
+            <span class="code-line"><span class="code-property">execution</span>:</span>
+            <span class="code-line">  <span class="code-attr">max_loops</span><span class="code-operator">:</span> <span class="code-value">2</span>        <span class="code-comment"># 论文使用 5</span></span>
+            <span class="code-line"></span>
+            <span class="code-line"><span class="code-property">evolution</span>:</span>
+            <span class="code-line">  <span class="code-attr">enabled</span><span class="code-operator">:</span> <span class="code-value">true</span></span>
+            <span class="code-line">  <span class="code-attr">max_rounds</span><span class="code-operator">:</span> <span class="code-value">3</span></span>
+            <span class="code-line"></span>
+            <span class="code-line"><span class="code-property">factor</span>:</span>
+            <span class="code-line">  <span class="code-attr">factors_per_hypothesis</span><span class="code-operator">:</span> <span class="code-value">1</span>  <span class="code-comment"># 论文使用 3</span></span>
+            <span class="code-line"></span>
+            <span class="code-line"><span class="code-property">quality_gate</span>:</span>
+            <span class="code-line">  <span class="code-attr">redundancy_enabled</span><span class="code-operator">:</span> <span class="code-value">true</span></span>
+            <span class="code-line">  <span class="code-attr">complexity_enabled</span><span class="code-operator">:</span> <span class="code-value">true</span></span>
+          </code>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">逐参数解读</span>
+          <div class="translation-lines">
+            <div class="tl">
+              <code>planning.num_directions</code> — 每次运行要探索几个研究子方向。2 个方向 = 2 条并行探索线。数字越大，覆盖越广，但 <span class="term" data-definition="Application Programming Interface——这里指 LLM 服务商（如 OpenAI）提供的按调用量计费的接口。每次 LLM 调用都消耗 API 配额">API</span> 消耗也越多。
+            </div>
+            <div class="tl">
+              <code>direction_template</code> — 发给 LLM 的方向模板，<code>{direction}</code> 会被你的 <code>--direction</code> 参数替换。可以用来限定 LLM 的探索语境。
+            </div>
+            <div class="tl">
+              <code>execution.max_loops</code> — 每个方向运行几轮完整的"假设→构建→测试→反馈"循环。每一轮都消耗 LLM 调用，也都会有新的因子产出（或被拒绝）。
+            </div>
+            <div class="tl">
+              <code>evolution.enabled</code> — 是否启用进化框架（Original→Mutation→Crossover 循环）。关闭后系统仅做随机探索，不会从历史结果中学习和改进。
+            </div>
+            <div class="tl">
+              <code>evolution.max_rounds</code> — 进化循环的总轮数（含 Original 轮）。第 0 轮是原始探索，后续轮是变异和交叉。
+            </div>
+            <div class="tl">
+              <code>factor.factors_per_hypothesis</code> — 每个假设生成几个因子。设为 3 时，每轮每个方向最多产出 3 个候选因子，探索密度更高。
+            </div>
+            <div class="tl">
+              <code>quality_gate.redundancy_enabled</code> — 是否运行 <span class="term" data-definition="Abstract Syntax Tree，抽象语法树——把因子表达式解析成树结构，通过比较树形结构来判断两个因子是否在数学上高度相似">AST</span> 去重检查。关闭后相似因子会进入因子库，可能导致因子库中有大量冗余。
+            </div>
+            <div class="tl">
+              <code>quality_gate.complexity_enabled</code> — 是否强制执行符号长度和基础特征数量的限制。关闭后可能产生极度复杂的因子，容易 <span class="term" data-definition="过拟合——模型过度适应历史数据的噪声，在未来实际表现中失效。因子表达式越复杂，过拟合风险越高">过拟合</span>。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <span class="callout-icon">💡</span>
+        <div class="callout-content">
+          <span class="callout-title">代码默认值 vs 论文配置</span>
+          <p>
+            你可能注意到代码里的默认值（2, 2, 1）比论文中的配置（10, 5, 3）小很多。
+            这是有意为之的——开发者用小值作为快速调试的默认配置。
+            完整复现论文结果需要使用论文中的 <span class="term" data-definition="超参数——控制机器学习/AI 系统行为的配置参数，不是模型学习得到的，而是人为事先设定的。比如 num_directions、max_loops 都是超参数">超参数</span>，
+            详见论文 Appendix B。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 3：三个场景——怎么调参
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">实战调参指南：三种场景</h3>
+
+      <p class="animate-in">
+        根据你的目标选择合适的配置。没有"正确配置"，只有"适合当前目标的配置"。
+      </p>
+
+      <div class="step-cards stagger-children animate-in">
+
+        <div class="step-card animate-in">
+          <div class="step-num" style="background: var(--color-success); color: #fff">1</div>
+          <div class="step-body">
+            <strong>场景一：快速原型验证（低成本）</strong>
+            <p>目标：确认系统能跑通，花最少的 <span class="term" data-definition="Application Programming Interface——这里指 LLM 服务商（如 OpenAI）提供的按调用量计费的接口。每次 LLM 调用都消耗 API 配额">API</span> 配额。</p>
+            <div class="badge-list" style="margin-top: var(--space-3)">
+              <div class="badge-item">
+                <span class="badge-code">num_directions: 1</span>
+                <span class="badge-desc">只跑一个方向，最小化 LLM 调用</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">max_loops: 2</span>
+                <span class="badge-desc">每个方向只跑2轮循环，够验证流程</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">evolution.enabled: false</span>
+                <span class="badge-desc">关闭进化，跳过 Mutation/Crossover</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">factors_per_hypothesis: 1</span>
+                <span class="badge-desc">每个假设只生成1个因子</span>
+              </div>
+            </div>
+            <p style="margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary)">
+              适用时机：新环境首次安装测试、<span class="term" data-definition="Backtest，回测——用历史数据验证因子或策略的有效性。是量化投资中不可省略的验证步骤">Backtest</span> 数据路径刚配好、API Key 刚到位。
+              只要系统能跑通一个完整的 propose→build→test→feedback 循环，基础设施就正常了。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-card animate-in">
+          <div class="step-num" style="background: var(--color-info); color: #fff">2</div>
+          <div class="step-body">
+            <strong>场景二：标准探索（日常挖掘）</strong>
+            <p>目标：探索一个新的研究方向主题，平衡效果与成本。</p>
+            <div class="badge-list" style="margin-top: var(--space-3)">
+              <div class="badge-item">
+                <span class="badge-code">num_directions: 3</span>
+                <span class="badge-desc">三个子方向并行探索，覆盖更广</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">max_loops: 3</span>
+                <span class="badge-desc">每方向3轮循环，让 Trace 有内容可学习</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">evolution.enabled: true</span>
+                <span class="badge-desc">启用进化，让系统从好因子中学习</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">evolution.max_rounds: 3</span>
+                <span class="badge-desc">Original + Mutation + Crossover 各一轮</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">factors_per_hypothesis: 2</span>
+                <span class="badge-desc">每假设2个因子，提高单轮产出</span>
+              </div>
+            </div>
+            <p style="margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary)">
+              适用时机：尝试新的方向主题（比如"日内成交量结构"）、常规周期性挖掘、<span class="term" data-definition="Information Coefficient，信息系数——因子预测能力的核心指标，衡量因子值与未来收益的相关性，绝对值越大越好，0.05以上值得关注">IC</span> 结果评估研究。
+            </p>
+          </div>
+        </div>
+
+        <div class="step-card animate-in">
+          <div class="step-num" style="background: var(--color-accent); color: #fff">3</div>
+          <div class="step-body">
+            <strong>场景三：论文复现（全功率）</strong>
+            <p>目标：复现论文中报告的结果，需要大量计算资源。</p>
+            <div class="badge-list" style="margin-top: var(--space-3)">
+              <div class="badge-item">
+                <span class="badge-code">num_directions: 10</span>
+                <span class="badge-desc">论文配置：10个方向并行探索</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">max_loops: 5</span>
+                <span class="badge-desc">每方向5轮完整循环</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">evolution.enabled: true</span>
+                <span class="badge-desc">必须启用进化框架</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">evolution.max_rounds: 5</span>
+                <span class="badge-desc">更多进化轮次，让优秀因子充分迭代</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-code">factors_per_hypothesis: 3</span>
+                <span class="badge-desc">每假设3个因子，最大化探索密度</span>
+              </div>
+            </div>
+            <div class="callout callout-info" style="margin-top: var(--space-4)">
+              <span class="callout-icon">⚠️</span>
+              <div class="callout-content">
+                <p>这是论文中使用的配置，需要大量 LLM <span class="term" data-definition="Application Programming Interface——这里指 LLM 服务商（如 OpenAI）提供的按调用量计费的接口。每次 LLM 调用都消耗 API 配额">API</span> 调用和计算资源。
+                建议先用场景一确认系统正常运行后，再逐步扩大配置规模。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 4：端到端数据流动画
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">从命令到结果：完整数据流</h3>
+
+      <p class="animate-in">
+        你输入一条命令，背后触发了12个步骤。点击"下一步"跟随数据流，理解每个环节交出了什么、传给了谁。
+      </p>
+
+      <div class="flow-animation animate-in"
+           data-steps="[{&quot;highlight&quot;:&quot;flow-actor-1&quot;,&quot;label&quot;:&quot;你运行 python launcher.py mine — 系统启动&quot;},{&quot;highlight&quot;:&quot;flow-actor-1&quot;,&quot;label&quot;:&quot;launcher.py 读取 .env 中的 API Key，调用 cli.py&quot;},{&quot;highlight&quot;:&quot;flow-actor-2&quot;,&quot;packet&quot;:true,&quot;from&quot;:&quot;actor-1&quot;,&quot;to&quot;:&quot;actor-2&quot;,&quot;label&quot;:&quot;cli.py 读取 experiment.yaml，构建 EvolutionController&quot;},{&quot;highlight&quot;:&quot;flow-actor-2&quot;,&quot;label&quot;:&quot;EvolutionController 初始化，Planning 模块将方向展开为多个子方向&quot;},{&quot;highlight&quot;:&quot;flow-actor-3&quot;,&quot;packet&quot;:true,&quot;from&quot;:&quot;actor-2&quot;,&quot;to&quot;:&quot;actor-3&quot;,&quot;label&quot;:&quot;HypothesisGen 接收方向 + Trace 历史，调用 LLM 生成因子假设&quot;},{&quot;highlight&quot;:&quot;flow-actor-3&quot;,&quot;label&quot;:&quot;QlibFactorParser 将假设转为因子表达式，生成并执行 factor.py&quot;},{&quot;highlight&quot;:&quot;flow-actor-3&quot;,&quot;label&quot;:&quot;FactorRegulator 运行5重质量门控（AST去重、复杂度、一致性等）&quot;},{&quot;highlight&quot;:&quot;flow-actor-4&quot;,&quot;packet&quot;:true,&quot;from&quot;:&quot;actor-3&quot;,&quot;to&quot;:&quot;actor-4&quot;,&quot;label&quot;:&quot;QlibFactorRunner 在 Qlib 中运行回测，输出 IC、ARR、MDD 等指标&quot;},{&quot;highlight&quot;:&quot;flow-actor-3&quot;,&quot;packet&quot;:true,&quot;from&quot;:&quot;actor-4&quot;,&quot;to&quot;:&quot;actor-3&quot;,&quot;label&quot;:&quot;反馈摘要器分析 IC 结果，生成自然语言反馈写入 Trace&quot;},{&quot;highlight&quot;:&quot;flow-actor-4&quot;,&quot;packet&quot;:true,&quot;from&quot;:&quot;actor-3&quot;,&quot;to&quot;:&quot;actor-4&quot;,&quot;label&quot;:&quot;通过质量门控的因子保存到 factors_df.parquet（因子库）&quot;},{&quot;highlight&quot;:&quot;flow-actor-2&quot;,&quot;packet&quot;:true,&quot;from&quot;:&quot;actor-4&quot;,&quot;to&quot;:&quot;actor-2&quot;,&quot;label&quot;:&quot;EvolutionController 根据结果决定下一轮：变异还是交叉&quot;},{&quot;highlight&quot;:&quot;flow-actor-1&quot;,&quot;label&quot;:&quot;进化循环继续或结束 — 最终因子库等待下游模型使用&quot;}]">
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon">⌨️</div>
+            <span>用户 / CLI</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon">🔄</div>
+            <span>EvolutionController</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon">🤖</div>
+            <span>AlphaAgentLoop</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon">📊</div>
+            <span>结果库 / Qlib</span>
+          </div>
+        </div>
+        <div class="flow-packet"></div>
+        <div class="flow-step-label">点击"下一步"开始追踪完整数据流</div>
+        <div class="flow-controls">
+          <button class="btn btn-primary flow-next-btn">下一步 →</button>
+          <button class="btn flow-reset-btn">重置</button>
+          <span class="flow-progress">Step 0 / 12</span>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">📦</span>
+        <div class="callout-content">
+          <span class="callout-title">最终产物：factors_df.parquet</span>
+          <p>
+            整个流程的终点是一个 <span class="term" data-definition="Parquet 是一种列式存储格式，比 CSV 快得多，专为大规模数据处理优化。QuantaAlpha 用它存储最终通过质量门控的因子库">Parquet</span>
+            文件，存储所有通过质量门控的因子。这个文件可以直接被量化模型读取，作为选股特征输入。
+            你挖到的因子就在这里——打开它，读懂它，才是理解 QuantaAlpha 输出的最后一步。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 5：排错指南 + 测验
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading animate-in">当出现问题时——排错指南</h3>
+
+      <p class="animate-in">这些是最常见的四种故障模式，以及对应的排查思路。</p>
+
+      <div class="pattern-cards stagger-children animate-in">
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-error)">
+          <div class="pattern-icon" style="background: var(--color-error-light)">🛡️</div>
+          <div class="pattern-title">因子大量被 FactorRegulator 拒绝</div>
+          <p class="pattern-desc">
+            可能原因：<span class="term" data-definition="AST，抽象语法树去重——通过比较因子表达式的树结构来判断两个因子是否在数学上高度相似，防止因子库中堆满变体因子">AST</span> 去重阈值过严，或 LLM 生成的因子结构雷同。<br>
+            <strong>排查：</strong> 降低 <code>factor.duplication.threshold</code>（默认值 5），或修改 <code>direction</code> 提示词让 LLM 更有创意。也可以暂时将 <code>quality_gate.redundancy_enabled: false</code> 观察是否能通过。
+          </p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-info)">
+          <div class="pattern-icon" style="background: var(--color-info-light)">📉</div>
+          <div class="pattern-title">Backtest 结果 IC 都很低</div>
+          <p class="pattern-desc">
+            可能原因：数据质量问题，或 direction 太宽泛。<br>
+            <strong>排查：</strong> 优先检查 Qlib 数据路径配置，确认 <code>daily_pv.h5</code> 数据不陈旧；尝试更具体的方向主题（如"开盘后30分钟的成交量模式"而非"成交量因子"）；查看 <span class="term" data-definition="Information Coefficient，信息系数——因子预测能力的核心指标，衡量因子值与未来收益的相关性，绝对值越大越好">IC</span> 是接近 0 还是接近 -0.05（负 IC 可能说明方向反了）。
+          </p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-accent)">
+          <div class="pattern-icon" style="background: var(--color-accent-light)">🐢</div>
+          <div class="pattern-title">运行速度太慢</div>
+          <p class="pattern-desc">
+            可能原因：配置过大，或 LLM <span class="term" data-definition="Application Programming Interface——这里指 LLM 服务商（如 OpenAI）提供的按调用量计费的接口。每次 LLM 调用都消耗 API 配额">API</span> 网络延迟高。<br>
+            <strong>排查：</strong> 降低 <code>num_directions</code> 和 <code>factors_per_hypothesis</code>；设置 <code>execution.parallel_execution: true</code>（需要多核环境）；用 <code>ping</code> 测试 API 端点延迟；检查 <span class="term" data-definition="Backtest，回测——用历史数据运行量化策略，验证因子的历史表现。Qlib 是微软开源的量化回测框架">Backtest</span> 的 <code>timeout</code> 参数是否设置合理。
+          </p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-success)">
+          <div class="pattern-icon" style="background: var(--color-success-light)">❌</div>
+          <div class="pattern-title">LLM 生成格式错误的因子表达式</div>
+          <p class="pattern-desc">
+            可能原因：LLM 使用了不支持的操作符，或输出不符合解析器预期的格式。<br>
+            <strong>排查：</strong> 查看 <code>quantaalpha/factors/coder/factor_ast.py</code> 中定义的支持操作符列表；检查 <code>llm.json_mode_strict: true</code> 是否已启用；查看 LLM 返回的原始输出日志（运行时加 <code>--verbose</code> 参数）。
+          </p>
+        </div>
+
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-content">
+          <span class="callout-title">你现在了解了 QuantaAlpha 的每一层</span>
+          <p>
+            从哲学到代码，从进化框架到质量控制，从命令行到配置文件——你已经有了完整的地图。
+            <strong>下一步：运行它，读因子库，理解它为什么选择了那些因子。</strong>
+          </p>
+        </div>
+      </div>
+
+      <h4 class="screen-heading animate-in" style="margin-top: var(--space-12)">模块测验</h4>
+
+      <div class="quiz-container animate-in" id="quiz-module6">
+
+        <!-- Q1 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="完全正确！最小化配置的核心原则：一个方向、少轮循环、关闭进化。只要系统能跑通一个完整的 propose→build→test→feedback 循环，就说明基础设施正常工作。"
+             data-explanation-wrong="这个配置会产生很多 LLM API 调用和大量计算，用于初步验证来说成本太高了。想想怎么用最少的资源验证系统的基本流程是通畅的。">
+          <p class="quiz-question">Q1：你想要快速验证 QuantaAlpha 系统是否正常工作，同时最小化 API 成本。你会怎么设置配置？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：<code>num_directions=10, max_loops=5, evolution.enabled=true</code>（论文配置）
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：<code>num_directions=1, max_loops=2, evolution.enabled=false</code>（快速验证）
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：<code>num_directions=5, max_loops=3, evolution.enabled=true</code>（标准配置）
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question-block"
+             data-correct="C"
+             data-explanation-right="对！max_rounds 控制的是进化轮次，设置过高不会导致 IC 变低——如果有的话，更多轮次应该让结果更好。IC 低通常指向数据问题或方向问题，而不是进化参数。"
+             data-explanation-wrong="这都是可能的原因。数据质量是首要排查点；方向提示词影响 LLM 探索的空间。IC 差的根本原因往往在输入端（数据 + 方向），而不是进化控制参数。">
+          <p class="quiz-question">Q2：你发现系统挖到的因子 <span class="term" data-definition="Information Coefficient，信息系数——因子预测能力的核心指标，衡量因子值与未来收益的相关性，绝对值越大越好">IC</span> 都在 0.01 以下，远低于论文的 0.15。哪个是最不可能的原因？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：数据质量问题（Qlib 数据路径错误或数据陈旧）
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：direction 提示词太模糊，LLM 不知道探索什么方向
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：<code>evolution.max_rounds</code> 设置过高
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question-block"
+             data-correct="B"
+             data-explanation-right="正是！这在研究项目中非常常见。开发者为了加快调试循环，用很小的配置作为默认值。真正要对比论文结果时，需要按照论文 Appendix B 的超参数来配置。把代码的低 IC 默认结果误解为「系统不行」是一个很常见的陷阱。"
+             data-explanation-wrong="这不是 bug 或硬件问题，而是有意为之的工程决策。研究代码通常有两套配置：快速迭代用的「调试默认值」和完整实验用的「论文配置」。">
+          <p class="quiz-question">Q3：论文中的配置（<code>num_directions=10, max_loops=5, factors_per_hypothesis=3</code>）和代码默认值（2, 2, 1）差距很大。这说明什么？</p>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="A" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              A：代码有 bug，默认值是错误的
+            </button>
+            <button class="quiz-option" data-value="B" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              B：代码默认值是用于快速调试的，完整复现需要使用论文中的 <span class="term" data-definition="超参数——控制机器学习或 AI 系统行为的配置参数，不是模型学习得到的，而是人为事先设定的。比如 num_directions、max_loops 都是超参数">超参数</span>
+            </button>
+            <button class="quiz-option" data-value="C" onclick="selectOption(this)">
+              <span class="quiz-option-radio"></span>
+              C：论文的结果是在特殊硬件上取得的，普通电脑无法复现
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">重置</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 6：课程结束——庆祝 + 总结
+    ═══════════════════════════════════════════ -->
+    <div class="screen">
+      <div class="animate-in" style="text-align: center; padding: var(--space-12) 0 var(--space-8)">
+        <div style="font-size: 4rem; margin-bottom: var(--space-4)">🎓</div>
+        <h3 class="module-title" style="font-size: var(--text-4xl); margin-bottom: var(--space-3)">课程完成！</h3>
+        <p style="font-size: var(--text-xl); color: var(--color-text-secondary); max-width: 520px; margin: 0 auto;">
+          你从一个完全陌生的代码库出发，现在已经能够理解、运行并定制 QuantaAlpha 的每一个核心部分。
+        </p>
+      </div>
+
+      <div class="pattern-cards stagger-children animate-in">
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-2) 12%, transparent)">01</div>
+          <div class="pattern-title">你学会了什么是 Alpha 因子</div>
+          <p class="pattern-desc">量化信号的本质、为什么需要挖掘它、QuantaAlpha 如何用 LLM 自动化这个过程。</p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-1)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-1) 12%, transparent)">02</div>
+          <div class="pattern-title">你认识了五位主角</div>
+          <p class="pattern-desc">HypothesisGen、FactorParser、FactorRunner、EvolutionController、FactorRegulator——每位的职责和协作方式。</p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-5)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-5) 12%, transparent)">03</div>
+          <div class="pattern-title">你跟完了一轮完整循环</div>
+          <p class="pattern-desc">从假设提出到因子值计算，再到 <span class="term" data-definition="Backtest，回测——用历史数据验证因子或策略的有效性">Backtest</span> 和反馈写入 Trace，理解了5步循环的每个细节。</p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-3)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-3) 12%, transparent)">04</div>
+          <div class="pattern-title">你理解了进化的秘密</div>
+          <p class="pattern-desc">Original→Mutation→Crossover 进化框架如何让系统从历史结果中自我改进，越跑越好。</p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-4)">
+          <div class="pattern-icon" style="background: color-mix(in srgb, var(--color-actor-4) 12%, transparent)">05</div>
+          <div class="pattern-title">你见识了质量守门员</div>
+          <p class="pattern-desc">FactorRegulator 的5重质量门控如何防止垃圾因子污染因子库，以及 <span class="term" data-definition="过拟合——模型过度适应历史数据的噪声，在未来实际表现中失效。复杂因子表达式尤其容易过拟合">过拟合</span> 风险的控制逻辑。</p>
+        </div>
+
+        <div class="pattern-card animate-in" style="border-top-color: var(--color-accent)">
+          <div class="pattern-icon" style="background: var(--color-accent-light)">06</div>
+          <div class="pattern-title">你现在能驾驭它</div>
+          <p class="pattern-desc">如何运行、调参、选择场景配置、排查常见问题——你有了完整的操作指南。</p>
+        </div>
+
+      </div>
+
+      <h4 class="screen-heading animate-in" style="margin-top: var(--space-12)">接下来探索什么？</h4>
+
+      <div class="step-cards stagger-children animate-in">
+
+        <div class="step-card animate-in">
+          <div class="step-num" style="background: var(--color-success); color: #fff">→</div>
+          <div class="step-body">
+            <strong>运行系统，读因子库</strong>
+            <p>用场景一配置（快速原型）跑一次，然后打开 <code>factors_df.parquet</code>，用 pandas 读取它，看看系统挖出来的因子长什么样——这才是真正的理解。</p>
+          </div>
+        </div>
+
+        <div class="step-card animate-in">
+          <div class="step-num" style="background: var(--color-info); color: #fff">→</div>
+          <div class="step-body">
+            <strong>定制你的 HypothesisGen</strong>
+            <p>依赖注入设计让你可以替换任何组件。在 <code>settings.py</code> 里修改 <code>hypothesis_gen</code> 字段，指向你自己写的类——这是扩展 QuantaAlpha 最干净的方式。</p>
+          </div>
+        </div>
+
+        <div class="step-card animate-in">
+          <div class="step-num" style="background: var(--color-accent); color: #fff">→</div>
+          <div class="step-body">
+            <strong>阅读论文原文</strong>
+            <p>代码来自一篇量化研究论文。理解了代码之后，读论文会变得容易很多——你会认出每个公式对应哪个函数，每个实验设置对应哪个 <span class="term" data-definition="超参数——控制 AI 系统行为的配置参数。理解超参数的含义是读懂论文实验设置的关键">超参数</span>。</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout callout-accent animate-in" style="margin-top: var(--space-12)">
+        <span class="callout-icon">✨</span>
+        <div class="callout-content">
+          <span class="callout-title">最后一句话</span>
+          <p>
+            QuantaAlpha 的设计哲学是：让研究员专注于"方向"，让机器负责"探索"。
+            你现在已经同时理解了这两端——你知道怎么给出好的方向，也知道机器背后发生了什么。
+            <strong>这就是驾驭它的完整能力。</strong>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+  </main>
+
+</body>
+</html>
