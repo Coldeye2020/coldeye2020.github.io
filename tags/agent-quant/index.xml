@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Agent Quant on Co&#39;Log</title>
+    <link>https://coldeye2020.github.io/tags/agent-quant/</link>
+    <description>Recent content in Agent Quant on Co&#39;Log</description>
+    <generator>Hugo -- 0.139.4</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 11 Apr 2026 14:00:00 +0800</lastBuildDate>
+    <atom:link href="https://coldeye2020.github.io/tags/agent-quant/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文</title>
+      <link>https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/</link>
+      <pubDate>Sat, 11 Apr 2026 14:00:00 +0800</pubDate>
+      <guid>https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/</guid>
+      <description>&lt;p&gt;如果你听说过&amp;quot;量化基金&amp;quot;&amp;ldquo;AI 炒股&amp;quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？&lt;/p&gt;
+&lt;p&gt;这篇文章想借一篇 2026 年的论文——&lt;strong&gt;QuantaAlpha&lt;/strong&gt;——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样&lt;strong&gt;自己想出预测方法，然后不断进化改进&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;量化研究在做什么&#34;&gt;量化研究在做什么？&lt;/h2&gt;
+&lt;h3 id=&#34;从选股说起&#34;&gt;从&amp;quot;选股&amp;quot;说起&lt;/h3&gt;
+&lt;p&gt;普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到&lt;strong&gt;可以被数学描述、可以被计算机执行的选股规律&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这类规律叫做&lt;strong&gt;因子（factor）&lt;/strong&gt;。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。&lt;/p&gt;
+&lt;p&gt;最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。&lt;/p&gt;
+&lt;p&gt;因子本身通常是一个&lt;strong&gt;数学表达式&lt;/strong&gt;，作用在价格、成交量等原始数据上，输出一个分数。比如：&lt;/p&gt;
+$$f_t(i) = \frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$&lt;p&gt;这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&amp;ldquo;Alpha&amp;rdquo;&lt;strong&gt;是量化圈里的另一个核心词。它指的是&lt;/strong&gt;扣除市场整体涨跌之后，策略额外赚到的收益&lt;/strong&gt;（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。&lt;/p&gt;
+&lt;h3 id=&#34;量化因子挖掘的传统流程&#34;&gt;量化因子挖掘的传统流程&lt;/h3&gt;
+&lt;p&gt;在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;人工驱动&lt;/strong&gt;：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;机器搜索&lt;/strong&gt;：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的&amp;quot;天书&amp;quot;公式。&lt;/p&gt;
+&lt;p&gt;LLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。&lt;/p&gt;
+&lt;h3 id=&#34;现有-llm-agent-方法是怎么做的&#34;&gt;现有 LLM Agent 方法是怎么做的？&lt;/h3&gt;
+&lt;p&gt;大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  通用 LLM Agent 方法
+  ─────────────────────────────────────────
+
+  市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码
+                  ↑                     │
+                  │                     ↓
+              修改假设 ←──── 回测评估（IC等）
+                                        │
+                                        ↓
+                              搜索空间逐渐收缩 
+                         （反复修改，越来越像）
+  ─────────────────────────────────────────
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果&amp;quot;打补丁&amp;rdquo;，慢慢地，所有的修改方向都指向同一片区域，&lt;strong&gt;搜索空间在不断收缩&lt;/strong&gt;。结果是生成了大量长相相似的因子，整体多样性越来越差。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

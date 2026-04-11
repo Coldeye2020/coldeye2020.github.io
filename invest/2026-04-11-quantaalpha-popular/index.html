@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 | Co&#39;Log</title>
+<meta name="keywords" content="LLM, Agent Quant">
+<meta name="description" content="如果你听说过&quot;量化基金&quot;&ldquo;AI 炒股&quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？
+这篇文章想借一篇 2026 年的论文——QuantaAlpha——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样自己想出预测方法，然后不断进化改进。
+我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。
+
+量化研究在做什么？
+从&quot;选股&quot;说起
+普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到可以被数学描述、可以被计算机执行的选股规律。
+这类规律叫做因子（factor）。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。
+最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。
+因子本身通常是一个数学表达式，作用在价格、成交量等原始数据上，输出一个分数。比如：
+$$f_t(i) = \frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。
+&ldquo;Alpha&rdquo;是量化圈里的另一个核心词。它指的是扣除市场整体涨跌之后，策略额外赚到的收益（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。
+量化因子挖掘的传统流程
+在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：
+人工驱动：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。
+机器搜索：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的&quot;天书&quot;公式。
+LLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。
+现有 LLM Agent 方法是怎么做的？
+大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：
+  通用 LLM Agent 方法
+  ─────────────────────────────────────────
+
+  市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码
+                  ↑                     │
+                  │                     ↓
+              修改假设 ←──── 回测评估（IC等）
+                                        │
+                                        ↓
+                              搜索空间逐渐收缩 
+                         （反复修改，越来越像）
+  ─────────────────────────────────────────
+这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果&quot;打补丁&rdquo;，慢慢地，所有的修改方向都指向同一片区域，搜索空间在不断收缩。结果是生成了大量长相相似的因子，整体多样性越来越差。">
+<meta name="author" content="Coldeye">
+<link rel="canonical" href="https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.730159cb963c92ac36d8c1fd343f8d9c45befd96ec83237a5783790c16a78113.css" integrity="sha256-cwFZy5Y8kqw22MH9ND&#43;NnEW&#43;/ZbsgyN6V4N5DBangRM=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://coldeye2020.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://coldeye2020.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://coldeye2020.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://coldeye2020.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://coldeye2020.github.io/favicon-32x32.png">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><script data-goatcounter="https://coldeye.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+    });"></script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HN6RSNM2B"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-8HN6RSNM2B');
+        }
+      </script><meta property="og:url" content="https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/">
+  <meta property="og:site_name" content="Co&#39;Log">
+  <meta property="og:title" content="让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文">
+  <meta property="og:description" content="如果你听说过&#34;量化基金&#34;“AI 炒股&#34;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？
+这篇文章想借一篇 2026 年的论文——QuantaAlpha——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样自己想出预测方法，然后不断进化改进。
+我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。
+量化研究在做什么？ 从&#34;选股&#34;说起 普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到可以被数学描述、可以被计算机执行的选股规律。
+这类规律叫做因子（factor）。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。
+最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。
+因子本身通常是一个数学表达式，作用在价格、成交量等原始数据上，输出一个分数。比如：
+$$f_t(i) = \frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。
+“Alpha”是量化圈里的另一个核心词。它指的是扣除市场整体涨跌之后，策略额外赚到的收益（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。
+量化因子挖掘的传统流程 在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：
+人工驱动：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。
+机器搜索：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的&#34;天书&#34;公式。
+LLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。
+现有 LLM Agent 方法是怎么做的？ 大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：
+通用 LLM Agent 方法 ───────────────────────────────────────── 市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码 ↑ │ │ ↓ 修改假设 ←──── 回测评估（IC等） │ ↓ 搜索空间逐渐收缩 （反复修改，越来越像） ───────────────────────────────────────── 这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果&#34;打补丁”，慢慢地，所有的修改方向都指向同一片区域，搜索空间在不断收缩。结果是生成了大量长相相似的因子，整体多样性越来越差。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="invest">
+    <meta property="article:published_time" content="2026-04-11T14:00:00+08:00">
+    <meta property="article:modified_time" content="2026-04-11T14:00:00+08:00">
+    <meta property="article:tag" content="LLM">
+    <meta property="article:tag" content="Agent Quant">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文">
+<meta name="twitter:description" content="如果你听说过&quot;量化基金&quot;&ldquo;AI 炒股&quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？
+这篇文章想借一篇 2026 年的论文——QuantaAlpha——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样自己想出预测方法，然后不断进化改进。
+我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。
+
+量化研究在做什么？
+从&quot;选股&quot;说起
+普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到可以被数学描述、可以被计算机执行的选股规律。
+这类规律叫做因子（factor）。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。
+最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。
+因子本身通常是一个数学表达式，作用在价格、成交量等原始数据上，输出一个分数。比如：
+$$f_t(i) = \frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。
+&ldquo;Alpha&rdquo;是量化圈里的另一个核心词。它指的是扣除市场整体涨跌之后，策略额外赚到的收益（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。
+量化因子挖掘的传统流程
+在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：
+人工驱动：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。
+机器搜索：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的&quot;天书&quot;公式。
+LLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。
+现有 LLM Agent 方法是怎么做的？
+大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：
+  通用 LLM Agent 方法
+  ─────────────────────────────────────────
+
+  市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码
+                  ↑                     │
+                  │                     ↓
+              修改假设 ←──── 回测评估（IC等）
+                                        │
+                                        ↓
+                              搜索空间逐渐收缩 
+                         （反复修改，越来越像）
+  ─────────────────────────────────────────
+这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果&quot;打补丁&rdquo;，慢慢地，所有的修改方向都指向同一片区域，搜索空间在不断收缩。结果是生成了大量长相相似的因子，整体多样性越来越差。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Invest",
+      "item": "https://coldeye2020.github.io/invest/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文",
+      "item": "https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文",
+  "name": "让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文",
+  "description": "如果你听说过\u0026quot;量化基金\u0026quot;\u0026ldquo;AI 炒股\u0026quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？\n这篇文章想借一篇 2026 年的论文——QuantaAlpha——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样自己想出预测方法，然后不断进化改进。\n我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。\n量化研究在做什么？ 从\u0026quot;选股\u0026quot;说起 普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到可以被数学描述、可以被计算机执行的选股规律。\n这类规律叫做因子（factor）。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。\n最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。\n因子本身通常是一个数学表达式，作用在价格、成交量等原始数据上，输出一个分数。比如：\n$$f_t(i) = \\frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。\n\u0026ldquo;Alpha\u0026rdquo;是量化圈里的另一个核心词。它指的是扣除市场整体涨跌之后，策略额外赚到的收益（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。\n量化因子挖掘的传统流程 在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：\n人工驱动：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。\n机器搜索：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的\u0026quot;天书\u0026quot;公式。\nLLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。\n现有 LLM Agent 方法是怎么做的？ 大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：\n通用 LLM Agent 方法 ───────────────────────────────────────── 市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码 ↑ │ │ ↓ 修改假设 ←──── 回测评估（IC等） │ ↓ 搜索空间逐渐收缩 （反复修改，越来越像） ───────────────────────────────────────── 这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果\u0026quot;打补丁\u0026rdquo;，慢慢地，所有的修改方向都指向同一片区域，搜索空间在不断收缩。结果是生成了大量长相相似的因子，整体多样性越来越差。\n",
+  "keywords": [
+    "LLM", "Agent Quant"
+  ],
+  "articleBody": "如果你听说过\"量化基金\"“AI 炒股\"这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？\n这篇文章想借一篇 2026 年的论文——QuantaAlpha——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样自己想出预测方法，然后不断进化改进。\n我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。\n量化研究在做什么？ 从\"选股\"说起 普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到可以被数学描述、可以被计算机执行的选股规律。\n这类规律叫做因子（factor）。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。\n最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。\n因子本身通常是一个数学表达式，作用在价格、成交量等原始数据上，输出一个分数。比如：\n$$f_t(i) = \\frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。\n“Alpha”是量化圈里的另一个核心词。它指的是扣除市场整体涨跌之后，策略额外赚到的收益（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。\n量化因子挖掘的传统流程 在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：\n人工驱动：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。\n机器搜索：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的\"天书\"公式。\nLLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。\n现有 LLM Agent 方法是怎么做的？ 大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：\n通用 LLM Agent 方法 ───────────────────────────────────────── 市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码 ↑ │ │ ↓ 修改假设 ←──── 回测评估（IC等） │ ↓ 搜索空间逐渐收缩 （反复修改，越来越像） ───────────────────────────────────────── 这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果\"打补丁”，慢慢地，所有的修改方向都指向同一片区域，搜索空间在不断收缩。结果是生成了大量长相相似的因子，整体多样性越来越差。\nQuantaAlpha 的流程设计与此截然不同：\nQuantaAlpha ───────────────────────────────────────── 多样化规划：同时生成 10 个互补方向 ↓ [10 条轨迹各自独立运行] ↓ 假设生成（Idea Agent）← 评估历史库反馈 ↓ 语义一致性检查 形式化描述 ↓ 语义一致性检查 符号表达式（AST）──→ 复杂度检查 / 冗余过滤 ↓ 可执行代码 ↓ 回测评估（Evaluation Agent） ↓ 轨迹存入轨迹池 ──→ 评估历史库（每轮结束后更新） ↓ ┌─ Mutation：定位最差步骤，冻结前缀，重写后续 │ ↓（新轨迹入池） └─ Crossover：跨轨迹合并高贡献片段 ↓（新轨迹入池，重复 5 轮，搜索空间持续扩张） 因子池筛选（Rank IC 降序，相关系数 \u003c 0.7） ↓ LightGBM → 策略 ───────────────────────────────────────── 下图展示了三代方法的对比，核心区别一目了然：现有 Agent 方法的搜索空间越来越窄，QuantaAlpha 的搜索空间持续扩展：\n最核心的差异有两点：质量约束在生成时就执行（而非最后过滤），以及在轨迹层面做进化（而非只优化单个因子）。下面我们逐一展开。\n股票市场为什么难预测？ 在介绍论文方法之前，先搞清楚为什么这件事本来就很难。论文开篇点明了金融市场的三个本质特性：\n重尾分布：极端事件比你想象的多得多 我们日常生活中的很多现象服从正态分布（Normal Distribution，也叫钟形曲线）。比如人的身高，大多数人集中在均值附近（170cm 左右），极端矮或极端高的人很少。\n$$p(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\exp\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)$$股票的日收益率看起来也像正态分布，但如果你仔细看尾部，会发现股市的极端涨跌出现的频率，远高于正态分布的预测。这种现象叫做重尾分布（Fat-Tailed / Heavy-Tailed Distribution）。\n下面是正态分布和重尾分布的示意对比：\n概率密度 ↑ │ 正态分布：中间高，两边快速归零 │ ████ │ ██████ │ ████████ │ ████████████ │ ████████████████ ├──────────────────── 收益率 -3σ -σ 0 σ 3σ 概率密度 ↑ │ 重尾分布：中间更尖，但两边下降更慢 │ ██ │ ████ │ ██████ │ ██████████ │ ▓▓▓████████████████▓▓▓ ← 尾部比正态分布\"厚\" ├──────────────────────── 收益率 -3σ -σ 0 σ 3σ 用数字来感受一下：在正态分布下，单日涨跌超过 3 个标准差的概率约为 0.27%，平均每 370 个交易日才出现一次。但在实际股市中，这种\"3 倍标准差\"的事件每隔几十天就可能出现一次——比理论预测高出数十倍。\n对量化研究的影响是：\n回测结果充满噪声，某个因子今天看起来很好，可能只是碰上了一次极端行情 基于正态分布假设的统计方法（比如普通线性回归）会严重低估风险 因子有效性的判断需要更长的时间周期才能稳定 这也是为什么论文要用 Rank IC（用排名代替原始数值）而不只是普通 IC——排名操作把极端值压制下来，对重尾分布更鲁棒。\n时变波动率：规律本身会变 不仅股票收益率的均值难以预测，就连波动的剧烈程度也在不断变化。平静期里，每天涨跌 0.5%；动荡期里，每天涨跌 3-5%。因子信号在这两种环境下的\"有效期\"完全不同，一个在低波动环境里有效的因子，搬到高波动环境可能完全失灵。\n截面依赖：股票之间相互影响 同一时刻，市场上的 500 只股票不是独立行动的。行业联动、宏观消息、资金流向——这些因素会让相关行业的股票同涨同跌。如果你的因子忽略了这种相关性，就会高估持有多只股票的分散化效果，实际承担的风险比你以为的大得多。\nQuantaAlpha 的框架 论文把整个系统设计为四个模块，像流水线一样串联：\n第一步：多样化规划——从 10 个方向出发 系统首先生成 10 个互补的初始研究方向，覆盖不同的信号来源和逻辑类型：\n维度 两端 信号来源 价格类 ↔ 成交量类 时间尺度 短期（1-5日）↔ 长期（20-60日） 机制类型 动量 / 均值回归 / 波动率结构 / 隔夜信息 为什么要强制多样化？因为 LLM 有\"偷懒\"的倾向——你让它想 10 个假设，它可能给你同一个想法的 10 种说法。显式的多样性约束能逼迫它真正覆盖不同方向，为后续进化提供广阔的起点。\n第二步：因子构建——从想法到代码的四层翻译 每个假设由三个 AI 角色协作完成：\n想法 AI 提出带有经济学逻辑的假设，比如\"机构投资者在收盘前集中建仓，导致收盘价与开盘价的差距能预测第二天的交易量变化\"。\n构建 AI 把假设变成可运行的因子公式，经过四层翻译：\n假设（自然语言） ↓ 形式化描述（用哪些数据特征、哪类操作、参数怎么设） ↓ 数学表达式（像乐高积木一样拼装起来的符号公式） ↓ 可执行代码（可以直接跑的 Python/Qlib 代码） 每层之间有语义一致性检查——如果假设说的是\"动量效应\"，最终的公式却变成了\"均值回归\"，系统会发现这个矛盾并要求修改，而不是放任这种偷偷走样的情况发生。\n评估 AI 负责回测并记录结果，同时维护一份\"成功和失败因子的规律库\"，反馈给想法 AI，让下一轮假设更有针对性。\n一个具体例子：从假设到代码的四步翻译\n假设 Idea Agent 提出了这样一个假设：\n“机构资金在收盘前集中买入，导致收盘价相对开盘价偏高；同时，成交量同步放大说明资金参与真实。这种’价涨量增’的组合能预测次日的延续性动量。”\nFactor Agent 接着完成四步翻译：\n第一步：形式化描述（把假设翻译成\"用什么数据、做什么操作\"）\n特征：close（收盘价）、open（开盘价）、volume（成交量） 操作：计算日内收益（close-open）/close；计算成交量变化率 Δvol/vol；对两者取 20 日滑动相关系数；截面排名\n第二步：符号表达式（把描述翻译成数学公式）\n$$f = \\text{RANK}\\Big(\\text{TS\\_CORR}\\Big(\\frac{\\text{close}-\\text{open}}{\\text{close}},\\ \\frac{\\Delta\\text{vol}}{\\text{vol}},\\ 20\\Big)\\Big)$$20 日价量相关性高，说明\"涨的时候成交量也大\"——正是机构资金参与的特征。截面排名把所有股票拉到同一标尺上比较。\n第三步：语义一致性检查\n系统检查：假设说的是\"价涨量增\"，表达式用了价量相关性——语义对齐，通过。\n第四步：生成可执行代码\ndef factor(close, open_, volume): intraday_ret = (close - open_) / close vol_chg = volume.pct_change() corr = intraday_ret.rolling(20).corr(vol_chg) return corr.rank(axis=1, pct=True) 代码和表达式语义再次核验：rolling(20).corr 对应 TS_CORR(…, 20)，rank(pct=True) 对应 RANK，通过。\n整个过程每一步都有\"锚点\"，LLM 不会悄悄把\"动量因子\"改成\"均值回归因子\"而没人发现。\n第三步：三重约束门——质量管控在生成时就执行 这是 QuantaAlpha 与通用 Agent 方法最重要的设计差异之一。\n传统方法是在最后过滤掉不合格因子。问题在于：AI 根本不知道有这些标准，会反复生成同类问题的因子，计算资源白白浪费。而且 AI 的优化目标（预测准确）和约束条件（低换手率、低复杂度）之间存在矛盾，事后过滤无法解决这个矛盾，只会让搜索方向反复跑偏。\nQuantaAlpha 的做法是把三道约束门嵌入生成过程，因子一生成就检查，不通过则当场修改：\n第一道：语义一致性。检查假设 $h$ 和描述 $d$ 之间、符号表达式 $f$ 和代码 $c$ 之间有没有语义漂移。不一致则只修改不一致的那一层，其余已验证的内容保留。\n第二道：复杂度控制。论文用一个加权公式量化因子的复杂程度：\n$$\\mathcal{C}(f) = \\alpha_1 \\cdot SL(f) + \\alpha_2 \\cdot PC(f) + \\alpha_3 \\cdot \\log(1 + |F_f|)$$三项分别控制：\n$SL(f)$（Symbol Length）：因子公式的长度，即数学表达式里的节点个数，上限 250 $PC(f)$（Parameter Count）：自由参数数量（比如\"20 日窗口\"里的\"20\"），自由参数占比不超过 50% $|F_f|$（Feature Count）：用到的原始数据特征数量，上限 6 个 这道关卡的消融实验结果最为显著：去掉复杂度控制后，年化超额收益下降 8.44%，最大回撤上升 2.57%——典型的过拟合症状：训练期把历史噪声\"背\"下来了，测试期一遇到新环境就崩。\n第三道：冗余过滤。通过比较两个因子的数学结构相似度，过滤掉和已有因子高度重复的新因子：\n$$s(f_i, f_j) = \\max_{\\substack{S_i \\subseteq T(f_i),\\; S_j \\subseteq T(f_j) \\\\ S_i \\cong S_j}} |V(S_i)|, \\quad S(f) = \\max_{\\phi \\in \\mathcal{Z}}\\, s(f, \\phi)$$这里比较的是因子公式的\"骨架结构\"，术语叫抽象语法树（AST，Abstract Syntax Tree）。\n什么是 AST？\n任何数学公式或代码，都可以被解析成一棵树形结构——每个操作是一个节点，操作数是它的子节点。比如公式 RANK(TS_MEAN(close, 5)) 对应的树是：\nRANK │ TS_MEAN / \\ close 5 再复杂一点，RANK(TS_CORR(close, volume, 20) * TS_MEAN(close, 5)) 对应：\nRANK │ MUL / \\ TS_CORR TS_MEAN / | \\ / \\ close vol 20 close 5 这棵树就是因子的\"骨架\"——不管用哪只股票的数据算，骨架是固定的。\n冗余检测是怎么做的？\n把两个因子的 AST 都画出来，然后找\"最大的公共子树\"——也就是两棵树里结构完全相同的最大片段。\n举个例子。假设因子库里已有因子 A：\n$$f_A = \\text{RANK}(\\text{TS\\_CORR}(\\text{close}, \\text{volume}, 20))$$现在新生成了因子 B：\n$$f_B = \\text{RANK}(\\text{TS\\_CORR}(\\text{close}, \\text{volume}, 20) \\times \\text{TS\\_STD}(\\text{close}, 5))$$两者的 AST 对比：\n因子 A 因子 B RANK RANK │ │ TS_CORR MUL / | \\ / \\ close vol 20 TS_CORR TS_STD / | \\ / \\ close vol 20 close 5 最大公共子树是 TS_CORR(close, vol, 20)，包含 4 个节点。如果这个数字超过阈值（论文设为 5），系统就认为因子 B 与 A 高度重叠，直接拒绝。\n为什么不用数值相关系数来判断冗余？因为两个因子的数值相关性需要先跑完回测才能算，代价很高；而 AST 比对在生成阶段就能完成，几乎没有计算成本。而且结构冗余比数值冗余更能反映\"同质化\"——两个结构相似的因子，即使在某段时间数值相关性不高，在新市场上也很可能同时失效。\n消融结果：去掉冗余过滤后，ARR 几乎不变（-0.62%）。论文指出多样性是泛化能力而非预测力的来源——因子冗余会降低跨市场迁移时的鲁棒性，但不直接影响样本内预测准确度。\n下面是约束门消融的完整结果：\n三重约束门消融结果（CSI300，括号内为与完整模型的差值）\n消融条件 IC ARR(%) MDD(%) 完整模型 0.149 28.99 9.42 去掉语义一致性 0.130（-0.019） 23.51（-5.48） 9.75 去掉复杂度控制 0.125（-0.024） 20.55（-8.44） 11.99（+2.57） 去掉冗余过滤 0.122（-0.027） 28.37（-0.62） 9.44 三道全去掉 0.122（-0.027） 17.55（-11.44） 10.69 第四步：自进化——Mutation 和 Crossover 通过三道关的因子进入轨迹池，接下来进行核心的进化操作。\n什么是\"轨迹\"？\n一条**轨迹（trajectory）**是一次完整的 alpha 挖掘工作记录：从最初的假设，到每一步的因子生成和修改，到最终的回测结果，全程都保存下来。就像一个研究员从灵感到结论的完整笔记——可以回头翻阅，可以找到哪一步写错了，也可以把两份笔记里最精彩的部分摘出来组合成新的研究。\n论文把优化目标形式化为：\n$$\\pi^* = \\arg\\max_{\\pi} \\mathbb{E}_{\\tau \\sim \\pi}[R(\\tau)], \\quad R(\\tau) = \\mathcal{L}(f_\\tau(\\mathbf{X}), \\mathbf{y}) - \\lambda\\mathcal{R}(f_\\tau)$$$\\tau$ 就是一条轨迹，$R(\\tau)$ 是这条轨迹的奖励。奖励同时包含预测准确性 $\\mathcal{L}$（IC、ICIR 等）和正则项 $\\mathcal{R}$（复杂度 + 因子间相关性），$\\lambda$ 控制二者的权衡。\n变异（Mutation）：找到最弱的一步，精准修复\n$$\\tau_{\\text{child}} = (s_0, a_0, \\ldots, s_k, \\text{Refine}(a_k), s'_{k+1}, \\ldots, s'_n)$$AI 回顾一条轨迹，找出最拖累结果的步骤 $k$，冻结 $k$ 之前的所有内容（已验证的好内容不动），只重写第 $k$ 步及其后续。可以更换经济机制（动量→波动率结构）、调整时间窗口（5日→20日）、引入条件判断（“只在成交量上升时触发”）。\n为什么这是四个组件里消融效果最显著的（ARR -9.81%，IC -0.0292）？因为变异同时做了两件事：修复已知的错误，以及通过机制级别的修改跳出局部最优。\n交叉（Crossover）：从多条成功轨迹里提取精华\n$$\\tau_{\\text{child}} = \\text{Crossover}(\\tau^{(1)}, \\ldots, \\tau^{(k)})$$从上一轮效果最好的几条轨迹里，各自提取贡献最大的片段（某条轨迹的假设特别好、另一条的因子结构特别巧妙），组合成新的轨迹。\n这模拟的是研究员之间的协作：研究员甲擅长捕捉隔夜跳空信息，研究员乙擅长建模波动率结构，两人合作能产生\"用隔夜信息触发波动率结构判断\"的新思路。\n额外价值：每个因子都有可追溯的来源谱系——假设从哪条轨迹来，结构参考了哪个父轨迹，全程可审计。这是解决\"AI 黑盒\"问题的一个具体手段。\n一个因子的完整成长史 论文追踪了因子 Institutional_Momentum_Score_20D（机构驱动 20 日动量评分）从第 1 轮到第 5 轮的完整进化过程，可以清晰看到整套机制是如何运作的：\n注：Figure 7 折线图 Y 轴是因子池整体累计超额收益；每轮括号标注的 ARR/MDD 是该轮单条轨迹自身的回测指标，两者含义不同。\nIter 1（初始化）：假设是\"低成交量 = 市场噪声少，此时做均值回归效率更高\"。生成因子 RegimeFiltered_Reversal_5D。ARR=13.27%，MDD=7.67%。回测反馈：缺少幅度信息和风险控制。\nIter 2（变异）：定位问题——缺少方向确认。修改为：把 1 日、5 日、20 日三个时间尺度的动量信号对齐，再加上波动率门控。ARR 仅 7.35%，但 MDD 暴涨到 18.7%——过度工程化，过拟合了。\nIter 3（交叉）：从其他轨迹里借来更简洁的结构，大幅简化，用标准的 5日/20日波动率比率加动量，线性加权替代复杂嵌套条件。ARR 提升到 22.38%，MDD 大幅回落。第 2 轮复杂化、第 3 轮简化的来回，正是交叉纠正过拟合的直观演示。\nIter 4（变异）：在简洁结构基础上，融合波动率机制与更精准的嵌套动量。ARR=27.85%。\nIter 5（交叉）：整合两条父轨迹的精华——父轨迹 1 擅长识别\"零售投机型脆弱动量\"，父轨迹 2 擅长识别\"机构支撑的可持续动量\"。最终因子：\n$$f = \\text{RANK}\\Big(\\underbrace{\\text{TS\\_CORR}\\big(\\tfrac{\\Delta\\text{close}}{\\text{close}},\\, \\tfrac{\\Delta\\text{vol}}{\\text{vol}},\\, 20\\big)}_{\\text{20日价量相关性}} \\times \\underbrace{\\text{TS\\_MEAN}\\big(\\tfrac{\\text{close}-\\text{open}}{\\text{close}},\\, 5\\big)}_{\\text{5日平均日内收益}}\\Big)$$经济含义：价量同步变动说明机构资金真正参与（而非散户跟风），这种情况下的持续上涨才是可信的动量。ARR=29.63%，每个组件都有清晰的经济学解释，来源可追溯。\n实验 一篇量化方法论文，需要回答四个核心问题：\n整体效果：比现有方法强多少？ 各组件贡献：哪些设计真正有效，哪些是多余的？ 泛化能力：在没见过的市场上能用吗？ 收敛性：跑多少轮最合适，会不会越跑越差？ 实验设置对应这四个问题：三个市场（CSI300/CSI500/S\u0026P500），训练期 2016-2020，验证期 2021，测试期 2022-2025。测试期故意覆盖了 2023 年的 A 股风格切换，这是对因子鲁棒性的严苛考验。\n评估指标 在看数字之前，我们需要理解这些指标的含义和计算方式。\n所有策略指标的基础是超额收益：\n$$r_{\\text{excess},t} = r_{\\text{portfolio},t} - r_{\\text{benchmark},t} - c_{\\text{transaction},t}$$买入手续费 0.05%，卖出手续费 0.15%（扣掉这个之后，那些靠频繁买卖刷 IC 的策略就原形毕露了）。\nIC（Information Coefficient，信息系数）：衡量因子打分和股票实际涨跌幅的一致程度。\n$$\\text{IC}_t = \\frac{(\\mathbf{f}_t - \\bar{f}_t\\mathbf{1})^\\top(\\mathbf{r}_{t+1} - \\bar{r}_{t+1}\\mathbf{1})}{\\|\\mathbf{f}_t - \\bar{f}_t\\mathbf{1}\\|_2 \\cdot \\|\\mathbf{r}_{t+1} - \\bar{r}_{t+1}\\mathbf{1}\\|_2}$$本质是因子值向量和次日收益率向量的 Pearson 相关系数，每天算一个，最后取平均。IC \u003e 0.03 认为有实用价值，\u003e 0.05 相当不错。绝大多数机构量化因子 IC 在 0.03~0.06 之间，QuantaAlpha 达到 0.1501 属于顶级水平。\n举个例子：某天对 300 只股票打分，分数最高的 10 只，平均第二天涨了 0.8%；分数最低的 10 只，平均跌了 0.3%。这个\"高分股票涨、低分股票跌\"的分离程度，就是 IC 在衡量的东西。\nICIR（IC Information Ratio）：IC 的稳定性。\n$$\\text{ICIR} = \\overline{\\text{IC}} / \\sigma(\\text{IC})$$只看平均 IC 不够——一个因子可能某几个月 IC 极高，其余月份接近 0，平均值看起来不错，但实盘完全没法用。ICIR 把均值除以标准差，高 ICIR 意味着这个因子每个月都比较稳定地有效。ICIR \u003e 0.5 认为稳定，\u003e 1.0 属于非常优秀。QuantaAlpha 达到 0.9110。\nRank IC（排名信息系数）：对重尾分布的鲁棒版 IC。\n$$\\text{RankIC}_t = \\text{Pearson}\\big(\\text{rank}(\\mathbf{f}_t),\\ \\text{rank}(\\mathbf{r}_{t+1})\\big)$$把因子值和收益率都换成各自的排名，再算相关系数。这样做的好处：某只股票当天暴涨 30%（极端值），在普通 IC 里会对结果产生巨大影响；换成排名之后，它只是\"排名第一\"，和排名第二的股票差距被压缩，极端值的影响被大幅削弱。\nARR（Annualized Excess Return Rate，年化超额收益率）：策略每年平均跑赢大盘多少。这是最直观的盈利指标。\nMDD（Maximum Drawdown，最大回撤）：从策略净值的历史峰值，到之后某个谷底，超额收益累计下跌的最大幅度。衡量的是\"赚钱过程中最痛苦的那段时间有多痛\"，直接影响实盘能不能坚持下去。\nIR（Information Ratio，信息比率）：\n$$\\text{IR} = \\frac{\\bar{r}_{\\text{excess}}}{\\sigma(r_{\\text{excess}})} \\times \\sqrt{252}$$年化超额收益除以超额收益的波动率。衡量\"每承担一单位风险，能换来多少超额收益\"，是衡量策略质量的综合指标。IR \u003e 1.0 在业界被认为是优秀策略的门槛。\nIR 与夏普比率（Sharpe Ratio）的区别在于分母：夏普比率除以的是组合总收益的波动率（含市场 beta），IR 除以的是超额收益（相对 benchmark）的波动率。量化选股策略通常用 IR 而非夏普，因为 IR 剔除了市场整体涨跌的影响，更纯粹地衡量选股能力。\nCR（Calmar Ratio，卡尔玛比率）：\n$$\\text{CR} = \\text{ARR} / |\\text{MDD}|$$年化收益率除以最大回撤。衡量\"每忍受一单位的最大痛苦，能换来多少年化收益\"，对最大回撤有心理承受要求的投资者特别看重这个指标。\n这些指标为什么要同时看？ 因为它们互相制约，任何一个单独好看都可能是\"作弊\"：\n作弊方式 被哪个指标识破 高频交易刷高表面收益 扣手续费后 ARR 崩塌 激进加仓博短期高收益 MDD 暴露极端风险 靠运气赚几次大的 ICIR 显示收益不稳定 只在牛市有效 超额收益相对 benchmark，牛市 alpha 被剥离 主要实验结果 各方法在 CSI300 测试期（2022-2025）的对比，使用各自最优 backbone\n方法 IC ARR (%) MDD (%) TRA（最佳深度学习） 0.0421 6.81 8.51 经典因子库最优 — 4.63 — RD-Agent（GPT-5.2） 0.0531 9.91 14.82 AlphaAgent（Claude-4.5-Sonnet） 0.1092 16.48 8.14 QuantaAlpha（GPT-5.2） 0.1501 27.75 7.98 两个关键对比值得细看：\n同为 GPT-5.2，QuantaAlpha vs RD-Agent：IC 提升 183%，ARR 提升 17.84 个百分点，MDD 从 14.82% 降到 7.98%。差距几乎全来自约束机制——没有生成阶段质量管控的 RD-Agent，因子会越来越复杂越来越过拟合，实盘波动大、回撤深。\nQuantaAlpha vs AlphaAgent：AlphaAgent 已有生成阶段正则化，所以优于 RD-Agent，但缺少轨迹级进化。ARR 差了 12.21 个百分点，MDD 差了 4.91 个百分点——这个差距量化的就是 Mutation + Crossover 的贡献。\nQuantaAlpha 在全部五个 backbone LLM（Qwen3-235B、DeepSeek-V3.2、Gemini-3-Pro、Claude-4.5-Sonnet、GPT-5.2）上均优于对应的 AlphaAgent 和 RD-Agent，说明提升来自框架本身，与用哪个 LLM 无关。\n进化组件各自贡献多少？ 各进化组件消融结果（括号内为与完整模型的差值）\n消融条件 IC ARR(%) MDD(%) 完整模型 0.1493 28.99 9.42 去掉多样化规划 0.1488（-0.0005） 21.21（-7.78） 12.15（+2.73） 去掉变异（Mutation） 0.1201（-0.0292） 19.18（-9.81） 8.99 去掉交叉（Crossover） 0.1423（-0.0070） 26.17（-2.82） 10.63（+1.21） 三个观察：变异是最核心的组件，IC 和 ARR 降幅最大；多样化规划对 IC 影响极小，但对 MDD 影响最大（策略稳定性的主要来源）；交叉的贡献中等但稳定存在。\n迭代到第几轮最合适？ 最优区间在第 11~12 轮（约 350 个因子），此时 ARR 峰值 36.02%，MDD 最低 7.58%。第 12 轮之后，新因子开始引入冗余信息，策略稳健性下降。这给复现提供了一个实用的早停条件。\n2023 年 A 股风格切换：一次严苛的现实考试 测试期选在 2022-2025 年是有意为之，因为中间发生了一次 A 股的重大风格切换。\n切换之前（2023 年前）：大盘蓝筹股（茅台、宁德时代等\"核心资产\"）主导市场，机构持股比例高，日内价格变化平滑，动量信号持续性强，传统量价因子整体有效。\n切换触发因素（2023 年）：\n外资大规模净流出，核心资产估值体系重构 中特估（央企估值重估）政策驱动主题轮动 ChatGPT 引爆 AI 概念，A 股 AI 相关小盘股快速轮动，涨停板大量出现 百亿量化私募大量使用相似的高频量价因子，因子拥挤集中爆发 新的市场特征：隔夜跳空频繁（集合竞价信息极为重要），趋势持续性减弱，小盘主题快速轮动，板块内部快速分化。\n传统因子模型的两个隐含假设被同时打破：①日内价格动态是平滑的（隔夜跳空一来，前一天的动量信号开盘瞬间被推翻）；②趋势具有一定持续性（小盘主题轮动里，“均值\"本身在漂移）。\n论文分析了 QuantaAlpha（QA）和 AlphaAgent（AA）在 2023 年全年的代表性因子表现，结果非常鲜明：\nQuantaAlpha 2023 年表现最好的因子，集中在隔夜竞价信息和有条件趋势两类\n因子名称 Rank IC IC 信号类型 GapZ10_Overnight_vs_TR 0.0793 0.0335 隔夜跳空 / 竞价信息 Gap_IntradayAcceptanceScore_20D 0.0744 0.0330 隔夜竞价接受度 Gap_IntradayAcceptance_VolWeighted_20D 0.0606 0.0314 成交量加权竞价信息 CleanTrend_Continuation_Score_RS10_WMA5 0.0590 0.0267 有条件的趋势延续 OrderlyTrend_x_Absorption_10D_5D_20D 0.0465 0.0271 有序趋势×筹码吸收 QuantaAlpha 在 2023 年失效的因子，依赖\"平滑日内价格\"或\"趋势持续\"假设\n因子名称 Rank IC IC KineticLength_AbsRetSum_Z_10D -0.0720 -0.0246 Drawdown_Gated_NegCorr_60D_28D_thr20pct -0.0282 -0.0095 HighClose_Shock_With_VolSync_60_20 -0.0274 -0.0090 AlphaAgent 2023 年表现最好的因子，集中于耗竭型反转，Rank IC 量级明显偏低\n因子名称 Rank IC IC Exhaustion_Intensity_Index_10D 0.0323 0.0159 Climax_Exhaustion_Intensity 0.0242 0.0160 Exhaustion_Volume_Instability_Index 0.0121 0.0117 AlphaAgent 在 2023 年失效的因子，主要依赖流动性稳定假设\n因子名称 Rank IC IC Relative_Volume_Calm_Reversal -0.0279 -0.0188 Volume_Stability_Momentum_Divergence_40D -0.0247 -0.0155 LVR_Bottom_Fishing_20D -0.0190 -0.0144 对比非常鲜明：QuantaAlpha 的强因子集中在隔夜竞价信息和有条件的趋势两类——前者在集合竞价主导的新市场环境里依然有效（Rank IC 0.0793），后者通过\"流动性条件\"过滤掉了小盘股的噪声趋势。AlphaAgent 的强因子是耗竭型反转（Rank IC 只有 0.03 量级），在快速轮动的小盘主题市场里远不如隔夜信息类因子稳健。\nQuantaAlpha 之所以能存活，根本原因是多样化初始化和冗余过滤共同保证了因子池覆盖多种不同的信号来源，总有一批因子与当前市场微结构对齐。\n零样本跨市场迁移 CSI300 上挖出的因子，不做任何修改，直接部署到 CSI500 和 S\u0026P500。\n2022-2023 年各方法差距不大，2023 年底后 QuantaAlpha 持续上扬，其余方法趋于平缓或微降。截至 2025 年末：\nCSI500：累计超额收益约 160% S\u0026P500：累计超额收益约 137% 这是整篇论文最有力的泛化性证明：挖掘到的是金融市场普遍存在的规律（价量协同动量、隔夜信息等），而非 A 股大盘股特有的历史模式。\n设计哲学 论文最后把 QuantaAlpha 的设计提炼为三个核心属性，也是对\"好的 AI 因子挖掘系统应该具备什么\"的回答：\n多样性（Diversity）：广泛探索 + 冗余过滤，保证因子池覆盖多信息渠道。市场风格切换时不会全军覆没。\n可控性（Controllability）：AST 中间表示 + 生成时执行的三重约束，每一步都有语义锚点，不会偏离预设的经济学逻辑。\n可信度（Trustworthiness）：轨迹级继承让每个因子都有可追溯的谱系，AI 的工作过程可以被审计，而不是面对黑盒输出。\n这三个属性恰好对应论文开篇诊断的三个缺陷：因子拥挤 → 多样性，语义漂移 → 可控性，无法审计 → 可信度。问题和解法一一对应。\n现有局限：目前主要在股票资产上验证，商品/债券/外汇尚待探索；进化机制不显式感知当前市场 regime（牛熊/高低波动），未来可以让 Mutation 策略根据市场状态自适应切换；因子生成和组合构建目前相对独立，更紧密的整合理论上还有优化空间。\n但不管如何，让 AI 像有经验的研究员一样思考、记录、反省、协作，并保持完整的工作谱系——这个方向本身，已经相当值得期待。\n",
+  "wordCount" : "1088",
+  "inLanguage": "en",
+  "datePublished": "2026-04-11T14:00:00+08:00",
+  "dateModified": "2026-04-11T14:00:00+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "Coldeye"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Co'Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://coldeye2020.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://coldeye2020.github.io/" accesskey="h" title="Co&#39;Log (Alt + H)">
+                <img src="https://coldeye2020.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Co&#39;Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://coldeye2020.github.io/tech/" title="Tech">
+                    <span>Tech</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/invest/" title="Invest">
+                    <span>Invest</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/think/" title="Thought">
+                    <span>Thought</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://xkcd.com/" title="xkcd.com">
+                    <span>xkcd.com</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文
+    </h1>
+    <div class="post-meta">  <span title='2026-04-11 14:00:00 +0800 +0800'>Date: April 11, 2026 | Reading Time: 6 min | Author: Coldeye| Readers: <span id="gc-page">–</span>
+      
+    </div>
+    <script>
+    fetch('https://coldeye.goatcounter.com/counter/\/invest\/2026-04-11-quantaalpha-popular.json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var el = document.getElementById('gc-page');
+        if (el && d && d.count) el.textContent = d.count;
+      }).catch(function(){});
+    </script>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#量化研究在做什么">量化研究在做什么？</a>
+      <ul>
+        <li><a href="#从选股说起">从&quot;选股&quot;说起</a></li>
+        <li><a href="#量化因子挖掘的传统流程">量化因子挖掘的传统流程</a></li>
+        <li><a href="#现有-llm-agent-方法是怎么做的">现有 LLM Agent 方法是怎么做的？</a></li>
+      </ul>
+    </li>
+    <li><a href="#股票市场为什么难预测">股票市场为什么难预测？</a>
+      <ul>
+        <li><a href="#重尾分布极端事件比你想象的多得多">重尾分布：极端事件比你想象的多得多</a></li>
+        <li><a href="#时变波动率规律本身会变">时变波动率：规律本身会变</a></li>
+        <li><a href="#截面依赖股票之间相互影响">截面依赖：股票之间相互影响</a></li>
+      </ul>
+    </li>
+    <li><a href="#quantaalpha-的框架">QuantaAlpha 的框架</a>
+      <ul>
+        <li><a href="#第一步多样化规划从-10-个方向出发">第一步：多样化规划——从 10 个方向出发</a></li>
+        <li><a href="#第二步因子构建从想法到代码的四层翻译">第二步：因子构建——从想法到代码的四层翻译</a></li>
+        <li><a href="#第三步三重约束门质量管控在生成时就执行">第三步：三重约束门——质量管控在生成时就执行</a></li>
+        <li><a href="#第四步自进化mutation-和-crossover">第四步：自进化——Mutation 和 Crossover</a></li>
+      </ul>
+    </li>
+    <li><a href="#一个因子的完整成长史">一个因子的完整成长史</a></li>
+    <li><a href="#实验">实验</a>
+      <ul>
+        <li><a href="#评估指标">评估指标</a></li>
+        <li><a href="#主要实验结果">主要实验结果</a></li>
+        <li><a href="#进化组件各自贡献多少">进化组件各自贡献多少？</a></li>
+        <li><a href="#迭代到第几轮最合适">迭代到第几轮最合适？</a></li>
+        <li><a href="#2023-年-a-股风格切换一次严苛的现实考试">2023 年 A 股风格切换：一次严苛的现实考试</a></li>
+        <li><a href="#零样本跨市场迁移">零样本跨市场迁移</a></li>
+      </ul>
+    </li>
+    <li><a href="#设计哲学">设计哲学</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>如果你听说过&quot;量化基金&quot;&ldquo;AI 炒股&quot;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？</p>
+<p>这篇文章想借一篇 2026 年的论文——<strong>QuantaAlpha</strong>——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样<strong>自己想出预测方法，然后不断进化改进</strong>。</p>
+<p>我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。</p>
+<hr>
+<h2 id="量化研究在做什么">量化研究在做什么？<a hidden class="anchor" aria-hidden="true" href="#量化研究在做什么">#</a></h2>
+<h3 id="从选股说起">从&quot;选股&quot;说起<a hidden class="anchor" aria-hidden="true" href="#从选股说起">#</a></h3>
+<p>普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到<strong>可以被数学描述、可以被计算机执行的选股规律</strong>。</p>
+<p>这类规律叫做<strong>因子（factor）</strong>。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。</p>
+<p>最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。</p>
+<p>因子本身通常是一个<strong>数学表达式</strong>，作用在价格、成交量等原始数据上，输出一个分数。比如：</p>
+$$f_t(i) = \frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$<p>这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。</p>
+<p><strong>&ldquo;Alpha&rdquo;<strong>是量化圈里的另一个核心词。它指的是</strong>扣除市场整体涨跌之后，策略额外赚到的收益</strong>（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。</p>
+<h3 id="量化因子挖掘的传统流程">量化因子挖掘的传统流程<a hidden class="anchor" aria-hidden="true" href="#量化因子挖掘的传统流程">#</a></h3>
+<p>在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：</p>
+<p><strong>人工驱动</strong>：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。</p>
+<p><strong>机器搜索</strong>：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的&quot;天书&quot;公式。</p>
+<p>LLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。</p>
+<h3 id="现有-llm-agent-方法是怎么做的">现有 LLM Agent 方法是怎么做的？<a hidden class="anchor" aria-hidden="true" href="#现有-llm-agent-方法是怎么做的">#</a></h3>
+<p>大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：</p>
+<pre tabindex="0"><code>  通用 LLM Agent 方法
+  ─────────────────────────────────────────
+
+  市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码
+                  ↑                     │
+                  │                     ↓
+              修改假设 ←──── 回测评估（IC等）
+                                        │
+                                        ↓
+                              搜索空间逐渐收缩 
+                         （反复修改，越来越像）
+  ─────────────────────────────────────────
+</code></pre><p>这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果&quot;打补丁&rdquo;，慢慢地，所有的修改方向都指向同一片区域，<strong>搜索空间在不断收缩</strong>。结果是生成了大量长相相似的因子，整体多样性越来越差。</p>
+<p>QuantaAlpha 的流程设计与此截然不同：</p>
+<pre tabindex="0"><code>  QuantaAlpha
+  ─────────────────────────────────────────
+
+  多样化规划：同时生成 10 个互补方向
+      ↓
+  [10 条轨迹各自独立运行]
+      ↓
+  假设生成（Idea Agent）← 评估历史库反馈
+      ↓ 语义一致性检查
+  形式化描述
+      ↓ 语义一致性检查
+  符号表达式（AST）──→ 复杂度检查 / 冗余过滤
+      ↓
+  可执行代码
+      ↓
+  回测评估（Evaluation Agent）
+      ↓
+  轨迹存入轨迹池 ──→ 评估历史库（每轮结束后更新）
+      ↓
+  ┌─ Mutation：定位最差步骤，冻结前缀，重写后续
+  │       ↓（新轨迹入池）
+  └─ Crossover：跨轨迹合并高贡献片段
+      ↓（新轨迹入池，重复 5 轮，搜索空间持续扩张）
+  因子池筛选（Rank IC 降序，相关系数 &lt; 0.7）
+      ↓
+  LightGBM → 策略
+
+  ─────────────────────────────────────────
+</code></pre><p>下图展示了三代方法的对比，核心区别一目了然：现有 Agent 方法的搜索空间越来越窄，QuantaAlpha 的搜索空间持续扩展：</p>
+<p><img alt="三代方法对比：ML 黑箱（左）、现有 LLM Agent 搜索空间收缩（中）、QuantaAlpha 搜索空间持续扩展（右）" loading="lazy" src="/img/quantaalpha/fig2-comparison.png"></p>
+<p>最核心的差异有两点：<strong>质量约束在生成时就执行</strong>（而非最后过滤），以及<strong>在轨迹层面做进化</strong>（而非只优化单个因子）。下面我们逐一展开。</p>
+<hr>
+<h2 id="股票市场为什么难预测">股票市场为什么难预测？<a hidden class="anchor" aria-hidden="true" href="#股票市场为什么难预测">#</a></h2>
+<p>在介绍论文方法之前，先搞清楚为什么这件事本来就很难。论文开篇点明了金融市场的三个本质特性：</p>
+<h3 id="重尾分布极端事件比你想象的多得多">重尾分布：极端事件比你想象的多得多<a hidden class="anchor" aria-hidden="true" href="#重尾分布极端事件比你想象的多得多">#</a></h3>
+<p>我们日常生活中的很多现象服从<strong>正态分布</strong>（Normal Distribution，也叫钟形曲线）。比如人的身高，大多数人集中在均值附近（170cm 左右），极端矮或极端高的人很少。</p>
+$$p(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$<p>股票的日收益率看起来也像正态分布，但如果你仔细看尾部，会发现<strong>股市的极端涨跌出现的频率，远高于正态分布的预测</strong>。这种现象叫做<strong>重尾分布</strong>（Fat-Tailed / Heavy-Tailed Distribution）。</p>
+<p>下面是正态分布和重尾分布的示意对比：</p>
+<pre tabindex="0"><code>概率密度
+  ↑
+  │   正态分布：中间高，两边快速归零
+  │         ████
+  │        ██████
+  │       ████████
+  │     ████████████
+  │   ████████████████
+  ├──────────────────── 收益率
+   -3σ   -σ   0   σ   3σ
+  
+概率密度
+  ↑
+  │   重尾分布：中间更尖，但两边下降更慢
+  │           ██
+  │          ████
+  │         ██████
+  │       ██████████
+  │ ▓▓▓████████████████▓▓▓  ← 尾部比正态分布&#34;厚&#34;
+  ├──────────────────────── 收益率
+   -3σ   -σ   0   σ   3σ
+</code></pre><p>用数字来感受一下：在正态分布下，单日涨跌超过 3 个标准差的概率约为 0.27%，平均每 370 个交易日才出现一次。但在实际股市中，这种&quot;3 倍标准差&quot;的事件每隔几十天就可能出现一次——<strong>比理论预测高出数十倍</strong>。</p>
+<p>对量化研究的影响是：</p>
+<ul>
+<li>回测结果充满噪声，某个因子今天看起来很好，可能只是碰上了一次极端行情</li>
+<li>基于正态分布假设的统计方法（比如普通线性回归）会严重低估风险</li>
+<li>因子有效性的判断需要更长的时间周期才能稳定</li>
+</ul>
+<p>这也是为什么论文要用 Rank IC（用排名代替原始数值）而不只是普通 IC——排名操作把极端值压制下来，对重尾分布更鲁棒。</p>
+<h3 id="时变波动率规律本身会变">时变波动率：规律本身会变<a hidden class="anchor" aria-hidden="true" href="#时变波动率规律本身会变">#</a></h3>
+<p>不仅股票收益率的均值难以预测，就连<strong>波动的剧烈程度</strong>也在不断变化。平静期里，每天涨跌 0.5%；动荡期里，每天涨跌 3-5%。因子信号在这两种环境下的&quot;有效期&quot;完全不同，一个在低波动环境里有效的因子，搬到高波动环境可能完全失灵。</p>
+<h3 id="截面依赖股票之间相互影响">截面依赖：股票之间相互影响<a hidden class="anchor" aria-hidden="true" href="#截面依赖股票之间相互影响">#</a></h3>
+<p>同一时刻，市场上的 500 只股票不是独立行动的。行业联动、宏观消息、资金流向——这些因素会让相关行业的股票同涨同跌。如果你的因子忽略了这种相关性，就会高估持有多只股票的分散化效果，实际承担的风险比你以为的大得多。</p>
+<hr>
+<h2 id="quantaalpha-的框架">QuantaAlpha 的框架<a hidden class="anchor" aria-hidden="true" href="#quantaalpha-的框架">#</a></h2>
+<p>论文把整个系统设计为四个模块，像流水线一样串联：</p>
+<p><img alt="QuantaAlpha 四模块流水线总览" loading="lazy" src="/img/quantaalpha/fig3-framework.png"></p>
+<h3 id="第一步多样化规划从-10-个方向出发">第一步：多样化规划——从 10 个方向出发<a hidden class="anchor" aria-hidden="true" href="#第一步多样化规划从-10-个方向出发">#</a></h3>
+<p>系统首先生成 10 个<strong>互补的初始研究方向</strong>，覆盖不同的信号来源和逻辑类型：</p>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>两端</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>信号来源</td>
+          <td>价格类 ↔ 成交量类</td>
+      </tr>
+      <tr>
+          <td>时间尺度</td>
+          <td>短期（1-5日）↔ 长期（20-60日）</td>
+      </tr>
+      <tr>
+          <td>机制类型</td>
+          <td>动量 / 均值回归 / 波动率结构 / 隔夜信息</td>
+      </tr>
+  </tbody>
+</table>
+<p>为什么要强制多样化？因为 LLM 有&quot;偷懒&quot;的倾向——你让它想 10 个假设，它可能给你同一个想法的 10 种说法。显式的多样性约束能逼迫它真正覆盖不同方向，为后续进化提供广阔的起点。</p>
+<h3 id="第二步因子构建从想法到代码的四层翻译">第二步：因子构建——从想法到代码的四层翻译<a hidden class="anchor" aria-hidden="true" href="#第二步因子构建从想法到代码的四层翻译">#</a></h3>
+<p>每个假设由三个 AI 角色协作完成：</p>
+<p><strong>想法 AI</strong> 提出带有经济学逻辑的假设，比如&quot;机构投资者在收盘前集中建仓，导致收盘价与开盘价的差距能预测第二天的交易量变化&quot;。</p>
+<p><strong>构建 AI</strong> 把假设变成可运行的因子公式，经过四层翻译：</p>
+<pre tabindex="0"><code>假设（自然语言）
+    ↓
+形式化描述（用哪些数据特征、哪类操作、参数怎么设）
+    ↓
+数学表达式（像乐高积木一样拼装起来的符号公式）
+    ↓
+可执行代码（可以直接跑的 Python/Qlib 代码）
+</code></pre><p>每层之间有<strong>语义一致性检查</strong>——如果假设说的是&quot;动量效应&quot;，最终的公式却变成了&quot;均值回归&quot;，系统会发现这个矛盾并要求修改，而不是放任这种偷偷走样的情况发生。</p>
+<p><strong>评估 AI</strong> 负责回测并记录结果，同时维护一份&quot;成功和失败因子的规律库&quot;，反馈给想法 AI，让下一轮假设更有针对性。</p>
+<p><strong>一个具体例子：从假设到代码的四步翻译</strong></p>
+<p>假设 Idea Agent 提出了这样一个假设：</p>
+<blockquote>
+<p>&ldquo;机构资金在收盘前集中买入，导致收盘价相对开盘价偏高；同时，成交量同步放大说明资金参与真实。这种&rsquo;价涨量增&rsquo;的组合能预测次日的延续性动量。&rdquo;</p>
+</blockquote>
+<p>Factor Agent 接着完成四步翻译：</p>
+<p><strong>第一步：形式化描述</strong>（把假设翻译成&quot;用什么数据、做什么操作&quot;）</p>
+<blockquote>
+<p>特征：close（收盘价）、open（开盘价）、volume（成交量）
+操作：计算日内收益（close-open）/close；计算成交量变化率 Δvol/vol；对两者取 20 日滑动相关系数；截面排名</p>
+</blockquote>
+<p><strong>第二步：符号表达式</strong>（把描述翻译成数学公式）</p>
+$$f = \text{RANK}\Big(\text{TS\_CORR}\Big(\frac{\text{close}-\text{open}}{\text{close}},\ \frac{\Delta\text{vol}}{\text{vol}},\ 20\Big)\Big)$$<p>20 日价量相关性高，说明&quot;涨的时候成交量也大&quot;——正是机构资金参与的特征。截面排名把所有股票拉到同一标尺上比较。</p>
+<p><strong>第三步：语义一致性检查</strong></p>
+<p>系统检查：假设说的是&quot;价涨量增&quot;，表达式用了价量相关性——语义对齐，通过。</p>
+<p><strong>第四步：生成可执行代码</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">factor</span><span class="p">(</span><span class="n">close</span><span class="p">,</span> <span class="n">open_</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">intraday_ret</span> <span class="o">=</span> <span class="p">(</span><span class="n">close</span> <span class="o">-</span> <span class="n">open_</span><span class="p">)</span> <span class="o">/</span> <span class="n">close</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vol_chg</span> <span class="o">=</span> <span class="n">volume</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">corr</span> <span class="o">=</span> <span class="n">intraday_ret</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">vol_chg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">corr</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></div><p>代码和表达式语义再次核验：rolling(20).corr 对应 TS_CORR(&hellip;, 20)，rank(pct=True) 对应 RANK，通过。</p>
+<p>整个过程每一步都有&quot;锚点&quot;，LLM 不会悄悄把&quot;动量因子&quot;改成&quot;均值回归因子&quot;而没人发现。</p>
+<h3 id="第三步三重约束门质量管控在生成时就执行">第三步：三重约束门——质量管控在生成时就执行<a hidden class="anchor" aria-hidden="true" href="#第三步三重约束门质量管控在生成时就执行">#</a></h3>
+<p>这是 QuantaAlpha 与通用 Agent 方法最重要的设计差异之一。</p>
+<p>传统方法是在最后过滤掉不合格因子。问题在于：AI 根本不知道有这些标准，会反复生成同类问题的因子，计算资源白白浪费。而且 AI 的优化目标（预测准确）和约束条件（低换手率、低复杂度）之间存在矛盾，事后过滤无法解决这个矛盾，只会让搜索方向反复跑偏。</p>
+<p>QuantaAlpha 的做法是把三道约束门<strong>嵌入生成过程</strong>，因子一生成就检查，不通过则当场修改：</p>
+<p><strong>第一道：语义一致性</strong>。检查假设 $h$ 和描述 $d$ 之间、符号表达式 $f$ 和代码 $c$ 之间有没有语义漂移。不一致则只修改不一致的那一层，其余已验证的内容保留。</p>
+<p><strong>第二道：复杂度控制</strong>。论文用一个加权公式量化因子的复杂程度：</p>
+$$\mathcal{C}(f) = \alpha_1 \cdot SL(f) + \alpha_2 \cdot PC(f) + \alpha_3 \cdot \log(1 + |F_f|)$$<p>三项分别控制：</p>
+<ul>
+<li>$SL(f)$（Symbol Length）：因子公式的长度，即数学表达式里的节点个数，上限 250</li>
+<li>$PC(f)$（Parameter Count）：自由参数数量（比如&quot;20 日窗口&quot;里的&quot;20&quot;），自由参数占比不超过 50%</li>
+<li>$|F_f|$（Feature Count）：用到的原始数据特征数量，上限 6 个</li>
+</ul>
+<p>这道关卡的消融实验结果最为显著：去掉复杂度控制后，年化超额收益下降 8.44%，最大回撤上升 2.57%——典型的过拟合症状：训练期把历史噪声&quot;背&quot;下来了，测试期一遇到新环境就崩。</p>
+<p><strong>第三道：冗余过滤</strong>。通过比较两个因子的<strong>数学结构相似度</strong>，过滤掉和已有因子高度重复的新因子：</p>
+$$s(f_i, f_j) = \max_{\substack{S_i \subseteq T(f_i),\; S_j \subseteq T(f_j) \\ S_i \cong S_j}} |V(S_i)|, \quad S(f) = \max_{\phi \in \mathcal{Z}}\, s(f, \phi)$$<p>这里比较的是因子公式的&quot;骨架结构&quot;，术语叫<strong>抽象语法树（AST，Abstract Syntax Tree）</strong>。</p>
+<p><strong>什么是 AST？</strong></p>
+<p>任何数学公式或代码，都可以被解析成一棵树形结构——每个操作是一个节点，操作数是它的子节点。比如公式 <code>RANK(TS_MEAN(close, 5))</code> 对应的树是：</p>
+<pre tabindex="0"><code>      RANK
+        │
+    TS_MEAN
+      /   \
+   close    5
+</code></pre><p>再复杂一点，<code>RANK(TS_CORR(close, volume, 20) * TS_MEAN(close, 5))</code> 对应：</p>
+<pre tabindex="0"><code>         RANK
+           │
+          MUL
+         /   \
+    TS_CORR   TS_MEAN
+    /  |  \    /   \
+close vol 20 close   5
+</code></pre><p>这棵树就是因子的&quot;骨架&quot;——不管用哪只股票的数据算，骨架是固定的。</p>
+<p><strong>冗余检测是怎么做的？</strong></p>
+<p>把两个因子的 AST 都画出来，然后找&quot;最大的公共子树&quot;——也就是两棵树里结构完全相同的最大片段。</p>
+<p>举个例子。假设因子库里已有因子 A：</p>
+$$f_A = \text{RANK}(\text{TS\_CORR}(\text{close}, \text{volume}, 20))$$<p>现在新生成了因子 B：</p>
+$$f_B = \text{RANK}(\text{TS\_CORR}(\text{close}, \text{volume}, 20) \times \text{TS\_STD}(\text{close}, 5))$$<p>两者的 AST 对比：</p>
+<pre tabindex="0"><code>  因子 A                     因子 B
+    RANK                       RANK
+      │                          │
+  TS_CORR                       MUL
+  /  |  \                      /   \
+close vol 20              TS_CORR   TS_STD
+                          /  |  \    /  \
+                        close vol 20 close 5
+</code></pre><p>最大公共子树是 <code>TS_CORR(close, vol, 20)</code>，包含 4 个节点。如果这个数字超过阈值（论文设为 5），系统就认为因子 B 与 A 高度重叠，直接拒绝。</p>
+<p>为什么不用数值相关系数来判断冗余？因为两个因子的数值相关性需要先跑完回测才能算，代价很高；而 AST 比对在生成阶段就能完成，几乎没有计算成本。而且结构冗余比数值冗余更能反映&quot;同质化&quot;——两个结构相似的因子，即使在某段时间数值相关性不高，在新市场上也很可能同时失效。</p>
+<p>消融结果：去掉冗余过滤后，ARR 几乎不变（-0.62%）。论文指出多样性是泛化能力而非预测力的来源——因子冗余会降低跨市场迁移时的鲁棒性，但不直接影响样本内预测准确度。</p>
+<p>下面是约束门消融的完整结果：</p>
+<p><img alt="三重约束门消融实验结果" loading="lazy" src="/img/quantaalpha/fig4-ablation-gate.png"></p>
+<p><em>三重约束门消融结果（CSI300，括号内为与完整模型的差值）</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>消融条件</th>
+          <th>IC</th>
+          <th>ARR(%)</th>
+          <th>MDD(%)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>完整模型</td>
+          <td>0.149</td>
+          <td>28.99</td>
+          <td>9.42</td>
+      </tr>
+      <tr>
+          <td>去掉语义一致性</td>
+          <td>0.130（-0.019）</td>
+          <td>23.51（-5.48）</td>
+          <td>9.75</td>
+      </tr>
+      <tr>
+          <td><strong>去掉复杂度控制</strong></td>
+          <td><strong>0.125（-0.024）</strong></td>
+          <td><strong>20.55（-8.44）</strong></td>
+          <td><strong>11.99（+2.57）</strong></td>
+      </tr>
+      <tr>
+          <td>去掉冗余过滤</td>
+          <td>0.122（-0.027）</td>
+          <td>28.37（-0.62）</td>
+          <td>9.44</td>
+      </tr>
+      <tr>
+          <td>三道全去掉</td>
+          <td>0.122（-0.027）</td>
+          <td>17.55（-11.44）</td>
+          <td>10.69</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="第四步自进化mutation-和-crossover">第四步：自进化——Mutation 和 Crossover<a hidden class="anchor" aria-hidden="true" href="#第四步自进化mutation-和-crossover">#</a></h3>
+<p>通过三道关的因子进入轨迹池，接下来进行核心的进化操作。</p>
+<p><strong>什么是&quot;轨迹&quot;？</strong></p>
+<p>一条**轨迹（trajectory）**是一次完整的 alpha 挖掘工作记录：从最初的假设，到每一步的因子生成和修改，到最终的回测结果，全程都保存下来。就像一个研究员从灵感到结论的完整笔记——可以回头翻阅，可以找到哪一步写错了，也可以把两份笔记里最精彩的部分摘出来组合成新的研究。</p>
+<p>论文把优化目标形式化为：</p>
+$$\pi^* = \arg\max_{\pi} \mathbb{E}_{\tau \sim \pi}[R(\tau)], \quad R(\tau) = \mathcal{L}(f_\tau(\mathbf{X}), \mathbf{y}) - \lambda\mathcal{R}(f_\tau)$$<p>$\tau$ 就是一条轨迹，$R(\tau)$ 是这条轨迹的奖励。奖励同时包含预测准确性 $\mathcal{L}$（IC、ICIR 等）和正则项 $\mathcal{R}$（复杂度 + 因子间相关性），$\lambda$ 控制二者的权衡。</p>
+<p><strong>变异（Mutation）：找到最弱的一步，精准修复</strong></p>
+$$\tau_{\text{child}} = (s_0, a_0, \ldots, s_k, \text{Refine}(a_k), s'_{k+1}, \ldots, s'_n)$$<p>AI 回顾一条轨迹，找出最拖累结果的步骤 $k$，冻结 $k$ 之前的所有内容（已验证的好内容不动），只重写第 $k$ 步及其后续。可以更换经济机制（动量→波动率结构）、调整时间窗口（5日→20日）、引入条件判断（&ldquo;只在成交量上升时触发&rdquo;）。</p>
+<p>为什么这是四个组件里消融效果最显著的（ARR -9.81%，IC -0.0292）？因为变异同时做了两件事：<strong>修复已知的错误</strong>，以及<strong>通过机制级别的修改跳出局部最优</strong>。</p>
+<p><strong>交叉（Crossover）：从多条成功轨迹里提取精华</strong></p>
+$$\tau_{\text{child}} = \text{Crossover}(\tau^{(1)}, \ldots, \tau^{(k)})$$<p>从上一轮效果最好的几条轨迹里，各自提取贡献最大的片段（某条轨迹的假设特别好、另一条的因子结构特别巧妙），组合成新的轨迹。</p>
+<p>这模拟的是研究员之间的协作：研究员甲擅长捕捉隔夜跳空信息，研究员乙擅长建模波动率结构，两人合作能产生&quot;用隔夜信息触发波动率结构判断&quot;的新思路。</p>
+<p>额外价值：每个因子都有<strong>可追溯的来源谱系</strong>——假设从哪条轨迹来，结构参考了哪个父轨迹，全程可审计。这是解决&quot;AI 黑盒&quot;问题的一个具体手段。</p>
+<hr>
+<h2 id="一个因子的完整成长史">一个因子的完整成长史<a hidden class="anchor" aria-hidden="true" href="#一个因子的完整成长史">#</a></h2>
+<p>论文追踪了因子 <code>Institutional_Momentum_Score_20D</code>（机构驱动 20 日动量评分）从第 1 轮到第 5 轮的完整进化过程，可以清晰看到整套机制是如何运作的：</p>
+<blockquote>
+<p>注：Figure 7 折线图 Y 轴是因子池整体累计超额收益；每轮括号标注的 ARR/MDD 是该轮单条轨迹自身的回测指标，两者含义不同。</p>
+</blockquote>
+<p><img alt="<code>Institutional_Momentum_Score_20D</code> 五轮进化轨迹，ARR 从 13.27% 提升至 29.63%" loading="lazy" src="/img/quantaalpha/fig7-evolution.png"></p>
+<p><strong>Iter 1（初始化）</strong>：假设是&quot;低成交量 = 市场噪声少，此时做均值回归效率更高&quot;。生成因子 <code>RegimeFiltered_Reversal_5D</code>。ARR=13.27%，MDD=7.67%。回测反馈：缺少幅度信息和风险控制。</p>
+<p><strong>Iter 2（变异）</strong>：定位问题——缺少方向确认。修改为：把 1 日、5 日、20 日三个时间尺度的动量信号对齐，再加上波动率门控。ARR 仅 7.35%，但 MDD 暴涨到 18.7%——过度工程化，过拟合了。</p>
+<p><strong>Iter 3（交叉）</strong>：从其他轨迹里借来更简洁的结构，大幅简化，用标准的 5日/20日波动率比率加动量，线性加权替代复杂嵌套条件。ARR 提升到 22.38%，MDD 大幅回落。<strong>第 2 轮复杂化、第 3 轮简化的来回，正是交叉纠正过拟合的直观演示。</strong></p>
+<p><strong>Iter 4（变异）</strong>：在简洁结构基础上，融合波动率机制与更精准的嵌套动量。ARR=27.85%。</p>
+<p><strong>Iter 5（交叉）</strong>：整合两条父轨迹的精华——父轨迹 1 擅长识别&quot;零售投机型脆弱动量&quot;，父轨迹 2 擅长识别&quot;机构支撑的可持续动量&quot;。最终因子：</p>
+$$f = \text{RANK}\Big(\underbrace{\text{TS\_CORR}\big(\tfrac{\Delta\text{close}}{\text{close}},\, \tfrac{\Delta\text{vol}}{\text{vol}},\, 20\big)}_{\text{20日价量相关性}} \times \underbrace{\text{TS\_MEAN}\big(\tfrac{\text{close}-\text{open}}{\text{close}},\, 5\big)}_{\text{5日平均日内收益}}\Big)$$<p>经济含义：价量同步变动说明机构资金真正参与（而非散户跟风），这种情况下的持续上涨才是可信的动量。ARR=29.63%，每个组件都有清晰的经济学解释，来源可追溯。</p>
+<hr>
+<h2 id="实验">实验<a hidden class="anchor" aria-hidden="true" href="#实验">#</a></h2>
+<p>一篇量化方法论文，需要回答四个核心问题：</p>
+<ol>
+<li><strong>整体效果</strong>：比现有方法强多少？</li>
+<li><strong>各组件贡献</strong>：哪些设计真正有效，哪些是多余的？</li>
+<li><strong>泛化能力</strong>：在没见过的市场上能用吗？</li>
+<li><strong>收敛性</strong>：跑多少轮最合适，会不会越跑越差？</li>
+</ol>
+<p>实验设置对应这四个问题：三个市场（CSI300/CSI500/S&amp;P500），训练期 2016-2020，验证期 2021，测试期 2022-2025。测试期故意覆盖了 2023 年的 A 股风格切换，这是对因子鲁棒性的严苛考验。</p>
+<h3 id="评估指标">评估指标<a hidden class="anchor" aria-hidden="true" href="#评估指标">#</a></h3>
+<p>在看数字之前，我们需要理解这些指标的含义和计算方式。</p>
+<p>所有策略指标的基础是<strong>超额收益</strong>：</p>
+$$r_{\text{excess},t} = r_{\text{portfolio},t} - r_{\text{benchmark},t} - c_{\text{transaction},t}$$<p>买入手续费 0.05%，卖出手续费 0.15%（扣掉这个之后，那些靠频繁买卖刷 IC 的策略就原形毕露了）。</p>
+<p><strong>IC（Information Coefficient，信息系数）</strong>：衡量因子打分和股票实际涨跌幅的一致程度。</p>
+$$\text{IC}_t = \frac{(\mathbf{f}_t - \bar{f}_t\mathbf{1})^\top(\mathbf{r}_{t+1} - \bar{r}_{t+1}\mathbf{1})}{\|\mathbf{f}_t - \bar{f}_t\mathbf{1}\|_2 \cdot \|\mathbf{r}_{t+1} - \bar{r}_{t+1}\mathbf{1}\|_2}$$<p>本质是因子值向量和次日收益率向量的 Pearson 相关系数，每天算一个，最后取平均。IC &gt; 0.03 认为有实用价值，&gt; 0.05 相当不错。绝大多数机构量化因子 IC 在 0.03~0.06 之间，QuantaAlpha 达到 0.1501 属于顶级水平。</p>
+<p>举个例子：某天对 300 只股票打分，分数最高的 10 只，平均第二天涨了 0.8%；分数最低的 10 只，平均跌了 0.3%。这个&quot;高分股票涨、低分股票跌&quot;的分离程度，就是 IC 在衡量的东西。</p>
+<p><strong>ICIR（IC Information Ratio）</strong>：IC 的稳定性。</p>
+$$\text{ICIR} = \overline{\text{IC}} / \sigma(\text{IC})$$<p>只看平均 IC 不够——一个因子可能某几个月 IC 极高，其余月份接近 0，平均值看起来不错，但实盘完全没法用。ICIR 把均值除以标准差，高 ICIR 意味着这个因子每个月都比较稳定地有效。ICIR &gt; 0.5 认为稳定，&gt; 1.0 属于非常优秀。QuantaAlpha 达到 0.9110。</p>
+<p><strong>Rank IC（排名信息系数）</strong>：对重尾分布的鲁棒版 IC。</p>
+$$\text{RankIC}_t = \text{Pearson}\big(\text{rank}(\mathbf{f}_t),\ \text{rank}(\mathbf{r}_{t+1})\big)$$<p>把因子值和收益率都换成各自的排名，再算相关系数。这样做的好处：某只股票当天暴涨 30%（极端值），在普通 IC 里会对结果产生巨大影响；换成排名之后，它只是&quot;排名第一&quot;，和排名第二的股票差距被压缩，极端值的影响被大幅削弱。</p>
+<p><strong>ARR（Annualized Excess Return Rate，年化超额收益率）</strong>：策略每年平均跑赢大盘多少。这是最直观的盈利指标。</p>
+<p><strong>MDD（Maximum Drawdown，最大回撤）</strong>：从策略净值的历史峰值，到之后某个谷底，超额收益累计下跌的最大幅度。衡量的是&quot;赚钱过程中最痛苦的那段时间有多痛&quot;，直接影响实盘能不能坚持下去。</p>
+<p><strong>IR（Information Ratio，信息比率）</strong>：</p>
+$$\text{IR} = \frac{\bar{r}_{\text{excess}}}{\sigma(r_{\text{excess}})} \times \sqrt{252}$$<p>年化超额收益除以超额收益的波动率。衡量&quot;每承担一单位风险，能换来多少超额收益&quot;，是衡量策略质量的综合指标。IR &gt; 1.0 在业界被认为是优秀策略的门槛。</p>
+<p>IR 与夏普比率（Sharpe Ratio）的区别在于分母：夏普比率除以的是组合总收益的波动率（含市场 beta），IR 除以的是超额收益（相对 benchmark）的波动率。量化选股策略通常用 IR 而非夏普，因为 IR 剔除了市场整体涨跌的影响，更纯粹地衡量选股能力。</p>
+<p><strong>CR（Calmar Ratio，卡尔玛比率）</strong>：</p>
+$$\text{CR} = \text{ARR} / |\text{MDD}|$$<p>年化收益率除以最大回撤。衡量&quot;每忍受一单位的最大痛苦，能换来多少年化收益&quot;，对最大回撤有心理承受要求的投资者特别看重这个指标。</p>
+<p><strong>这些指标为什么要同时看？</strong> 因为它们互相制约，任何一个单独好看都可能是&quot;作弊&quot;：</p>
+<table>
+  <thead>
+      <tr>
+          <th>作弊方式</th>
+          <th>被哪个指标识破</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>高频交易刷高表面收益</td>
+          <td>扣手续费后 ARR 崩塌</td>
+      </tr>
+      <tr>
+          <td>激进加仓博短期高收益</td>
+          <td>MDD 暴露极端风险</td>
+      </tr>
+      <tr>
+          <td>靠运气赚几次大的</td>
+          <td>ICIR 显示收益不稳定</td>
+      </tr>
+      <tr>
+          <td>只在牛市有效</td>
+          <td>超额收益相对 benchmark，牛市 alpha 被剥离</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="主要实验结果">主要实验结果<a hidden class="anchor" aria-hidden="true" href="#主要实验结果">#</a></h3>
+<p><em>各方法在 CSI300 测试期（2022-2025）的对比，使用各自最优 backbone</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>方法</th>
+          <th>IC</th>
+          <th>ARR (%)</th>
+          <th>MDD (%)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TRA（最佳深度学习）</td>
+          <td>0.0421</td>
+          <td>6.81</td>
+          <td>8.51</td>
+      </tr>
+      <tr>
+          <td>经典因子库最优</td>
+          <td>—</td>
+          <td>4.63</td>
+          <td>—</td>
+      </tr>
+      <tr>
+          <td>RD-Agent（GPT-5.2）</td>
+          <td>0.0531</td>
+          <td>9.91</td>
+          <td>14.82</td>
+      </tr>
+      <tr>
+          <td>AlphaAgent（Claude-4.5-Sonnet）</td>
+          <td>0.1092</td>
+          <td>16.48</td>
+          <td>8.14</td>
+      </tr>
+      <tr>
+          <td><strong>QuantaAlpha（GPT-5.2）</strong></td>
+          <td><strong>0.1501</strong></td>
+          <td><strong>27.75</strong></td>
+          <td><strong>7.98</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>两个关键对比值得细看：</p>
+<p><strong>同为 GPT-5.2，QuantaAlpha vs RD-Agent</strong>：IC 提升 183%，ARR 提升 17.84 个百分点，MDD 从 14.82% 降到 7.98%。差距几乎全来自约束机制——没有生成阶段质量管控的 RD-Agent，因子会越来越复杂越来越过拟合，实盘波动大、回撤深。</p>
+<p><strong>QuantaAlpha vs AlphaAgent</strong>：AlphaAgent 已有生成阶段正则化，所以优于 RD-Agent，但缺少轨迹级进化。ARR 差了 12.21 个百分点，MDD 差了 4.91 个百分点——这个差距量化的就是 Mutation + Crossover 的贡献。</p>
+<p>QuantaAlpha 在全部五个 backbone LLM（Qwen3-235B、DeepSeek-V3.2、Gemini-3-Pro、Claude-4.5-Sonnet、GPT-5.2）上均优于对应的 AlphaAgent 和 RD-Agent，说明提升来自框架本身，与用哪个 LLM 无关。</p>
+<h3 id="进化组件各自贡献多少">进化组件各自贡献多少？<a hidden class="anchor" aria-hidden="true" href="#进化组件各自贡献多少">#</a></h3>
+<p><em>各进化组件消融结果（括号内为与完整模型的差值）</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>消融条件</th>
+          <th>IC</th>
+          <th>ARR(%)</th>
+          <th>MDD(%)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>完整模型</td>
+          <td>0.1493</td>
+          <td>28.99</td>
+          <td>9.42</td>
+      </tr>
+      <tr>
+          <td>去掉多样化规划</td>
+          <td>0.1488（-0.0005）</td>
+          <td>21.21（-7.78）</td>
+          <td>12.15（+2.73）</td>
+      </tr>
+      <tr>
+          <td><strong>去掉变异（Mutation）</strong></td>
+          <td><strong>0.1201（-0.0292）</strong></td>
+          <td><strong>19.18（-9.81）</strong></td>
+          <td><strong>8.99</strong></td>
+      </tr>
+      <tr>
+          <td>去掉交叉（Crossover）</td>
+          <td>0.1423（-0.0070）</td>
+          <td>26.17（-2.82）</td>
+          <td>10.63（+1.21）</td>
+      </tr>
+  </tbody>
+</table>
+<p>三个观察：变异是最核心的组件，IC 和 ARR 降幅最大；多样化规划对 IC 影响极小，但对 MDD 影响最大（策略稳定性的主要来源）；交叉的贡献中等但稳定存在。</p>
+<h3 id="迭代到第几轮最合适">迭代到第几轮最合适？<a hidden class="anchor" aria-hidden="true" href="#迭代到第几轮最合适">#</a></h3>
+<p><img alt="随迭代轮次增加，ARR 先升后降，MDD 先降后升，第 11~12 轮为最优区间" loading="lazy" src="/img/quantaalpha/fig8-convergence.png"></p>
+<p>最优区间在第 <strong>11~12 轮</strong>（约 350 个因子），此时 ARR 峰值 36.02%，MDD 最低 7.58%。第 12 轮之后，新因子开始引入冗余信息，策略稳健性下降。这给复现提供了一个实用的早停条件。</p>
+<h3 id="2023-年-a-股风格切换一次严苛的现实考试">2023 年 A 股风格切换：一次严苛的现实考试<a hidden class="anchor" aria-hidden="true" href="#2023-年-a-股风格切换一次严苛的现实考试">#</a></h3>
+<p>测试期选在 2022-2025 年是有意为之，因为中间发生了一次 A 股的重大风格切换。</p>
+<p><strong>切换之前</strong>（2023 年前）：大盘蓝筹股（茅台、宁德时代等&quot;核心资产&quot;）主导市场，机构持股比例高，日内价格变化平滑，动量信号持续性强，传统量价因子整体有效。</p>
+<p><strong>切换触发因素（2023 年）</strong>：</p>
+<ul>
+<li>外资大规模净流出，核心资产估值体系重构</li>
+<li>中特估（央企估值重估）政策驱动主题轮动</li>
+<li>ChatGPT 引爆 AI 概念，A 股 AI 相关小盘股快速轮动，涨停板大量出现</li>
+<li>百亿量化私募大量使用相似的高频量价因子，<strong>因子拥挤</strong>集中爆发</li>
+</ul>
+<p>新的市场特征：隔夜跳空频繁（集合竞价信息极为重要），趋势持续性减弱，小盘主题快速轮动，板块内部快速分化。</p>
+<p>传统因子模型的两个隐含假设被同时打破：①日内价格动态是平滑的（隔夜跳空一来，前一天的动量信号开盘瞬间被推翻）；②趋势具有一定持续性（小盘主题轮动里，&ldquo;均值&quot;本身在漂移）。</p>
+<p>论文分析了 QuantaAlpha（QA）和 AlphaAgent（AA）在 2023 年全年的代表性因子表现，结果非常鲜明：</p>
+<p><em>QuantaAlpha 2023 年表现最好的因子，集中在隔夜竞价信息和有条件趋势两类</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>因子名称</th>
+          <th>Rank IC</th>
+          <th>IC</th>
+          <th>信号类型</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>GapZ10_Overnight_vs_TR</td>
+          <td>0.0793</td>
+          <td>0.0335</td>
+          <td>隔夜跳空 / 竞价信息</td>
+      </tr>
+      <tr>
+          <td>Gap_IntradayAcceptanceScore_20D</td>
+          <td>0.0744</td>
+          <td>0.0330</td>
+          <td>隔夜竞价接受度</td>
+      </tr>
+      <tr>
+          <td>Gap_IntradayAcceptance_VolWeighted_20D</td>
+          <td>0.0606</td>
+          <td>0.0314</td>
+          <td>成交量加权竞价信息</td>
+      </tr>
+      <tr>
+          <td>CleanTrend_Continuation_Score_RS10_WMA5</td>
+          <td>0.0590</td>
+          <td>0.0267</td>
+          <td>有条件的趋势延续</td>
+      </tr>
+      <tr>
+          <td>OrderlyTrend_x_Absorption_10D_5D_20D</td>
+          <td>0.0465</td>
+          <td>0.0271</td>
+          <td>有序趋势×筹码吸收</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>QuantaAlpha 在 2023 年失效的因子，依赖&quot;平滑日内价格&quot;或&quot;趋势持续&quot;假设</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>因子名称</th>
+          <th>Rank IC</th>
+          <th>IC</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>KineticLength_AbsRetSum_Z_10D</td>
+          <td>-0.0720</td>
+          <td>-0.0246</td>
+      </tr>
+      <tr>
+          <td>Drawdown_Gated_NegCorr_60D_28D_thr20pct</td>
+          <td>-0.0282</td>
+          <td>-0.0095</td>
+      </tr>
+      <tr>
+          <td>HighClose_Shock_With_VolSync_60_20</td>
+          <td>-0.0274</td>
+          <td>-0.0090</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>AlphaAgent 2023 年表现最好的因子，集中于耗竭型反转，Rank IC 量级明显偏低</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>因子名称</th>
+          <th>Rank IC</th>
+          <th>IC</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Exhaustion_Intensity_Index_10D</td>
+          <td>0.0323</td>
+          <td>0.0159</td>
+      </tr>
+      <tr>
+          <td>Climax_Exhaustion_Intensity</td>
+          <td>0.0242</td>
+          <td>0.0160</td>
+      </tr>
+      <tr>
+          <td>Exhaustion_Volume_Instability_Index</td>
+          <td>0.0121</td>
+          <td>0.0117</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>AlphaAgent 在 2023 年失效的因子，主要依赖流动性稳定假设</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>因子名称</th>
+          <th>Rank IC</th>
+          <th>IC</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Relative_Volume_Calm_Reversal</td>
+          <td>-0.0279</td>
+          <td>-0.0188</td>
+      </tr>
+      <tr>
+          <td>Volume_Stability_Momentum_Divergence_40D</td>
+          <td>-0.0247</td>
+          <td>-0.0155</td>
+      </tr>
+      <tr>
+          <td>LVR_Bottom_Fishing_20D</td>
+          <td>-0.0190</td>
+          <td>-0.0144</td>
+      </tr>
+  </tbody>
+</table>
+<p>对比非常鲜明：QuantaAlpha 的强因子集中在<strong>隔夜竞价信息</strong>和<strong>有条件的趋势</strong>两类——前者在集合竞价主导的新市场环境里依然有效（Rank IC 0.0793），后者通过&quot;流动性条件&quot;过滤掉了小盘股的噪声趋势。AlphaAgent 的强因子是耗竭型反转（Rank IC 只有 0.03 量级），在快速轮动的小盘主题市场里远不如隔夜信息类因子稳健。</p>
+<p>QuantaAlpha 之所以能存活，根本原因是多样化初始化和冗余过滤共同保证了因子池覆盖多种不同的信号来源，总有一批因子与当前市场微结构对齐。</p>
+<h3 id="零样本跨市场迁移">零样本跨市场迁移<a hidden class="anchor" aria-hidden="true" href="#零样本跨市场迁移">#</a></h3>
+<p>CSI300 上挖出的因子，<strong>不做任何修改，直接部署到 CSI500 和 S&amp;P500</strong>。</p>
+<p><img alt="CSI300 因子直接迁移至 CSI500 和 S&amp;P500 的累计超额收益，QuantaAlpha 在 2023 年底后持续领先" loading="lazy" src="/img/quantaalpha/fig1-transfer.png"></p>
+<p>2022-2023 年各方法差距不大，2023 年底后 QuantaAlpha 持续上扬，其余方法趋于平缓或微降。截至 2025 年末：</p>
+<ul>
+<li><strong>CSI500：累计超额收益约 160%</strong></li>
+<li><strong>S&amp;P500：累计超额收益约 137%</strong></li>
+</ul>
+<p>这是整篇论文最有力的泛化性证明：挖掘到的是金融市场普遍存在的规律（价量协同动量、隔夜信息等），而非 A 股大盘股特有的历史模式。</p>
+<hr>
+<h2 id="设计哲学">设计哲学<a hidden class="anchor" aria-hidden="true" href="#设计哲学">#</a></h2>
+<p>论文最后把 QuantaAlpha 的设计提炼为三个核心属性，也是对&quot;好的 AI 因子挖掘系统应该具备什么&quot;的回答：</p>
+<p><strong>多样性（Diversity）</strong>：广泛探索 + 冗余过滤，保证因子池覆盖多信息渠道。市场风格切换时不会全军覆没。</p>
+<p><strong>可控性（Controllability）</strong>：AST 中间表示 + 生成时执行的三重约束，每一步都有语义锚点，不会偏离预设的经济学逻辑。</p>
+<p><strong>可信度（Trustworthiness）</strong>：轨迹级继承让每个因子都有可追溯的谱系，AI 的工作过程可以被审计，而不是面对黑盒输出。</p>
+<p>这三个属性恰好对应论文开篇诊断的三个缺陷：因子拥挤 → 多样性，语义漂移 → 可控性，无法审计 → 可信度。问题和解法一一对应。</p>
+<p><strong>现有局限</strong>：目前主要在股票资产上验证，商品/债券/外汇尚待探索；进化机制不显式感知当前市场 regime（牛熊/高低波动），未来可以让 Mutation 策略根据市场状态自适应切换；因子生成和组合构建目前相对独立，更紧密的整合理论上还有优化空间。</p>
+<p>但不管如何，让 AI 像有经验的研究员一样思考、记录、反省、协作，并保持完整的工作谱系——这个方向本身，已经相当值得期待。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://coldeye2020.github.io/tags/llm/">LLM</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/agent-quant/">Agent Quant</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://coldeye2020.github.io/think/2026-04-11-cognitive-load/">
+    <span class="title">Next »</span>
+    <br>
+    <span>从&#34;绝活哥&#34;到认知负荷控制</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on x"
+            href="https://x.com/intent/tweet/?text=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87&amp;url=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f&amp;hashtags=LLM%2cAgentQuant">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f&amp;title=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87&amp;summary=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87&amp;source=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f&title=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on whatsapp"
+            href="https://api.whatsapp.com/send?text=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87%20-%20https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on telegram"
+            href="https://telegram.me/share/url?text=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87&amp;url=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=%e8%ae%a9%20AI%20%e8%87%aa%e5%b7%b1%e5%ad%a6%e4%bc%9a%e6%8c%96%e6%8e%98%e8%82%a1%e7%a5%a8%e4%bf%a1%e5%8f%b7%ef%bc%9f%e8%81%8a%e8%81%8a%20QuantaAlpha%20%e8%bf%99%e7%af%87%e8%ae%ba%e6%96%87&u=https%3a%2f%2fcoldeye2020.github.io%2finvest%2f2026-04-11-quantaalpha-popular%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://coldeye2020.github.io/">Co&#39;Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

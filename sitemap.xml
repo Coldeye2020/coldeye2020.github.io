@@ -2,10 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://coldeye2020.github.io/tags/autonomous-driving/</loc>
-    <lastmod>2024-12-15T11:42:16+08:00</lastmod>
+    <loc>https://coldeye2020.github.io/tags/agent-quant/</loc>
+    <lastmod>2026-04-11T14:00:00+08:00</lastmod>
   </url><url>
     <loc>https://coldeye2020.github.io/</loc>
+    <lastmod>2026-04-11T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/invest/</loc>
+    <lastmod>2026-04-11T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/tags/llm/</loc>
+    <lastmod>2026-04-11T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/tags/</loc>
+    <lastmod>2026-04-11T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/</loc>
+    <lastmod>2026-04-11T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/think/</loc>
+    <lastmod>2026-04-11T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/think/2026-04-11-cognitive-load/</loc>
+    <lastmod>2026-04-11T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://coldeye2020.github.io/tags/autonomous-driving/</loc>
     <lastmod>2024-12-15T11:42:16+08:00</lastmod>
   </url><url>
     <loc>https://coldeye2020.github.io/tags/mllm/</loc>
@@ -14,21 +35,13 @@
     <loc>https://coldeye2020.github.io/tech/2024-12-15-omnidrive/</loc>
     <lastmod>2024-12-15T11:42:16+08:00</lastmod>
   </url><url>
-    <loc>https://coldeye2020.github.io/tags/</loc>
-    <lastmod>2024-12-15T11:42:16+08:00</lastmod>
-  </url><url>
     <loc>https://coldeye2020.github.io/tech/</loc>
     <lastmod>2024-12-15T11:42:16+08:00</lastmod>
   </url><url>
     <loc>https://coldeye2020.github.io/think/2024-12-15-introduction/</loc>
     <lastmod>2024-12-15T01:39:39+08:00</lastmod>
   </url><url>
-    <loc>https://coldeye2020.github.io/think/</loc>
-    <lastmod>2024-12-15T01:39:39+08:00</lastmod>
-  </url><url>
     <loc>https://coldeye2020.github.io/archives/</loc>
-  </url><url>
-    <loc>https://coldeye2020.github.io/invest/</loc>
   </url><url>
     <loc>https://coldeye2020.github.io/search/</loc>
   </url>

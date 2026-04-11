@@ -6,8 +6,57 @@
     <description>Recent content in Thought on Co&#39;Log</description>
     <generator>Hugo -- 0.139.4</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 15 Dec 2024 01:39:39 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2026 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://coldeye2020.github.io/think/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从&#34;绝活哥&#34;到认知负荷控制</title>
+      <link>https://coldeye2020.github.io/think/2026-04-11-cognitive-load/</link>
+      <pubDate>Sat, 11 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://coldeye2020.github.io/think/2026-04-11-cognitive-load/</guid>
+      <description>&lt;p&gt;最近在看一个英雄联盟博主的视频，他讲了一个我觉得挺有意思的观点：真正能快速上分到高段位的玩家，往往不是英雄池宽广、什么都会的那种人，而是把一两个英雄练到极致的&amp;quot;绝活哥&amp;quot;。&lt;/p&gt;
+&lt;p&gt;博主的解释是：如果你的英雄池很宽，你在每一局游戏里都要花注意力去熟悉技能怎么放、连招顺序是什么。这些操作层面的东西会把大脑塞满，让你根本没空去想那些更重要的事——对面打野在哪，这波兵线能不能推，团战应该怎么站。你不是不想想，是真的想不了，因为大脑已经满了。只有当一个英雄的操作被练到&amp;quot;根本不需要想&amp;quot;的程度，才能腾出空间去思考别的东西。&lt;/p&gt;
+&lt;p&gt;记得之前国服长期排位霸榜第一的莎莉也说他自己的经历——曾经在白金段位卡了很久，直到专注练习豹女这一个英雄之后，突然开窍，从白金一路连胜到王者。&lt;/p&gt;
+&lt;p&gt;我听完之后，结合一些自身的经历很有感触，把一些思考记录到了这篇博客中。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;高三的一段经历&#34;&gt;高三的一段经历&lt;/h2&gt;
+&lt;p&gt;这让我想起了高三备考时的一段经历。&lt;/p&gt;
+&lt;p&gt;我高中三年英语一直不好，所以就默默接受了这个现实。有一次考试，完形填空20道题，我错了13个，这个数字把我自己都吓了一跳。当时刚好接触到了&amp;quot;刻意练习&amp;quot;的概念，就决定做个实验：先不管其他题型，只盯着完形填空一个题型死磕。每次拿到试卷，我都会带着最高的兴奋度去第一时间完成完形填空，似乎正常考试只有这一个题目是重要的，每次考试成绩出来也只会关注完形填空错了哪几道，犯了那些错误，其他题目是死是活我基本是完全不care了。做英语练习的时候也是类似的状态，只关注完形填空题型相关的错题。&lt;/p&gt;
+&lt;p&gt;后面的结果出乎意料。我做完形填空错误数量从13个慢慢降到7-8个，再降到3-4个，最后基本维持在0-2个。与此同时，英语总分在一个月内从平均110分涨到了140分往上，从一开始英语倒数第一，到后面考进了前10。&lt;/p&gt;
+&lt;p&gt;一开始我以为是刻意练习的功劳。但听完这个博主的解释之后，我开始重新想这件事——刻意练习可能只是形式，背后真正在起作用的，似乎是另一件事。&lt;/p&gt;
+&lt;p&gt;做题的过程中，我能感受到一个很明显的变化。刚开始刷题时，脑子里什么都在想但什么也没想清楚。到了后期，做题的感觉越来越不一样——不是说变得更轻松了，而是思考的内容明显变少了，思考的方向变得明显清晰了，开始能感知到&amp;quot;这道题在考什么&amp;quot;、&amp;ldquo;我哪里比较薄弱&amp;rdquo;。&lt;/p&gt;
+&lt;p&gt;这个变化让我觉得，可能不是我变聪明了，而是我主动降低了一些大脑负荷。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;工作记忆和认知负荷&#34;&gt;工作记忆和认知负荷&lt;/h2&gt;
+&lt;p&gt;带着这个疑问，我后来找到了一些相关的研究。&lt;/p&gt;
+&lt;p&gt;认知心理学里有个概念叫&lt;strong&gt;工作记忆&lt;/strong&gt;（Working Memory），可以理解成大脑里用来&amp;quot;当下处理信息&amp;quot;的临时空间。这块空间非常有限，研究表明人类工作记忆一次大约只能同时处理4到7个独立的信息块 &lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;Sweller在1988年提出的&lt;strong&gt;认知负荷理论&lt;/strong&gt;（Cognitive Load Theory）在此基础上进一步指出 &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;，认知资源是固定的总量，当低层次的操作占用了大量资源，留给真正学习的空间就少了。技能从生疏到熟练，心理学家Fitts和Posner描述了三个阶段 &lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;：先是每个细节都要有意识地控制，极度消耗工作记忆；然后动作开始串联，有意识监控逐渐减少；最后达到自动化，执行几乎不再消耗工作记忆，意识可以去处理其他事情。&lt;/p&gt;
+&lt;p&gt;用这个框架回头看，我高三的经历似乎说得通了。之前没有采用刻意刷题的方式前，我每切换一次题型，工作记忆被&amp;quot;这类题的做题技巧有哪些&amp;quot;、&amp;ldquo;回忆语法的考察方式&amp;quot;这些基础但是不重要的操作塞满，没有余量去感知更重要的知识。而控制刷题类型的好处在于做题技巧是固定的，同时每种语法在这些题型中的考察方式也类似，我可以真正只关注到语法使用本身，从而快速的提升自己的英语能力。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;当家教时的反面教材&#34;&gt;当家教时的反面教材&lt;/h2&gt;
+&lt;p&gt;这个理解让我想到自己当家教时犯的一个错误。&lt;/p&gt;
+&lt;p&gt;因为自己的英语高效提升，我后来去当了两次英语家教，想把这套方法分享给学生。我让他们也专门刷完形填空，但每次做完题，我会把所有错误的知识点全部讲一遍——一道题做下来，发现可能有10个知识点需要补充，就全讲了。另外，我还喜欢做知识拓展，因为在我自己的经历里，把知识点串联起来对巩固很有帮助。&lt;/p&gt;
+&lt;p&gt;但是效果很差。&lt;/p&gt;
+&lt;p&gt;回头看，我当时大概是把自己的认知状态投射到了学生身上。对我来说，那10个知识点在脑子里可能已经是2-3个更大的模式；对基础薄弱的学生来说，这是10个毫无关联的全新信息，早就超出他们工作记忆的上限了。知识拓展对我有用，是因为我已经有了稳定的基础，新东西可以挂上去；对他们来说，多余的信息可能只是额外的负担。&lt;/p&gt;
+&lt;p&gt;Sweller的研究里有个叫&lt;strong&gt;专家反转效应&lt;/strong&gt;（Expertise Reversal Effect）的现象 &lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;：对专家有效的教学方式，对新手往往是有害的。专家太清楚知识之间的关联，反而感知不到基础薄弱者面对同样信息时的认知压力。&lt;/p&gt;
+&lt;p&gt;更合适的做法，或许是只让他们关注那些最简单、最常见的错误，其余的暂时忽略，等在这一层建立了稳定的感觉，再引入下一层的复杂性。损失一些题目表面上的&amp;quot;利用率&amp;rdquo;，但认知负荷控制住了，进步可能反而会快一些。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;深度学习的联系&#34;&gt;深度学习的联系&lt;/h2&gt;
+&lt;p&gt;在找资料的过程中，我发现深度学习领域有一些有意思的研究，和这个思路不谋而合。&lt;/p&gt;
+&lt;p&gt;Bengio等人在2009年提出的&lt;strong&gt;课程学习&lt;/strong&gt;（Curriculum Learning）发现，按照从易到难的顺序训练神经网络，模型收敛更快，泛化能力更强 &lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;。另一项研究则发现，神经网络在训练过程中会优先拟合&lt;strong&gt;低频特征&lt;/strong&gt;（全局结构、普遍规律），然后才逐渐拟合&lt;strong&gt;高频特征&lt;/strong&gt;（局部细节、特殊情况） &lt;sup id=&#34;fnref:6&#34;&gt;&lt;a href=&#34;#fn:6&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;。换句话说，在训练初期，那些高频的细节信号对网络来说更像是噪声，不仅没有帮助，反而会干扰模型对基础规律的学习。&lt;/p&gt;
+&lt;p&gt;这让我觉得，或许对于学习初期的人来说，过多的细节和拓展知识，并不像直觉上感觉的那样是&amp;quot;赚到了&amp;quot;，反而可能因为超出当前处理能力而变成噪声——被大脑直接过滤掉，什么也没留下，有时还会影响到真正有价值内容的学习。&lt;/p&gt;
+&lt;p&gt;一边是人脑，一边是人工神经网络，两者在完全不同的背景下走向了类似的结论。我不确定这是否意味着什么更深层的东西，但这个巧合本身让我觉得挺有意思的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;想到哪写到哪&#34;&gt;想到哪写到哪&lt;/h2&gt;
+&lt;p&gt;我没有什么实践上的结论，只是把这些零碎的观察和思考写下来。&lt;/p&gt;
+&lt;p&gt;如果这些想法有一个共同的方向的话，大概是：学习的瓶颈，可能不在于接收了多少信息，而在于认知资源有没有被集中在当前能够消化的那一层上。信息量超出处理能力，不会带来更快的进步，只会制造更多的混乱。&lt;/p&gt;
+&lt;p&gt;就像现在信息爆炸的时代，我常会有一种信息不过脑的焦虑，现在想来可能就是因为现代社会过多的信息，对于还在和数万年前古人类用着同等型号大脑的现代人来说，实在是有一些认知负荷过载了。&lt;/p&gt;
+&lt;hr&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. &lt;em&gt;Psychological Review&lt;/em&gt;, 63(2), 81–97. Cowan, N. (2001). The magical number 4 in short-term memory. &lt;em&gt;Behavioral and Brain Sciences&lt;/em&gt;, 24(1), 87–114.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The begining</title>
       <link>https://coldeye2020.github.io/think/2024-12-15-introduction/</link>

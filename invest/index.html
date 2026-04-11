@@ -58,6 +58,16 @@
     </style>
 </noscript><script data-goatcounter="https://coldeye.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+    });"></script>
 
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HN6RSNM2B"></script>
       <script>
@@ -192,6 +202,33 @@
     Grand Caishen bless me
   </div>
 </header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>如果你听说过&#34;量化基金&#34;“AI 炒股&#34;这类词，可能会好奇：AI 究竟是怎么在股市里找到赚钱机会的？它找到的方法可靠吗？能持续有效吗？
+这篇文章想借一篇 2026 年的论文——QuantaAlpha——来回答这些问题。这篇论文做了一件有意思的事：不只是让 AI 去预测股价，而是让 AI 像一个量化研究员一样自己想出预测方法，然后不断进化改进。
+我会从量化研究是什么讲起，一路讲到这篇论文的核心机制和实验结果。涉及公式的地方会附上直觉解释，不需要数学背景也能理解。
+量化研究在做什么？ 从&#34;选股&#34;说起 普通投资者选股，靠的可能是新闻、财报、直觉。量化研究员则不同——他们的工作是找到可以被数学描述、可以被计算机执行的选股规律。
+这类规律叫做因子（factor）。一个因子本质上是一条规则：给市场上所有股票打一个分，然后买高分股票、卖低分股票，看这样做长期下来能不能赚钱。
+最简单的因子：过去一个月涨幅最大的股票，下个月继续跑赢的概率更高（动量因子）。这条规律在很多市场里真的存在，背后有经济学解释（机构资金买入需要时间，趋势会延续），也有大量实证数据支持。
+因子本身通常是一个数学表达式，作用在价格、成交量等原始数据上，输出一个分数。比如：
+$$f_t(i) = \frac{P_t(i) - P_{t-20}(i)}{P_{t-20}(i)}$$这就是一个 20 日动量因子——用今天的价格除以 20 天前的价格再减一，得到这 20 天的涨跌幅，作为对股票 $i$ 的打分。
+“Alpha”是量化圈里的另一个核心词。它指的是扣除市场整体涨跌之后，策略额外赚到的收益（超额收益）。如果大盘涨了 10%，你的策略涨了 16%，那多出来的 6% 就是 Alpha。挖掘 Alpha，就是寻找能持续产生超额收益的因子。
+量化因子挖掘的传统流程 在大语言模型（LLM）出现之前，量化研究员找因子的方式主要有两种：
+人工驱动：研究员根据金融理论提出假设，手动设计数学表达式，回测验证。速度慢，但每个因子背后有清晰的经济学逻辑。
+机器搜索：用遗传算法或强化学习在因子空间里暴力搜索，速度快，但搜出来的因子往往是无法解释的&#34;天书&#34;公式。
+LLM 的出现提供了第三条路：它既理解金融语义，又能生成代码，理论上可以结合两者的优点。
+现有 LLM Agent 方法是怎么做的？ 大多数现有的 LLM Agent 因子挖掘方法，流程大致如下：
+通用 LLM Agent 方法 ───────────────────────────────────────── 市场数据 ──→ [LLM] 提出假设 ──→ 生成因子代码 ↑ │ │ ↓ 修改假设 ←──── 回测评估（IC等） │ ↓ 搜索空间逐渐收缩 （反复修改，越来越像） ───────────────────────────────────────── 这个流程有一个隐藏的问题：LLM 每一轮都根据上一轮的回测结果&#34;打补丁”，慢慢地，所有的修改方向都指向同一片区域，搜索空间在不断收缩。结果是生成了大量长相相似的因子，整体多样性越来越差。
+...</p>
+  </div>
+  <footer class="entry-footer">  <span title='2026-04-11 14:00:00 +0800 +0800'>Date: April 11, 2026 | Reading Time: 6 min | Author: Coldeye</footer>
+  <a class="entry-link" aria-label="post link to 让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文" href="https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/"></a>
+</article>
     </main>
     
 <footer class="footer">
