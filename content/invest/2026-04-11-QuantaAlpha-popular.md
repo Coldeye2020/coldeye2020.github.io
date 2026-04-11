@@ -588,4 +588,8 @@ CSI300 上挖出的因子，**不做任何修改，直接部署到 CSI500 和 S&
 
 ---
 
-如果你对 QuantaAlpha 的代码实现感兴趣，可以查看配套的[互动代码教程](/course/quantaalpha/)。
+**参考资料**
+
+- 论文：[QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining](https://arxiv.org/abs/2602.07085)（arXiv 2602.07085）
+- GitHub：[QuantaAlpha/QuantaAlpha](https://github.com/QuantaAlpha/QuantaAlpha)
+- 配套[互动代码教程](/course/quantaalpha/)
