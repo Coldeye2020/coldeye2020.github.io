@@ -21,9 +21,17 @@
 .post-content p {
     font-size: 16px;
 }
+.post-content table {
+    display: table !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: auto !important;
+    min-width: 60%;
+}
 .post-content table th,
 .post-content table td {
     font-size: 14px;
+    text-align: center;
 }
 .post-content li {
     font-size: 16px;
@@ -44,28 +52,26 @@
 /* ── Image caption (figure > figcaption) ── */
 .post-content figure {
     margin: 1.2rem 0;
-    text-align: center;
 }
 
 .post-content figure img {
-    margin: 0 auto;
     display: block;
 }
 
 .post-content figure > figcaption {
-    color: var(--secondary) !important;
-    font-size: 13px !important;
-    font-weight: normal !important;
-    font-style: italic;
-    margin: 6px auto 0 !important;
-    max-width: 80%;
-    line-height: 1.5;
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    margin: 8px 0 0;
+    line-height: 1.6;
+    text-align: center;
 }
 
 .post-content figure > figcaption > p {
-    color: var(--secondary) !important;
-    font-size: 13px !important;
-    font-weight: normal !important;
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: normal;
 }
 
 /* ── Table caption: italic em directly before/after a table ──
@@ -84,16 +90,16 @@
 .post-content p:has(> em:only-child):has(+ table),
 /* Caption below: p containing only <em>, immediately after a table */
 .post-content table + p:has(> em:only-child) {
-    text-align: center;
     color: var(--secondary);
-    font-size: 13px;
-    margin-top: 4px;
+    font-size: 14px;
+    margin-top: 6px;
     margin-bottom: 4px;
+    text-align: center;
 }
 
 .post-content p:has(> em:only-child):has(+ table) em,
 .post-content table + p:has(> em:only-child) em {
-    font-style: italic;
+    font-style: normal;
 }
 
 /* Archives page with sidebar */
