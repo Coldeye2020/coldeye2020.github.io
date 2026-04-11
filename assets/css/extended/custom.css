@@ -26,6 +26,61 @@
     display: inline;
 }
 
+/* ── Image caption (figure > figcaption) ── */
+.post-content figure {
+    margin: 1.2rem 0;
+    text-align: center;
+}
+
+.post-content figure img {
+    margin: 0 auto;
+    display: block;
+}
+
+.post-content figure > figcaption {
+    color: var(--secondary) !important;
+    font-size: 13px !important;
+    font-weight: normal !important;
+    font-style: italic;
+    margin: 6px auto 0 !important;
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+.post-content figure > figcaption > p {
+    color: var(--secondary) !important;
+    font-size: 13px !important;
+    font-weight: normal !important;
+}
+
+/* ── Table caption: italic em directly before/after a table ──
+   Write in markdown:  *表1：说明文字*  immediately before the table  */
+.post-content p:has(> em:only-child) + .post-content table,
+.post-content p:has(> em:only-child) {
+    /* base reset — overridden below when adjacent to table */
+}
+
+.post-content table + p > em:only-child,
+.post-content p:has(> em:only-child) + table {
+    /* handled via wrapper below */
+}
+
+/* Caption above: p containing only <em>, immediately before a table */
+.post-content p:has(> em:only-child):has(+ table),
+/* Caption below: p containing only <em>, immediately after a table */
+.post-content table + p:has(> em:only-child) {
+    text-align: center;
+    color: var(--secondary);
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.post-content p:has(> em:only-child):has(+ table) em,
+.post-content table + p:has(> em:only-child) em {
+    font-style: italic;
+}
+
 /* Archives page with sidebar */
 .archives-layout {
     display: flex;

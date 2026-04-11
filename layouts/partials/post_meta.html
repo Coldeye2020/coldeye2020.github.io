@@ -1,7 +1,11 @@
 {{- $scratch := newScratch }}
 
 {{- if not .Date.IsZero -}}
-  {{- $scratch.Add "meta" (slice (printf "<span title='%s'>Date: %s" (.Date) (.Date | time.Format "January 2, 2006"))) }}
+  {{- $scratch.Add "meta" (slice (printf "<span title='%s'>Date: %s</span>" (.Date) (.Date | time.Format "January 2, 2006"))) }}
+{{- end }}
+
+{{- if and (not .Lastmod.IsZero) (not (.Date.Equal .Lastmod)) -}}
+  {{- $scratch.Add "meta" (slice (printf "<span title='%s'>Updated: %s</span>" (.Lastmod) (.Lastmod | time.Format "January 2, 2006"))) }}
 {{- end }}
 
 {{- if .Param "ShowReadingTime" -}}
