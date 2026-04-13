@@ -1,6 +1,7 @@
 ---
 date: '2024-12-15T11:42:16+08:00'
 title: 'OmniDrive 论文解读'
+description: '解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。'
 author: ["OuhaoTen"]
 tags: ["Autonomous driving","MLLM"]
 ---

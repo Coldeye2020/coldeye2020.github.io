@@ -1,6 +1,7 @@
 ---
 date: '2024-12-15T01:39:39+08:00'
 title: 'The begining'
+description: '博客的开篇，记录 Coldeye 与 OuhaoTen 建立这个博客的初心——对抗拖延、留存记录，以及对未来持续更新的期待。'
 author: ["OuhaoTen"]
 tag: 
 ---

@@ -91,7 +91,7 @@ params:
     google:
       SiteVerificationTag: ""
     bing:
-      SiteVerificationTag: ""
+      SiteVerificationTag: "0A53450D60EE95103C2117D5737EA0C7"
     yandex:
       SiteVerificationTag: ""
 

@@ -1,6 +1,7 @@
 ---
 date: '2026-04-11T14:00:00+08:00'
 title: '让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文'
+description: '介绍 QuantaAlpha 论文：一个让 LLM 像量化研究员一样自主挖掘、进化 Alpha 因子的框架，解析其核心机制与实验结果。'
 author: ["Coldeye"]
 tags: ["LLM", "Agent Quant"]
 ---
