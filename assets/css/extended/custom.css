@@ -1,3 +1,7 @@
+:root {
+    --main-width: 800px;
+}
+
 .post-content h1 {
     margin: 28px auto 20px;
     font-size: 28px;
