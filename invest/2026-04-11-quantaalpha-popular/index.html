@@ -1080,7 +1080,57 @@ $$\text{CR} = \text{ARR} / |\text{MDD}|$$<p>年化收益率除以最大回撤。
     </li>
 </ul>
 
-  </footer>
+  </footer><script src="https://giscus.app/client.js"
+        data-repo="coldeye2020/coldeye2020.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzNTMyMDAxOTM="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOFQ1oQc4C6t8Q"
+        data-mapping="pathname"
+        data-strict="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+(function () {
+  function getGiscusTheme() {
+    var theme = document.documentElement.getAttribute('data-theme');
+    return theme === 'dark' ? 'dark' : 'light';
+  }
+
+  function sendGiscusTheme(theme) {
+    var iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  var observer = new MutationObserver(function () {
+    sendGiscusTheme(getGiscusTheme());
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+
+  
+  window.addEventListener('message', function handler(e) {
+    if (e.origin !== 'https://giscus.app') return;
+    if (e.data && e.data.giscus && e.data.giscus.discussion !== undefined) {
+      sendGiscusTheme(getGiscusTheme());
+      window.removeEventListener('message', handler);
+    }
+  });
+})();
+</script>
+
 </article>
     </main>
     
