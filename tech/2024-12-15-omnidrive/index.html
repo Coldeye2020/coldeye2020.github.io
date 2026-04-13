@@ -7,31 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>OmniDrive 论文解读 | Co&#39;Log</title>
 <meta name="keywords" content="Autonomous driving, MLLM">
-<meta name="description" content="一.论文总览
-
-问题背景：
-
-现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：&ldquo;询问当前车道是否可以左转&rdquo;，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。
-现有 MLLM 模型按照对图像的处理方式的不同，可以分为两种流派：一种是以 Flamingo 、BLIP-2、Qwen等方法为代表，以交叉注意力机制为基础，特点是不论图像分辨率都处理成统一长度的 token 序列，而另一种是以 Vit、 BLIP、LLAVA 为代表，以自注意力机制为基础，每个 token 用于代表固定像素大小的图像局部信息，这意味着不同的分辨率图像对应变长的 token 序列。对于自动驾驶场景而言，多视角、高分辨率、连续帧（视频）是感知任务的数据特点，而变长序列代表时延、不稳定。所以作者以 BLIP-2 结构为基础，引入 Stream-PETR（作者之前的工作），构建用于自动驾驶场景的 3D MLLM。
-过去的 Benchmark 大多采用简单的 QA 的形式进行评测，已有工作证明端到端自动驾驶目前 open-loop 评测方式的局限性。另外，这种评测方式驱动的方法也无法完全利用到大语言模型强大的涌现能力。对于自动驾驶场景，类似于世界模型的反事实推断能力是更符合人类思考方式和习惯的。作者希望仿照 LLAVA 的做法，提出一种高效的数据构建方式，用于构建大规模 VQA 数据集，一方面用于 MLLM 的 Instruction-tuning 训练，另一方面用于评测。
-
-贡献：
-
-一种具有3d 能力的vision-language model结构，将多模态大语言模型用于自动驾驶场景中的3d场景任务；
-一种基于 GPT-4o 的数据构建方法，用于生成自动驾驶场景的 VQA 问答数据，包括反事实推断形式的问答。
-
-二.方法
-
-结构总览：
-
-图像编码器：作者采用的是基于 Clip 结构的 Eva-02 模型作为图像编码器，通过多视角图像特征提取 3d 信息，这一部分没太多需要讲的。
-Q-Former3D：参考 BLIP-2 中的 Q-Former 结构，这里作者敏锐地发现了 Q-Former 结构和 Petr 系列模型结构的相似之处，将结构引入的同时也引入了 3D 目标检测任务作为辅助监督。
-LLM：之前的结构的作用在于提取 3D 信息特征，最终需要对齐到 LLM 模型能够理解的特征空间，进行 VQA 问答。
-
-Q-Former3D:
-作为最能体现作者贡献的模块，这一部分选择 Stream-PETR 出于以下考虑：PETR 所代表的稀疏 BEV 建模方式，适用于检测任务，相比于需要构建 dense bev feature 的方法来说，需要更小的计算量，同时加快模型的推理速度，毕竟OmniDrive 的核心在于多模态大模型的能力，检测任务仅作为辅助监督，所以尽量简化降低存在感。">
+<meta name="description" content="解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。">
 <meta name="author" content="OuhaoTen">
 <link rel="canonical" href="https://coldeye2020.github.io/tech/2024-12-15-omnidrive/">
+<meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.2c4eb3ec8979dfce07c26b0e4675477cac9a100dd4bf7e0bee049d71a59089f1.css" integrity="sha256-LE6z7Il5384HwmsORnVHfKyaEA3Uv34L7gSdcaWQifE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://coldeye2020.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://coldeye2020.github.io/favicon-16x16.png">
@@ -106,7 +85,7 @@ Q-Former3D:
       </script><meta property="og:url" content="https://coldeye2020.github.io/tech/2024-12-15-omnidrive/">
   <meta property="og:site_name" content="Co&#39;Log">
   <meta property="og:title" content="OmniDrive 论文解读">
-  <meta property="og:description" content="一.论文总览 问题背景： 现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：“询问当前车道是否可以左转”，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。 现有 MLLM 模型按照对图像的处理方式的不同，可以分为两种流派：一种是以 Flamingo 、BLIP-2、Qwen等方法为代表，以交叉注意力机制为基础，特点是不论图像分辨率都处理成统一长度的 token 序列，而另一种是以 Vit、 BLIP、LLAVA 为代表，以自注意力机制为基础，每个 token 用于代表固定像素大小的图像局部信息，这意味着不同的分辨率图像对应变长的 token 序列。对于自动驾驶场景而言，多视角、高分辨率、连续帧（视频）是感知任务的数据特点，而变长序列代表时延、不稳定。所以作者以 BLIP-2 结构为基础，引入 Stream-PETR（作者之前的工作），构建用于自动驾驶场景的 3D MLLM。 过去的 Benchmark 大多采用简单的 QA 的形式进行评测，已有工作证明端到端自动驾驶目前 open-loop 评测方式的局限性。另外，这种评测方式驱动的方法也无法完全利用到大语言模型强大的涌现能力。对于自动驾驶场景，类似于世界模型的反事实推断能力是更符合人类思考方式和习惯的。作者希望仿照 LLAVA 的做法，提出一种高效的数据构建方式，用于构建大规模 VQA 数据集，一方面用于 MLLM 的 Instruction-tuning 训练，另一方面用于评测。 贡献： 一种具有3d 能力的vision-language model结构，将多模态大语言模型用于自动驾驶场景中的3d场景任务； 一种基于 GPT-4o 的数据构建方法，用于生成自动驾驶场景的 VQA 问答数据，包括反事实推断形式的问答。 二.方法 结构总览： 图像编码器：作者采用的是基于 Clip 结构的 Eva-02 模型作为图像编码器，通过多视角图像特征提取 3d 信息，这一部分没太多需要讲的。 Q-Former3D：参考 BLIP-2 中的 Q-Former 结构，这里作者敏锐地发现了 Q-Former 结构和 Petr 系列模型结构的相似之处，将结构引入的同时也引入了 3D 目标检测任务作为辅助监督。 LLM：之前的结构的作用在于提取 3D 信息特征，最终需要对齐到 LLM 模型能够理解的特征空间，进行 VQA 问答。 Q-Former3D: 作为最能体现作者贡献的模块，这一部分选择 Stream-PETR 出于以下考虑：PETR 所代表的稀疏 BEV 建模方式，适用于检测任务，相比于需要构建 dense bev feature 的方法来说，需要更小的计算量，同时加快模型的推理速度，毕竟OmniDrive 的核心在于多模态大模型的能力，检测任务仅作为辅助监督，所以尽量简化降低存在感。">
+  <meta property="og:description" content="解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="tech">
@@ -116,29 +95,7 @@ Q-Former3D:
     <meta property="article:tag" content="MLLM">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OmniDrive 论文解读">
-<meta name="twitter:description" content="一.论文总览
-
-问题背景：
-
-现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：&ldquo;询问当前车道是否可以左转&rdquo;，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。
-现有 MLLM 模型按照对图像的处理方式的不同，可以分为两种流派：一种是以 Flamingo 、BLIP-2、Qwen等方法为代表，以交叉注意力机制为基础，特点是不论图像分辨率都处理成统一长度的 token 序列，而另一种是以 Vit、 BLIP、LLAVA 为代表，以自注意力机制为基础，每个 token 用于代表固定像素大小的图像局部信息，这意味着不同的分辨率图像对应变长的 token 序列。对于自动驾驶场景而言，多视角、高分辨率、连续帧（视频）是感知任务的数据特点，而变长序列代表时延、不稳定。所以作者以 BLIP-2 结构为基础，引入 Stream-PETR（作者之前的工作），构建用于自动驾驶场景的 3D MLLM。
-过去的 Benchmark 大多采用简单的 QA 的形式进行评测，已有工作证明端到端自动驾驶目前 open-loop 评测方式的局限性。另外，这种评测方式驱动的方法也无法完全利用到大语言模型强大的涌现能力。对于自动驾驶场景，类似于世界模型的反事实推断能力是更符合人类思考方式和习惯的。作者希望仿照 LLAVA 的做法，提出一种高效的数据构建方式，用于构建大规模 VQA 数据集，一方面用于 MLLM 的 Instruction-tuning 训练，另一方面用于评测。
-
-贡献：
-
-一种具有3d 能力的vision-language model结构，将多模态大语言模型用于自动驾驶场景中的3d场景任务；
-一种基于 GPT-4o 的数据构建方法，用于生成自动驾驶场景的 VQA 问答数据，包括反事实推断形式的问答。
-
-二.方法
-
-结构总览：
-
-图像编码器：作者采用的是基于 Clip 结构的 Eva-02 模型作为图像编码器，通过多视角图像特征提取 3d 信息，这一部分没太多需要讲的。
-Q-Former3D：参考 BLIP-2 中的 Q-Former 结构，这里作者敏锐地发现了 Q-Former 结构和 Petr 系列模型结构的相似之处，将结构引入的同时也引入了 3D 目标检测任务作为辅助监督。
-LLM：之前的结构的作用在于提取 3D 信息特征，最终需要对齐到 LLM 模型能够理解的特征空间，进行 VQA 问答。
-
-Q-Former3D:
-作为最能体现作者贡献的模块，这一部分选择 Stream-PETR 出于以下考虑：PETR 所代表的稀疏 BEV 建模方式，适用于检测任务，相比于需要构建 dense bev feature 的方法来说，需要更小的计算量，同时加快模型的推理速度，毕竟OmniDrive 的核心在于多模态大模型的能力，检测任务仅作为辅助监督，所以尽量简化降低存在感。">
+<meta name="twitter:description" content="解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。">
 
 
 <script type="application/ld+json">
@@ -167,7 +124,7 @@ Q-Former3D:
   "@type": "BlogPosting",
   "headline": "OmniDrive 论文解读",
   "name": "OmniDrive 论文解读",
-  "description": "一.论文总览 问题背景： 现有的将多模态大模型（Multimodal Large Language Model, MLLM）引入自动驾驶领域的方法中，大多不具备3D场景理解能力，但这一能力对于自动驾驶场景而言是不可或缺的，以一个驾驶场景中常见的问题为例：\u0026ldquo;询问当前车道是否可以左转\u0026rdquo;，该问题看似在做一个简单的语义判断，本质上需要涉及到对车道与自车的几何关系判断、车道与交通灯语义、地面标识语义的匹配，要回答这些问题，需要 MLLM 模型将 2D 理解和推理能力扩展到复杂的 3D场景中。 现有 MLLM 模型按照对图像的处理方式的不同，可以分为两种流派：一种是以 Flamingo 、BLIP-2、Qwen等方法为代表，以交叉注意力机制为基础，特点是不论图像分辨率都处理成统一长度的 token 序列，而另一种是以 Vit、 BLIP、LLAVA 为代表，以自注意力机制为基础，每个 token 用于代表固定像素大小的图像局部信息，这意味着不同的分辨率图像对应变长的 token 序列。对于自动驾驶场景而言，多视角、高分辨率、连续帧（视频）是感知任务的数据特点，而变长序列代表时延、不稳定。所以作者以 BLIP-2 结构为基础，引入 Stream-PETR（作者之前的工作），构建用于自动驾驶场景的 3D MLLM。 过去的 Benchmark 大多采用简单的 QA 的形式进行评测，已有工作证明端到端自动驾驶目前 open-loop 评测方式的局限性。另外，这种评测方式驱动的方法也无法完全利用到大语言模型强大的涌现能力。对于自动驾驶场景，类似于世界模型的反事实推断能力是更符合人类思考方式和习惯的。作者希望仿照 LLAVA 的做法，提出一种高效的数据构建方式，用于构建大规模 VQA 数据集，一方面用于 MLLM 的 Instruction-tuning 训练，另一方面用于评测。 贡献： 一种具有3d 能力的vision-language model结构，将多模态大语言模型用于自动驾驶场景中的3d场景任务； 一种基于 GPT-4o 的数据构建方法，用于生成自动驾驶场景的 VQA 问答数据，包括反事实推断形式的问答。 二.方法 结构总览： 图像编码器：作者采用的是基于 Clip 结构的 Eva-02 模型作为图像编码器，通过多视角图像特征提取 3d 信息，这一部分没太多需要讲的。 Q-Former3D：参考 BLIP-2 中的 Q-Former 结构，这里作者敏锐地发现了 Q-Former 结构和 Petr 系列模型结构的相似之处，将结构引入的同时也引入了 3D 目标检测任务作为辅助监督。 LLM：之前的结构的作用在于提取 3D 信息特征，最终需要对齐到 LLM 模型能够理解的特征空间，进行 VQA 问答。 Q-Former3D: 作为最能体现作者贡献的模块，这一部分选择 Stream-PETR 出于以下考虑：PETR 所代表的稀疏 BEV 建模方式，适用于检测任务，相比于需要构建 dense bev feature 的方法来说，需要更小的计算量，同时加快模型的推理速度，毕竟OmniDrive 的核心在于多模态大模型的能力，检测任务仅作为辅助监督，所以尽量简化降低存在感。\n",
+  "description": "解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。",
   "keywords": [
     "Autonomous driving", "MLLM"
   ],
@@ -280,6 +237,9 @@ Q-Former3D:
     <h1 class="post-title entry-hint-parent">
       OmniDrive 论文解读
     </h1>
+    <div class="post-description">
+      解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。
+    </div>
     <div class="post-meta">Date: December 15, 2024 | Estimated Reading Time: 17 min | Author: OuhaoTen | Readers:&nbsp;<span id="gc-page">–</span>
       
     </div>
