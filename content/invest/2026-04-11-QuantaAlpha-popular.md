@@ -5,7 +5,7 @@ author: ["Coldeye"]
 tags: ["LLM", "Agent Quant"]
 ---
 
->论文：[QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining](https://arxiv.org/abs/2602.07085)（arXiv 2602.07085）
+>论文：[QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining](https://arxiv.org/abs/2602.07085)
 >
 >GitHub：[QuantaAlpha/QuantaAlpha](https://github.com/QuantaAlpha/QuantaAlpha)
 >

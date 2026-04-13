@@ -1,16 +1,33 @@
 {{- $scratch := newScratch }}
 
 {{- if not .Date.IsZero -}}
-  {{- $scratch.Add "meta" (slice (printf "<span title='%s'>Date: %s</span>" (.Date) (.Date | time.Format "January 2, 2006"))) }}
+  {{- $scratch.Add "meta" (slice (printf "Date: %s" (.Date | time.Format "January 2, 2006"))) }}
 {{- end }}
 
 {{- if and (not .Lastmod.IsZero) (not (.Date.Equal .Lastmod)) -}}
-  {{- $scratch.Add "meta" (slice (printf "<span title='%s'>Updated: %s</span>" (.Lastmod) (.Lastmod | time.Format "January 2, 2006"))) }}
+  {{- $scratch.Add "meta" (slice (printf "Updated: %s" (.Lastmod | time.Format "January 2, 2006"))) }}
 {{- end }}
 
 {{- if .Param "ShowReadingTime" -}}
-  {{- $readingTime := default 5 .ReadingTime }}  <!-- 设置默认阅读时间 -->
-  {{- $scratch.Add "meta" (slice (printf "Reading Time: %d min" $readingTime)) }}
+  {{- $plainText := .Plain }}
+  {{- $lines := split $plainText "\n" }}
+  {{- $bodyLines := slice }}
+  {{- range $lines }}
+    {{- if not (hasPrefix . "[^") }}
+      {{- $bodyLines = append . $bodyLines }}
+    {{- end }}
+  {{- end }}
+  {{- $bodyText := delimit $bodyLines "\n" }}
+  {{- $chineseChars := len (findRE `\p{Han}` $bodyText) }}
+  {{- $imageCount := len (findRE `<img` .Content) }}
+  {{- $chineseMins := div $chineseChars 250 }}
+  {{- $latinWords := sub .WordCount (div $chineseChars 2) }}
+  {{- $latinMins := div $latinWords 200 }}
+  {{- $imageSecs := mul $imageCount 20 }}
+  {{- $imageMins := div $imageSecs 60 }}
+  {{- $readingMins := add (add $chineseMins $latinMins) $imageMins }}
+  {{- if lt $readingMins 1 }}{{- $readingMins = 1 }}{{- end }}
+  {{- $scratch.Add "meta" (slice (printf "Estimated Reading Time: %d min" $readingMins)) }}
 {{- end }}
 
 {{- if not (.Param "hideAuthor") -}}
