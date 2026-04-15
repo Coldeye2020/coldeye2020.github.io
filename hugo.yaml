@@ -19,8 +19,8 @@ params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   mainSections: ["tech", "invest", "think"]
   title: Co'Log
-  description: "Learning notes about Recommendation and Autonomous driving"
-  keywords: [Blog, Learning notes, Recommendation, Autonomous driving]
+  description: "Hi, this is Coldeye and OuhaoTen. We share thoughts on technology, investment, and ideas."
+  keywords: [Blog, Technology, Investment, Ideas, Coldeye, OuhaoTen]
   author: ["Coldeye", "OuhaoTen"]
   images: []
   DateFormat: "January 2, 2006"
@@ -76,8 +76,8 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "\U0001F44B Welcome to this blog"
-    Content: Hi, this is Coldeye and OuhaoTen.
+    Title: "Hi, this is Coldeye and OuhaoTen \U0001F44B"
+    Content: We share thoughts on technology, investment, and ideas.
 
   socialIcons:
     - name: email
