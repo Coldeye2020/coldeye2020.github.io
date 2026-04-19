@@ -1064,10 +1064,11 @@ if __name__ == "__main__":
 
 | 方案 | 单线程耗时 | vs Python | 多线程耗时 | 多线程加速比 |
 |---|---|---|---|---|
-| 纯 Python 循环 | 0.681s | 1x（基准） | — | — |
-| Numba `nogil=True` | 0.009s | 75.9x | 0.012s | 3.02x |
+| 纯 Python 循环 | 0.702s | 1x（基准） | 0.681s | 1.03x |
+| Numba `nogil=False` | 0.009s | 76.5x | 0.010s | 0.96x |
+| Numba `nogil=True` | 0.009s | 77.4x | 0.003s | **2.98x** |
 
-**实验结论**：Numba JIT 单线程比 Python 循环快 **75.9x**（LLVM 机器码 vs 字节码解释）；`nogil=True` 使多线程真正并行，加速比 3.02x（接近理论 4x，差距来自线程启动和内存带宽）。**注意首次调用有 JIT 编译延迟（约 0.5~2s），适合长期运行的服务而非一次性脚本**。
+**实验结论**：Numba JIT 单线程比 Python 快 **~77x**（LLVM 机器码 vs 字节码解释）。`nogil=False` 多线程加速比仅 0.96x——编译后的代码虽快，GIL 依然把线程串行化；`nogil=True` 多线程加速比 **2.98x**（接近理论 4x，差距来自线程启动和内存带宽竞争）。注意：首次调用有 JIT 编译延迟（约 0.5~2s），适合长期运行的服务而非一次性脚本。
 
 ---
 
@@ -1139,10 +1140,11 @@ setup(
 
 | 方案 | 单线程耗时 | vs Python | 多线程耗时 | 多线程加速比 |
 |---|---|---|---|---|
-| 纯 Python 循环 | 0.755s | 1x（基准） | — | — |
-| Cython `with nogil` | 0.016s | 46.4x | 0.019s | 3.33x |
+| 纯 Python 循环 | 0.679s | 1x（基准） | 0.698s | 0.97x |
+| Cython `cdef`（默认持有 GIL） | 0.015s | 46.8x | 0.015s | 0.94x |
+| Cython `with nogil` | 0.015s | 45.5x | 0.005s | **3.22x** |
 
-**实验结论**：Cython 单线程比 Python 快 **46.4x**，`with nogil` 后多线程加速比 3.33x，是三者中最高的。**Cython 的核心优势**：编译产物是标准 `.so` 文件，用户无需安装 Numba，无首次编译延迟，适合作为库发布（pandas/scipy 的选择正是如此）。代价是需要维护 `.pyx` 文件和编译步骤。
+**实验结论**：Cython `cdef` 单线程比 Python 快 **~47x**。默认 Cython 多线程加速比仅 0.94x——`cdef` 消除了 Python 对象，但 GIL 仍由调用方隐式持有；`with nogil` 显式释放后，多线程加速比 **3.22x**。**Cython 的核心优势**：编译产物是标准 `.so` 文件，无运行时依赖（无需安装 Numba），无首次编译延迟，是 pandas/scipy 的选择。代价是需要维护 `.pyx` 文件和编译流程。
 
 ---
 
@@ -1229,10 +1231,11 @@ print(f"pybind11 nogil 多线程（{THREADS} 线程）：{t_pb_m:.3f}s")
 
 | 方案 | 单线程耗时 | vs Python | 多线程耗时 | 多线程加速比 |
 |---|---|---|---|---|
-| 纯 Python 循环 | 0.731s | 1x（基准） | — | — |
-| pybind11 `gil_scoped_release` | 0.011s | 64.3x | 0.020s | 2.25x |
+| 纯 Python 循环 | 0.684s | 1x（基准） | 0.676s | 1.01x |
+| pybind11 C++（持有 GIL） | 0.010s | 69.1x | 0.010s | 0.99x |
+| pybind11 `gil_scoped_release` | 0.010s | 70.6x | 0.003s | **3.11x** |
 
-**实验结论**：pybind11 单线程性能与 Numba/Cython 相近（约 64.3x），`gil_scoped_release` 后多线程同样接近线性加速。**pybind11 的核心优势**：可以无缝对接已有 C++ 代码库（交易所 SDK、数值计算库），无需将现有 C++ 逻辑重写为 Python/Cython。代价是需要 C++ 编译器和 pybind11 依赖。
+**实验结论**：pybind11 C++ 单线程比 Python 快 **~70x**，与 Numba/Cython 处于同一量级。持有 GIL 版本多线程 0.99x——C++ 代码本身不操作 Python 对象，但 GIL 由调用框架持有，线程仍被串行化；`gil_scoped_release` 释放后多线程加速比 **3.11x**。**pybind11 的核心优势**：可无缝对接已有 C++ 库（交易所 SDK、数值计算库），无需将现有逻辑重写为 Cython。代价是需要 C++ 编译器。
 
 ---
 
