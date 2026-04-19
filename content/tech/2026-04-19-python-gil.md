@@ -11,6 +11,8 @@ author: ["Coldeye"]
 本文从原理出发，用实验数据说话，帮你彻底搞清楚 GIL 的边界——以及在机器学习、深度学习、量化金融场景下如何系统性地绕开它。
 
 > **实验环境**：Apple M3 Pro，Python 3.11.13，numpy 2.2.3，pandas 2.3.3，torch 2.11.0
+>
+> **实验代码**：https://github.com/Coldeye2020/gil_experiments
 
 ---
 
