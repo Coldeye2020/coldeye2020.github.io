@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Tech on Co&#39;Log</title>
-    <link>https://coldeye2020.github.io/tech/</link>
-    <description>Recent content in Tech on Co&#39;Log</description>
+    <title>多线程 on Co&#39;Log</title>
+    <link>https://coldeye2020.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+    <description>Recent content in 多线程 on Co&#39;Log</description>
     <generator>Hugo -- 0.139.4</generator>
     <language>en</language>
     <lastBuildDate>Sun, 19 Apr 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://coldeye2020.github.io/tech/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://coldeye2020.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>深入理解 Python GIL：从原理到实践</title>
       <link>https://coldeye2020.github.io/tech/2026-04-19-python-gil/</link>
       <pubDate>Sun, 19 Apr 2026 00:00:00 +0000</pubDate>
       <guid>https://coldeye2020.github.io/tech/2026-04-19-python-gil/</guid>
       <description>从 CPython 引用计数机制出发，通过实验数据揭示 GIL 对 CPU 密集型任务的拖累，并为机器学习、深度学习、量化金融从业者提供系统性的规避策略。</description>
-    </item>
-    <item>
-      <title>OmniDrive 论文解读</title>
-      <link>https://coldeye2020.github.io/tech/2024-12-15-omnidrive/</link>
-      <pubDate>Sun, 15 Dec 2024 11:42:16 +0800</pubDate>
-      <guid>https://coldeye2020.github.io/tech/2024-12-15-omnidrive/</guid>
-      <description>解读 OmniDrive：一种将多模态大语言模型引入自动驾驶的 3D 场景理解框架，介绍其 Q-Former3D 结构设计与反事实推断评测方式。</description>
     </item>
   </channel>
 </rss>

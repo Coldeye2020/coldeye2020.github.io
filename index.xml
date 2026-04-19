@@ -6,8 +6,15 @@
     <description>Recent content on Co&#39;Log</description>
     <generator>Hugo -- 0.139.4</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 11 Apr 2026 14:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 19 Apr 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://coldeye2020.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>深入理解 Python GIL：从原理到实践</title>
+      <link>https://coldeye2020.github.io/tech/2026-04-19-python-gil/</link>
+      <pubDate>Sun, 19 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://coldeye2020.github.io/tech/2026-04-19-python-gil/</guid>
+      <description>从 CPython 引用计数机制出发，通过实验数据揭示 GIL 对 CPU 密集型任务的拖累，并为机器学习、深度学习、量化金融从业者提供系统性的规避策略。</description>
+    </item>
     <item>
       <title>让 AI 自己学会挖掘股票信号？聊聊 QuantaAlpha 这篇论文</title>
       <link>https://coldeye2020.github.io/invest/2026-04-11-quantaalpha-popular/</link>
