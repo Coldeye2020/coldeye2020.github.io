@@ -95,6 +95,12 @@ params:
     yandex:
       SiteVerificationTag: ""
 
+  schema:
+    publisherType: Person
+    sameAs:
+      - "https://github.com/Coldeye2020"
+      - "mailto:948283368.coldeye@gmail.com"
+
   cover:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
