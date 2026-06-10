@@ -206,6 +206,25 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">BPQP：加速可微凸优化层的端到端学习框架
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 论文：BPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning (NeurIPS 2024) 作者：Jianming Pan, Zeqi Ye, Xiao Yang, Xu Yang, Weiqing Liu, Lewen Wang, Jiang Bian 单位：UC Berkeley, Nankai University, Microsoft Research Asia 代码：microsoft/qlib
+这篇论文是 NeurIPS 2024 上一篇关于&#34;如何让神经网络中的优化层反向传播变快&#34;的工作。读完后我觉得它的核心 idea 非常优雅——一句话概括是：
+把反向传播中昂贵的 KKT 矩阵求逆问题，重构为一个等价的 QP 问题，用 ADMM 高效求解。
+但要真正理解这句话，需要补充不少前置知识。本文面向对优化理论不太熟悉的算法工程师，会沿着&#34;问题 → 抽象 → 前置知识 → 现有方案 → 论文方法&#34;的路线，把整个故事讲清楚。中间会有相对详细的凸优化、KKT、隐函数定理介绍——熟悉的读者可以自行跳过。
+一、背景：金融中的一个真实难题 投资组合优化 假设你是一个量化基金的投资经理，手上管理着 500 只股票，每天都要决定一件事：这些股票各应该配置多少比例的资金？
+经典的解法是马科维茨的均值-方差优化（Mean-Variance Optimization, MVO）：
+$$ \max_w\ \mu^\top w - \frac{\gamma}{2} w^\top \Sigma w \quad \text{s.t.}\ \mathbf{1}^\top w = 1,\ w \geq 0 $$其中：
+...</p>
+  </div>
+  <footer class="entry-footer">Date: June 10, 2026 | Estimated Reading Time: 21 min | Author: Coldeye</footer>
+  <a class="entry-link" aria-label="post link to BPQP：加速可微凸优化层的端到端学习框架" href="https://coldeye2020.github.io/tech/2026-06-10-bpqp/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">深入理解 Python GIL：从原理到实践
     </h2>
   </header>
@@ -221,7 +240,7 @@
 用代码验证引用计数 import sys a = [] print(sys.getrefcount(a)) # 输出 2：a 本身持有 1 个引用，getrefcount 调用时临时持有 1 个 b = a print(sys.getrefcount(a)) # 输出 3：b 也引用了同一个列表 del b print(sys.getrefcount(a)) # 输出 2：b 被删除，引用数减 1 sys.getrefcount() 让我们直接观察引用计数的变化。正是这个机制的存在，让 GIL 成为 CPython 的&#34;必要之恶&#34;。
 ...</p>
   </div>
-  <footer class="entry-footer">Date: April 19, 2026 | Estimated Reading Time: 27 min | Author: Coldeye</footer>
+  <footer class="entry-footer">Date: April 19, 2026 | Estimated Reading Time: 28 min | Author: Coldeye</footer>
   <a class="entry-link" aria-label="post link to 深入理解 Python GIL：从原理到实践" href="https://coldeye2020.github.io/tech/2026-04-19-python-gil/"></a>
 </article>
 

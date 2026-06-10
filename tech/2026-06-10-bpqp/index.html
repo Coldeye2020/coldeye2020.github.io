@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>BPQP：加速可微凸优化层的端到端学习框架 | Co&#39;Log</title>
+<meta name="keywords" content="凸优化, 量化金融, 投资组合优化, 神经网络">
+<meta name="description" content="从投资组合优化讲起，系统梳理可微优化层、KKT 条件、隐函数定理、QP/SOCP 求解方法，并解读 NeurIPS 2024 BPQP 如何用一个巧妙的等价转化把反向传播加速一个数量级。">
+<meta name="author" content="Coldeye">
+<link rel="canonical" href="https://coldeye2020.github.io/tech/2026-06-10-bpqp/">
+<meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2c4eb3ec8979dfce07c26b0e4675477cac9a100dd4bf7e0bee049d71a59089f1.css" integrity="sha256-LE6z7Il5384HwmsORnVHfKyaEA3Uv34L7gSdcaWQifE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://coldeye2020.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://coldeye2020.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://coldeye2020.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://coldeye2020.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://coldeye2020.github.io/favicon-32x32.png">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://coldeye2020.github.io/tech/2026-06-10-bpqp/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><script data-goatcounter="https://coldeye.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+    });"></script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HN6RSNM2B"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-8HN6RSNM2B');
+        }
+      </script><meta property="og:url" content="https://coldeye2020.github.io/tech/2026-06-10-bpqp/">
+  <meta property="og:site_name" content="Co&#39;Log">
+  <meta property="og:title" content="BPQP：加速可微凸优化层的端到端学习框架">
+  <meta property="og:description" content="从投资组合优化讲起，系统梳理可微优化层、KKT 条件、隐函数定理、QP/SOCP 求解方法，并解读 NeurIPS 2024 BPQP 如何用一个巧妙的等价转化把反向传播加速一个数量级。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="tech">
+    <meta property="article:published_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-06-10T00:00:00+00:00">
+    <meta property="article:tag" content="凸优化">
+    <meta property="article:tag" content="量化金融">
+    <meta property="article:tag" content="投资组合优化">
+    <meta property="article:tag" content="神经网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BPQP：加速可微凸优化层的端到端学习框架">
+<meta name="twitter:description" content="从投资组合优化讲起，系统梳理可微优化层、KKT 条件、隐函数定理、QP/SOCP 求解方法，并解读 NeurIPS 2024 BPQP 如何用一个巧妙的等价转化把反向传播加速一个数量级。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "https://coldeye2020.github.io/tech/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "BPQP：加速可微凸优化层的端到端学习框架",
+      "item": "https://coldeye2020.github.io/tech/2026-06-10-bpqp/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "BPQP：加速可微凸优化层的端到端学习框架",
+  "name": "BPQP：加速可微凸优化层的端到端学习框架",
+  "description": "从投资组合优化讲起，系统梳理可微优化层、KKT 条件、隐函数定理、QP/SOCP 求解方法，并解读 NeurIPS 2024 BPQP 如何用一个巧妙的等价转化把反向传播加速一个数量级。",
+  "keywords": [
+    "凸优化", "量化金融", "投资组合优化", "神经网络"
+  ],
+  "articleBody": " 论文：BPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning (NeurIPS 2024) 作者：Jianming Pan, Zeqi Ye, Xiao Yang, Xu Yang, Weiqing Liu, Lewen Wang, Jiang Bian 单位：UC Berkeley, Nankai University, Microsoft Research Asia 代码：microsoft/qlib\n这篇论文是 NeurIPS 2024 上一篇关于\"如何让神经网络中的优化层反向传播变快\"的工作。读完后我觉得它的核心 idea 非常优雅——一句话概括是：\n把反向传播中昂贵的 KKT 矩阵求逆问题，重构为一个等价的 QP 问题，用 ADMM 高效求解。\n但要真正理解这句话，需要补充不少前置知识。本文面向对优化理论不太熟悉的算法工程师，会沿着\"问题 → 抽象 → 前置知识 → 现有方案 → 论文方法\"的路线，把整个故事讲清楚。中间会有相对详细的凸优化、KKT、隐函数定理介绍——熟悉的读者可以自行跳过。\n一、背景：金融中的一个真实难题 投资组合优化 假设你是一个量化基金的投资经理，手上管理着 500 只股票，每天都要决定一件事：这些股票各应该配置多少比例的资金？\n经典的解法是马科维茨的均值-方差优化（Mean-Variance Optimization, MVO）：\n$$ \\max_w\\ \\mu^\\top w - \\frac{\\gamma}{2} w^\\top \\Sigma w \\quad \\text{s.t.}\\ \\mathbf{1}^\\top w = 1,\\ w \\geq 0 $$其中：\n$w \\in \\mathbb{R}^{500}$ 是每只股票的投资比例（要决策的变量） $\\mu \\in \\mathbb{R}^{500}$ 是每只股票的预期收益率 $\\Sigma$ 是收益率的协方差矩阵（衡量风险） $\\gamma$ 是风险厌恶系数 约束保证权重和为 1 且不能做空 为什么是 MVO，而不是直接最大化收益？ 很多算法工程师第一次看到这个目标会困惑：为什么不直接 $\\max_w\\ \\mu^\\top w$ 把所有钱投到预期收益最高的那只股票就行了？\n答案是：金融决策的目标不只是收益高，还要稳定。具体有几个层次的原因：\n第一，预期收益率 $\\mu$ 是预测出来的，不是真值。预测必然有噪声。如果你 all-in 一只股票，预测稍有偏差，整个组合就崩了。\n第二，即使预测完全准确，“预期收益最高\"和\"真实收益最高\"也不是一回事——预期是均值，真实结果是随机的。一只预期收益 10% 但波动 50% 的股票，和一只预期收益 8% 但波动 5% 的股票，理性投资者更可能选后者。这就是经济学里的风险厌恶。\n第三，分散投资能降低组合风险。两只不完全相关的股票各投 50%，整体波动会小于单独持有任一只——这就是协方差矩阵 $\\Sigma$ 在目标函数中起的作用。\n所以 MVO 的目标函数 $\\mu^\\top w - \\frac{\\gamma}{2} w^\\top \\Sigma w$ 同时考虑了：\n收益项 $\\mu^\\top w$：让组合的期望收益越高越好 风险项 $\\frac{\\gamma}{2} w^\\top \\Sigma w$：惩罚组合的方差（波动），$\\gamma$ 决定多在乎风险 这是一个标准的凸优化问题（具体来说是 QP，后面会讲），给定 $\\mu$ 和 $\\Sigma$ 可以用现成求解器秒解。\n真正的问题：$\\mu$ 怎么来？ 没人能直接观测到\"明天的收益率”，所以工业界通常用神经网络来预测：\n$$ \\text{历史价格、成交量等特征} \\xrightarrow{\\text{神经网络}} \\hat{\\mu} $$然后把 $\\hat{\\mu}$ 喂给 MVO，得到投资比例 $w^*$。这就是经典的两阶段方法。\n两阶段方法的致命缺陷 这种\"先预测、后优化\"的两阶段方法有一个非常隐蔽的问题：\n预测准 ≠ 投资好。\n举个直觉：\n股票 A 真实收益率 1.0%，股票 B 真实收益率 1.1% 网络预测 A = 0.5%，B = 0.6%（绝对误差挺大） 但优化器仍然会选 B（因为相对排序对了）→ 投资决策完美 反过来：\n网络预测 A = 1.05%，B = 1.0%（绝对误差很小） 优化器会选 A → 投资决策错了 也就是说，神经网络在用\"预测误差\"作为损失训练，但真正决定我们能不能赚钱的是最终的投资决策。这两个目标并不一致。\n端到端学习 理想做法是：让整个流程端到端训练。\n特征 → [神经网络] → μ̂ → [MVO 优化器] → w* → 实际收益（损失函数） │ └── 反向传播训练神经网络 这样神经网络的训练目标直接是\"让最终决策赚的钱最多\"，而不是\"让 $\\mu$ 预测得准\"。\n但这里有个问题：MVO 优化器这一层不是普通的神经网络层，它是一个\"求解优化问题\"的过程。怎么对它求导？怎么把损失函数的梯度从 $w^*$ 一路传回神经网络？\n这就是本文要解决的核心问题。\n二、抽象成数学问题：什么是可微优化层 普通神经网络层 我们熟悉的神经网络层都是显式函数，比如 $z = \\sigma(Wy + b)$。输入 $y$，经过一系列直接的算术运算得到输出 $z$。求导很简单，PyTorch 的自动微分能直接搞定。\n可微优化层 但 MVO 这一层不一样——它的输出是一个优化问题的最优解：\n$$ z^*(y) = \\arg\\min_z f_y(z) \\quad \\text{s.t.}\\ h_y(z) = 0,\\ g_y(z) \\leq 0 $$其中 $y$ 是上一层的输出（在 MVO 例子里就是预测的收益率 $\\hat\\mu$），$z^*$ 是下一层的输入（最优投资比例 $w^*$）。\n注意\"下标 $y$“的写法——意思是优化问题本身的目标函数和约束都依赖参数 $y$。也就是说，$y$ 不是被代入某个公式得到 $z$，而是用来定义一个优化问题，然后这一层的输出 $z^*$ 是这个问题的最优解。\n核心区别：\n普通层 可微优化层 输出 = 公式直接算出来 输出 = 优化问题解出来 内部：一次前向运算 内部：调用优化求解器迭代 处理约束：困难 处理约束：天然满足 求导：链式法则 求导：???（这就是难点） 为什么不直接让网络输出 $w$？ 你可能会问：神经网络是万能逼近器，为什么不直接让它输出投资比例 $w$？\n理论上可以，但实际有几个大问题：\n约束保证难：要保证 $\\sum w_i = 1$ 且 $w_i \\geq 0$ 很麻烦。Softmax 能做权重和为 1，但更复杂的约束（“换手率不超过 20%\"、“行业集中度限制”）几乎不可能用普通网络层保证。 领域知识难嵌入：MVO 几十年来的金融理论积累被白白浪费。让神经网络从零学习\"什么是好的风险-收益权衡\"远比把它直接编码进 MVO 来得困难。 可解释性差：黑盒输出 vs “在风险约束下的最优配置”。后者向客户和监管机构解释起来容易得多。 类似的场景在工程界还有很多：能源调度（在物理约束下最小化成本）、机器人轨迹规划（在动力学约束下达到目标位置）、网络资源分配，等等。只要任务本身就包含\"在约束下做最优决策\"的成分，把优化问题做成一层嵌入网络就是一个很自然的选择。\n前向 vs 反向 可微优化层的前向传播没什么神秘的——调用一个凸优化求解器解出 $z^*$ 就行。慢一些，但思路直接。\n反向传播才是真正的难题。要做反向传播，需要计算 $\\frac{\\partial z^*}{\\partial y}$，也就是\"当 $y$ 微小变化时，最优解 $z^*$ 怎么变？“但 $z^*$ 没有显式公式——它是优化问题的解。怎么求导？\n这就需要一些数学工具——KKT 条件和隐函数定理。\n三、前置知识（一）：KKT 与隐函数定理 这一节会比较慢，会用一些图像化的直觉解释。如果你已经熟悉 KKT 和隐函数定理，可以直接跳到第四节。\n3.1 从无约束到带约束：拉格朗日的智慧 无约束情况：导数 = 0 如果你想找一个 $x$ 让 $f(x) = (x-3)^2$ 最小，凭直觉：$x = 3$ 时 $f = 0$，最小。\n数学上的方法：求导让导数为零，$f'(x) = 2(x-3) = 0 \\Rightarrow x = 3$。多元情况就是梯度为零：$\\nabla f(x^*) = 0$。\n加入等式约束：直接求导失效 升级一下问题：\n$$ \\min_{x_1, x_2}\\ x_1^2 + x_2^2 \\quad \\text{s.t.}\\ x_1 + x_2 = 1 $$几何含义：在直线 $x_1 + x_2 = 1$ 上，找离原点最近的点。凭直觉答案是 $(0.5, 0.5)$。\n但如果套用\"梯度 = 0”，得到 $(2x_1, 2x_2) = 0 \\Rightarrow x = (0,0)$——它根本不在约束直线上！这个方法完全没用约束信息。\n拉格朗日的天才想法 为什么\"梯度 = 0\"在这里失败？因为它适用于\"全方向无下降\"的情形，但带约束时，我们只需要”在约束允许的方向上无下降”。\n拉格朗日的关键洞察是几何上的：在最优点，目标函数的等高线必须与约束曲线\"相切\"。\n为什么？想象你在直线上走来走去，目标是让 $f$ 越小越好。每走到一个点看一眼当前的 $f$ 等高圆。如果等高圆和直线\"穿过\"（相交），你沿着直线总能继续走到一个 $f$ 更小的等高圆。只有等高圆和直线相切时，沿着约束方向再走 $f$ 不会下降——这就到了最优点。\n数学上\"相切\"等价于：$\\nabla f$ 和 $\\nabla h$（约束的梯度）平行。也就是存在一个数 $\\nu$（叫拉格朗日乘子）使得：\n$$ \\nabla f + \\nu \\nabla h = 0 $$加上\"约束被满足\"的条件 $h(x) = 0$，两个条件合起来描述了最优点。\n拉格朗日把这两个条件巧妙地\"打包\"成一个新函数：\n$$ L(x, \\nu) = f(x) + \\nu \\cdot h(x) $$然后对所有变量（包括 $\\nu$）求偏导 = 0：\n$\\frac{\\partial L}{\\partial x_i} = 0$ 给出 $\\nabla f + \\nu \\nabla h = 0$（梯度平行条件） $\\frac{\\partial L}{\\partial \\nu} = 0$ 给出 $h(x) = 0$（约束被满足） 带约束问题 → 解一组方程组。这就是拉格朗日乘子法的精髓。\n顺带一提：拉格朗日乘子 $\\nu$ 不是凑出来的辅助变量，它有清晰的经济学含义——约束被放松一点点，最优值能改善多少（叫\"影子价格\"）。在 MVO 里，约束 $\\mathbf{1}^\\top w = 1$ 的乘子就告诉你\"再多给一块钱预算，最优收益能多多少\"。\n3.2 KKT 条件：处理不等式约束 再升级一次，加上不等式约束：\n$$ \\min_x\\ f(x) \\quad \\text{s.t.}\\ h(x) = 0,\\ g(x) \\leq 0 $$不等式约束 $g(x) \\leq 0$ 几何上是一堵\"墙\"——只有 $g(x) \\leq 0$ 这一侧才允许。最优点要么\"顶在墙上\"（$g(x^*) = 0$），要么\"远离墙\"（$g(x^*) \u003c 0$，约束没起作用）。\nKKT 条件就是处理这两种情况的扩展。最优解 $x^*$ 必须满足以下四条：\n稳定性：$\\nabla f + \\nu \\nabla h + \\lambda \\nabla g = 0$ （目标函数的\"拉力\"和约束的\"反作用力\"平衡）\n原始可行性：$h(x^*) = 0,\\ g(x^*) \\leq 0$ （解必须在可行域内）\n对偶可行性：$\\lambda \\geq 0$ （不等式约束这堵\"墙\"只能往一个方向推，反作用力非负）\n互补松弛：$\\lambda_i \\cdot g_i(x^*) = 0$ （要么约束起作用 $g_i = 0$（顶在墙上），要么乘子为零 $\\lambda_i = 0$（约束没起作用），两者必有一个为 0）\n一个具体例子 考虑 $\\min (x-3)^2$ s.t. $x \\leq 1$。约束是 $g(x) = x - 1 \\leq 0$。\n凭直觉：目标想把 $x$ 拉到 3，但被墙挡在 $x = 1$，最优点是 $x^* = 1$。\n用 KKT 验证：\n互补松弛分两种情况： $\\lambda^* = 0$：稳定性给出 $2(x^* - 3) = 0 \\Rightarrow x^* = 3$，但违反 $x \\leq 1$ ✗ $g(x^*) = 0$：$x^* = 1$，稳定性给出 $\\lambda^* = 4 \u003e 0$ ✓ 最终 $x^* = 1$，$\\lambda^* = 4$。\n互补松弛与 active set 互补松弛引出一个非常重要的概念——有效集（active set）。\n对于多个不等式约束 $g_1(x) \\leq 0, \\ldots, g_n(x) \\leq 0$：\n若 $g_i(x^*) = 0$（约束\"紧\"，顶到墙上）→ 有效约束，此时 $\\lambda_i^*$ 可能 $\u003e 0$ 若 $g_i(x^*) \u003c 0$（约束\"松\"，没顶到墙）→ 无效约束，此时 $\\lambda_i^* = 0$ 有效集就是所有\"紧\"约束的索引集合。这个概念后面会成为 BPQP 的核心。\n3.3 KKT 条件的本质 把 KKT 条件抽象一下：\nKKT 条件把\"找最优解\"变成了\"解一组方程组\"。这组方程同时涉及原变量 $x$ 和拉格朗日乘子 $\\lambda, \\nu$。\n更重要的是，对于参数化的优化问题（参数为 $y$，最优解为 $z^*$），KKT 条件构成了一个把最优解和参数联系起来的隐式方程：\n$$ \\mathcal{F}(z^*, \\lambda^*, \\nu^*; y) = 0 $$注意\"隐式\"两个字——$z^*$ 没有显式公式，但它和 $y$ 通过 KKT 方程组绑定。这正是隐函数定理的用武之地。\n3.4 隐函数定理：从隐式关系求导 显式 vs 隐式 显式函数 $z = f(y) = y^2 + 3y + 1$，求 $\\frac{dz}{dy}$ 直接求导。\n隐式函数：$z$ 和 $y$ 不通过公式直接表达，而是满足某个方程 $F(z, y) = 0$。比如单位圆 $z^2 + y^2 - 1 = 0$。\n隐式情况下能不能求 $\\frac{dz}{dy}$？\n关键想法：对方程两边求全导 对 $F(z(y), y) = 0$ 两边关于 $y$ 求全导数（链式法则）：\n$$ \\frac{\\partial F}{\\partial z} \\cdot \\frac{dz}{dy} + \\frac{\\partial F}{\\partial y} = 0 $$整理得：\n$$ \\frac{dz}{dy} = -\\left(\\frac{\\partial F}{\\partial z}\\right)^{-1} \\frac{\\partial F}{\\partial y} $$这就是隐函数定理。它告诉我们：即使写不出 $z$ 的显式公式，只要有方程 $F(z, y) = 0$，就能求 $\\frac{dz}{dy}$。\n用单位圆例子验证 $F(z, y) = z^2 + y^2 - 1$，$\\frac{\\partial F}{\\partial z} = 2z$，$\\frac{\\partial F}{\\partial y} = 2y$，所以 $\\frac{dz}{dy} = -\\frac{y}{z}$。\n直接从 $z = \\sqrt{1-y^2}$ 求导得到的也是 $-\\frac{y}{z}$——完全一致。\n多元情形 $z, y$ 都是向量时，$z \\in \\mathbb{R}^d$，$y \\in \\mathbb{R}^p$，方程组 $F(z, y) = 0 \\in \\mathbb{R}^d$，公式变成：\n$$ \\frac{\\partial z}{\\partial y} = -\\left[\\frac{\\partial F}{\\partial z}\\right]^{-1} \\frac{\\partial F}{\\partial y} $$核心思想一句话：隐函数定理把\"隐式关系下的求导\"转化成\"解一个线性方程组\"。\n3.5 两者结合：可微优化层的求导公式 现在把两者拼起来：\nKKT 条件 → 提供了 z* 和 y 的隐式方程 F(z*, λ*, ν*; y) = 0 隐函数定理 → 提供了从隐式方程求导的方法 组合起来 → 反向传播的梯度可以通过解一个线性方程组得到 具体地，对 KKT 方程组应用隐函数定理后，需要解（论文公式 3）：\n$$ \\underbrace{\\begin{bmatrix} P \u0026 G^\\top \u0026 A^\\top \\\\ D(\\lambda^*)G \u0026 D(g(z^*)) \u0026 0 \\\\ A \u0026 0 \u0026 0 \\end{bmatrix}}_{\\text{KKT 矩阵 } K} \\begin{bmatrix} \\tilde z \\\\ \\tilde \\lambda \\\\ \\tilde \\nu \\end{bmatrix} = -\\begin{bmatrix} (\\partial \\mathcal{L}/\\partial z^*)^\\top \\\\ 0 \\\\ 0 \\end{bmatrix} $$各部分定义：\n$P = \\nabla_z^2 f + \\sum \\nu_i \\nabla_z^2 h_i + \\sum \\lambda_i \\nabla_z^2 g_i$（拉格朗日 Hessian） $G = \\nabla_z g(z^*)$（不等式约束的雅可比） $A = \\nabla_z h(z^*)$（等式约束的雅可比） $D(\\cdot)$：把向量放在对角线的对角矩阵 关键瓶颈：直接解这个系统需要做 $K^{-1}$，复杂度 $O(N^3)$。当 $N$ 上千甚至上万时（比如 500 只股票的 MVO），慢得无法接受。\n四、现有方案与难点 针对\"如何对优化层求导\"，目前主流方法分两类。\n方案一：显式展开法（Explicit Unrolling） 思路：既然 $z^*$ 是通过迭代算法（梯度下降、ADMM 等）算出来的，那就把每一步迭代记录下来，作为一个超长的显式计算图，让 PyTorch 自动微分。\n举例：优化算法迭代了 100 步 $z_0 \\to z_1 \\to \\cdots \\to z_{100} \\approx z^*$，每一步都是 $z_{k+1} = z_k - \\alpha \\nabla f(z_k)$，把这 100 步全部展开成计算图，然后反向传播。\n优点：思路简单，套用现成自动微分框架。\n缺点：\n计算图随迭代次数线性增长，内存爆炸 处理约束很麻烦（要不断把解投影回可行域） 每加一步迭代，反向传播也跟着变贵 方案二：隐式微分法（Implicit Differentiation） 思路：不展开迭代过程，而是利用 KKT + 隐函数定理直接求梯度。\n这就是上一节讲的方法：解线性方程组 $K \\tilde x = b$，其中 $K$ 是 KKT 矩阵。\n代表方法：OptNet、qpth、CvxpyLayer、Diffcp 等。\n优点：\n不需要存储所有迭代历史 与求解算法解耦（理论上） 缺点：\n求解 KKT 系统本身很贵（$O(N^3)$ 矩阵分解） 实际中前向和后向往往紧耦合（OptNet 把内点法的状态共享给后向） 大规模问题（变量数 1000+）几乎跑不动 难点总结 把现状梳理一下：\n方法 通用性 效率（小规模） 效率（大规模） Unrolling 中 中 差 OptNet/qpth 仅 QP 好 差 CvxpyLayer 高 中 极差 核心难点：通用性和效率难以兼得，特别是在大规模场景下。\n而金融场景（500 只股票的投资组合优化）正好需要\"通用 + 大规模\"——这就是 BPQP 的切入点。\n五、前置知识（二）：凸优化与求解方法 这一节介绍凸优化的常见类型和求解方法。这是理解 BPQP 为什么\"重构成 QP 后可以加速\"的基础。\n5.1 什么是凸优化？ 凸优化的一般形式：\n$$ \\min_x f(x) \\quad \\text{s.t.}\\ g_i(x) \\leq 0,\\ Ax = b $$其中 $f$ 和所有 $g_i$ 都是凸函数。凸函数的几何含义是函数图像形如\"碗\"——任意两点的连线总在函数图像之上。\n为什么凸优化重要？因为它有一个非常友好的性质：\n凸优化的局部最优解 = 全局最优解。\n只要找到一个满足 KKT 条件的点，就找到了全局最优。这让算法设计变得简单且可靠——不像非凸优化那样需要处理\"陷在局部最优\"的麻烦。\n5.2 凸优化的层级 按表达能力从弱到强，常见的凸优化问题排成一个包含层级：\n$$ \\text{LP} \\subset \\text{QP} \\subset \\text{QCQP} \\subset \\text{SOCP} \\subset \\text{SDP} \\subset \\text{一般凸优化} $$这里的\"包含\"是指\"任何 A 类问题都能等价转化为 B 类问题\"——不一定是形式上长得像，而是表达能力上包含。每往上一层都更通用，但也更难求解。\n下面具体讲三种最常见的：LP、QP、SOCP。\nLP（线性规划） $$ \\min_x\\ c^\\top x \\quad \\text{s.t.}\\ A x = b,\\ G x \\leq h $$目标和约束都是线性的。几何上，线性约束围出一个多面体，目标函数是一组平行的超平面，最优解一定在多面体的顶点上。\n应用：运输问题、生产计划、资源分配、网络流。\nQP（二次规划） $$ \\min_x\\ \\frac{1}{2} x^\\top P x + q^\\top x \\quad \\text{s.t.}\\ A x = b,\\ G x \\leq h $$目标是二次的（$P \\succeq 0$ 半正定保证凸），约束仍然是线性的。要注意这一点——QP 的\"约束\"不是二次的，“约束二次\"的版本叫 QCQP，是另一个层级。\n几何上，目标函数是一个椭球面，最优解 = 在多面体内找到一个点，使它在椭球的最低层。\nLP 是 QP 的特例（取 $P = 0$）。\n应用：\n投资组合优化（MVO 就是 QP！目标 $\\frac{\\gamma}{2}w^\\top \\Sigma w - \\mu^\\top w$ 是二次的，约束是线性的） 支持向量机（SVM）：$\\min \\frac{1}{2}\\|w\\|^2$ s.t. $y_i(w^\\top x_i + b) \\geq 1$ 模型预测控制（MPC）：自动驾驶/机器人的实时控制 带约束的最小二乘问题 SOCP（二阶锥规划） $$ \\min_x\\ c^\\top x \\quad \\text{s.t.}\\ \\|A_i x + b_i\\|_2 \\leq c_i^\\top x + d_i $$目标线性，约束是\"二阶锥约束”——即\"某个向量的 2-范数 $\\leq$ 某个线性函数\"。每个约束限制点 $(A_i x + b_i, c_i^\\top x + d_i)$ 必须在一个**二阶锥（冰淇淋锥）**内。\nSOCP 比 QP 更通用——能表达椭球（QP 也能），还能表达\"圆锥\"这种\"角度型\"约束（QP 不能）。\n经典应用：鲁棒线性规划。LP 假设参数 $a$ 是确定的，但实际有不确定性。如果只知道 $a$ 在某个椭球内 $\\{a_0 + Pu : \\|u\\|_2 \\leq 1\\}$，“对所有 $a$ 都满足约束\"会自然变成 SOCP 约束 $a_0^\\top x + \\|P^\\top x\\|_2 \\leq b$。\n其他应用：滤波器设计、波束成形（通信/雷达）、含不确定性的最优控制。\n三者比较 特性 LP QP SOCP 目标 线性 二次（凸） 线性 约束 线性 线性 二阶锥 几何 多面体 椭球 ∩ 多面体 锥体 ∩ 多面体 求解难度 最易 容易 较难 表达能力 最弱 中 强（含 LP/QP） 5.3 求解方法（一）：内点法 要解上述问题，历史上发展出多种方法。先讲内点法（Interior Point Method, IPM）——它是商业求解器（Mosek、Gurobi、ECOS、OptNet 内核）的主力。\n核心思想：障碍函数 把不等式约束 $g_i(x) \\leq 0$ 改写为目标的一部分，加一个对数障碍：\n$$ \\min_x\\ f(x) - \\mu \\sum_i \\log(-g_i(x)) $$直觉：当 $x$ 接近约束边界（$g_i(x) \\to 0$）时，$\\log(-g_i(x)) \\to -\\infty$，整个目标暴增到 $+\\infty$——形成一道\"墙”，逼着 $x$ 远离边界。参数 $\\mu \u003e 0$ 控制墙的强度。\n路径跟踪 从一个内部点出发，先取较大的 $\\mu_0$ 用牛顿法解，得到 $x_1$；逐渐减小 $\\mu$（“墙\"变薄），从上一步出发再用牛顿法解。这条路径叫中心路径，从内部\"中心\"逐渐逼近最优解。\n牛顿步的代价 每次牛顿迭代要求解一个线性系统 $H \\cdot \\Delta x = -\\nabla L$。这一步是内点法的瓶颈——需要做 $O(N^3)$ 的矩阵分解。对小到中等规模问题（变量数 $\u003c 1000$）很快，但对大规模问题就慢了。\n优缺点 优点：通用（LP/QP/SOCP/SDP 都能解）；理论复杂度好；精度极高（可达 $10^{-10}$） 缺点：每步都要做矩阵分解，对大规模稀疏问题不够快；难以并行化 5.4 求解方法（二）：一阶法 / ADMM 近 15 年的趋势：一阶法（只用梯度信息，不用 Hessian）成为大规模凸优化的主流。代表是 ADMM（交替方向乘子法）——这正是 BPQP 用的方法。\n核心思想：拆分 + 交替 把复杂问题拆分成几个简单子问题，交替求解。考虑：\n$$ \\min_{x, z}\\ f(x) + g(z) \\quad \\text{s.t.}\\ Ax + Bz = c $$构造增广拉格朗日函数：\n$$ L_\\rho(x, z, \\nu) = f(x) + g(z) + \\nu^\\top(Ax + Bz - c) + \\frac{\\rho}{2}\\|Ax + Bz - c\\|^2 $$ADMM 迭代：\n固定 $z, \\nu$，对 $x$ 求最小：$x_{k+1} = \\arg\\min_x L_\\rho(x, z_k, \\nu_k)$ 固定 $x, \\nu$，对 $z$ 求最小：$z_{k+1} = \\arg\\min_z L_\\rho(x_{k+1}, z, \\nu_k)$ 更新乘子：$\\nu_{k+1} = \\nu_k + \\rho (A x_{k+1} + B z_{k+1} - c)$ 为什么 ADMM 适合 QP？ 对 QP 问题，ADMM 的 $x$ 子问题简化为求解一个简单线性系统（矩阵正定），而这个矩阵在迭代中不变——所以可以预先做一次分解，后续每次迭代只要做矩阵-向量乘法！\nOSQP 就是利用了这一点：把 QP 的求解变成\"一次分解 + 多次廉价迭代”，对大规模稀疏 QP 极为高效。BPQP 默认就用 OSQP。\n优缺点 优点：每步迭代廉价（只要矩阵-向量乘法）；天然适合稀疏问题；容易并行；对中低精度需求非常快 缺点：收敛速度是线性的（不像 IPM 是超线性），高精度需要的迭代次数较多 5.5 内点法 vs 一阶法 维度 内点法 一阶法（ADMM） 每步成本 高（$O(N^3)$ 矩阵分解） 低（$O(N^2)$ 或更低） 迭代次数 少（10-50 次） 多（100-1000 次） 总体快慢 中小规模快 大规模快 精度 极高 中等 并行化 难 易 利用稀疏性 部分 充分 经验法则：变量数 $\u003c 1000$ 用内点法；$\u003e 10000$ 用一阶法；中间地带看具体问题。\n这里有一个值得记住的关键点：反向传播只需要中等精度（梯度有 $10^{-4}$ 精度就够训练了），所以一阶法的\"精度差\"对训练神经网络几乎不是问题；而它的\"大规模快\"恰恰是 BPQP 想要的。这就是 BPQP 选择 ADMM 而不是内点法的根本原因。\n5.6 现代主流求解器 求解器 算法 适用 特点 Mosek 内点法 LP/QP/SOCP/SDP 商业，工业级精度 Gurobi 单纯形+内点法 LP/QP（含整数） 商业，最快的整数规划 ECOS 内点法 LP/SOCP 开源 OSQP ADMM QP 开源，BPQP 用这个 SCS ADMM LP/QP/SOCP/SDP 开源，CVXPY 默认 Clarabel 内点法 LP/QP/SOCP/SDP 开源新秀（Rust） CVXPY 是一个 Python 库，可以用统一的语法描述凸优化问题，自动调用上述任一求解器。\n六、BPQP 的核心方法 现在所有前置知识都准备好了，可以来看 BPQP 怎么巧妙解决问题。\n6.1 核心洞察 BPQP 的核心 idea 一句话：\n反向传播中要解的 KKT 线性系统，可以等价地重构为一个新的 QP 问题。\n为什么这样做有意义？\nQP 有非常成熟的高效求解器（OSQP） 求解 QP 用 ADMM，避开了 $O(N^3)$ 的矩阵分解 前向和反向完全解耦——前向用任意求解器，反向用 OSQP，互不影响 6.2 解耦：BPQP 的整体架构 ┌──────────────────────────────────────────────┐ │ 前向传播 │ │ y → [凸优化问题 + 任意求解器] → z* │ │ │ │ ⋮ ─── 解耦 ─── ⋮ │ │ │ │ 反向传播 │ │ ∂L/∂y ← [OSQP 解 QP] ← [KKT→QP 重构] ← ∂L/∂z*│ └──────────────────────────────────────────────┘ 之前的方法（OptNet 等）前向后向是紧耦合的——前向用什么算法决定了反向只能用配套方法。BPQP 把它们彻底解耦：前向爱用什么求解器都行，反向统一走 QP 路线。\n6.3 关键转化：KKT 系统 → 等式约束 QP 这是论文的定理 1，也是最精彩的部分。我们一步步推。\n步骤 1：观察 KKT 系统的结构 回顾反向传播要解的系统：\n$$ \\begin{bmatrix} P \u0026 G^\\top \u0026 A^\\top \\\\ D(\\lambda^*)G \u0026 D(g(z^*)) \u0026 0 \\\\ A \u0026 0 \u0026 0 \\end{bmatrix} \\begin{bmatrix} \\tilde z \\\\ \\tilde \\lambda \\\\ \\tilde \\nu \\end{bmatrix} = -\\begin{bmatrix} (\\partial \\mathcal{L}/\\partial z^*)^\\top \\\\ 0 \\\\ 0 \\end{bmatrix} $$直接解需要矩阵求逆，慢。\n步骤 2：写出一个等式约束 QP 的 KKT 系统 考虑新构造的一个 QP：\n$$ \\min_{\\tilde z}\\ \\frac{1}{2}\\tilde z^\\top P' \\tilde z + q'^\\top \\tilde z \\quad \\text{s.t.}\\ A' \\tilde z = b',\\ G' \\tilde z = c' $$它对应的 KKT 系统是：\n$$ \\begin{bmatrix} P' \u0026 G'^\\top \u0026 A'^\\top \\\\ G' \u0026 0 \u0026 0 \\\\ A' \u0026 0 \u0026 0 \\end{bmatrix} \\begin{bmatrix} \\tilde z \\\\ \\bar \\lambda \\\\ \\bar \\nu \\end{bmatrix} = \\begin{bmatrix} -q' \\\\ c' \\\\ b' \\end{bmatrix} $$对比两个系统——结构非常像，但中间一行不同：原 KKT 是 $D(\\lambda^*)G$ 和 $D(g(z^*))$，新 QP 是 $G'$ 和 $0$。\n步骤 3：用 active set 化简中间一行 回忆 KKT 的互补松弛：$\\lambda_i^* g_i(z^*) = 0$。\n定义有效集：$\\mathcal{A} = \\{i : g_i(z^*) = 0\\}$（约束紧的索引集合）。\n对原系统的中间行 $\\lambda_i^* G_i \\tilde z + g_i(z^*) \\tilde \\lambda_i = 0$ 分情况讨论：\n不在 $\\mathcal A$ 中（约束松，$g_i \u003c 0$，$\\lambda_i^* = 0$）： $0 + g_i \\tilde\\lambda_i = 0 \\Rightarrow \\tilde\\lambda_i = 0$ → 这些约束对反向传播没贡献，直接丢弃\n在 $\\mathcal A$ 中（约束紧，$g_i = 0$，$\\lambda_i^* \\geq 0$）： $\\lambda_i^* G_i \\tilde z + 0 = 0 \\Rightarrow G_i \\tilde z = 0$ → 变成关于 $\\tilde z$ 的等式约束\n经过这步处理，原 KKT 系统中\"复杂的不等式行\"被压缩成\"针对有效集的等式约束\"。\n步骤 4：化简后的系统正好是等式约束 QP 的 KKT 去除无效约束、把有效约束转为等式后：\n$$ \\begin{bmatrix} P \u0026 G_+^\\top \u0026 A^\\top \\\\ G_+ \u0026 0 \u0026 0 \\\\ A \u0026 0 \u0026 0 \\end{bmatrix} \\begin{bmatrix} \\tilde z \\\\ \\tilde \\lambda_+ \\\\ \\tilde \\nu \\end{bmatrix} = -\\begin{bmatrix} (\\partial \\mathcal{L}/\\partial z^*)^\\top \\\\ 0 \\\\ 0 \\end{bmatrix} $$这正是以下等式约束 QP 的 KKT 系统：\n$$ \\min_{\\tilde z}\\ \\frac{1}{2}\\tilde z^\\top P' \\tilde z + q'^\\top \\tilde z \\quad \\text{s.t.}\\ A' \\tilde z = 0,\\ G_+' \\tilde z = 0 $$其中：\n$P' = P(z^*, \\nu^*, \\lambda^*)$（原问题的拉格朗日 Hessian） $A' = A(z^*),\\ G_+' = G_+(z^*)$（只保留有效集） $q' = \\partial \\mathcal{L}/\\partial z^*$（来自上游梯度） 这就是定理 1：反向传播的梯度可以通过解这个 QP 得到。\n6.4 用 OSQP 高效求解 得到 QP 后，用 OSQP（基于 ADMM）求解。OSQP 每次迭代需要解：\n$$ \\begin{bmatrix} P + \\sigma I \u0026 A^\\top \\\\ A \u0026 -\\text{diag}(\\rho)^{-1} \\end{bmatrix} \\begin{bmatrix} z^{(k+1)} \\\\ v^{(k+1)} \\end{bmatrix} = \\begin{bmatrix} \\sigma z^{(k)} - q \\\\ \\lambda^{(k)} - \\text{diag}(\\rho)^{-1} \\nu^{(k)} \\end{bmatrix} $$关键：左边的矩阵不依赖迭代步 $k$——只需分解一次，后续每次迭代只是矩阵-向量乘法。这就是 BPQP 速度优势的根源。\n6.5 一个简化例子验证 考虑 $\\min_z\\ \\frac{1}{2} z^2 - yz$ s.t. $z \\leq 1$，可以直接解出：\n$$ z^*(y) = \\begin{cases} y \u0026 y \\leq 1 \\\\ 1 \u0026 y \u003e 1 \\end{cases},\\quad \\frac{\\partial z^*}{\\partial y} = \\begin{cases} 1 \u0026 y \\leq 1 \\\\ 0 \u0026 y \u003e 1 \\end{cases} $$用 BPQP 流程验证（情形 $y \u003e 1$）：\n前向得 $z^* = 1$，$\\lambda^* = y - 1 \u003e 0$ 有效集 $\\mathcal A = \\{1\\}$，转为等式约束 $\\tilde z = 0$ BPQP 构造 QP：$\\min_{\\tilde z}\\ \\frac{1}{2}\\tilde z^2 + \\tilde z$ s.t. $\\tilde z = 0$ 解：$\\tilde z = 0$ 链式法则：$\\partial \\mathcal L/\\partial y = (-1) \\cdot 0 = 0$ ✓ 完美对应。\n6.6 完整流程 输入: 原问题最优解 z*, λ*, ν*（前向已得） 上游梯度 ∂L/∂z* 步骤 1: 检测有效集 A = {i : g_i(z*) = 0} 步骤 2: 利用互补松弛去掉无效约束 步骤 3: 把有效不等式约束转为等式 步骤 4: 构造等式约束 QP（定理 1） 步骤 5: 用 OSQP 解这个 QP 步骤 6: 链式法则得到 ∂L/∂y 输出: ∂L/∂y 七、实验与回顾 7.1 实验一：模拟大规模优化 随机生成 LP、QP、SOCP 三类问题，对比 BPQP 与 CVXPY、qpth/OptNet、Alt-Diff、JAXOpt。\n结果（100×20 规模，总时间 = 前向 + 反向）：\n问题类型 BPQP 加速比 QP 21.02× LP 13.54× SOCP 1.67× 为什么 SOCP 加速比小？因为 CVXPY 处理 SOCP 时不需要做\"重构成 cone program\"这一步，基线本来就快。\n大规模场景（5000×2000）：CVXPY、qpth/OptNet 等方法直接失败或极慢，BPQP 仍能正常运行——这正是它的核心价值。\n7.2 实验二：真实投资组合优化 回到开头的金融场景：500 只股票的端到端 MVO。\n方法 年化收益 Sharpe 训练时间/epoch 两阶段（先预测后优化） 9.28% 0.65 0.11 min qpth/OptNet（端到端） 16.54% 1.25 21.2 min BPQP（端到端） 17.67% 1.28 7.7 min 两个核心结论：\n端到端确实更好：Sharpe 从 0.65 提升到 1.28，几乎翻倍 BPQP 比 OptNet 快 2.75×，且决策质量略好 7.3 整体回顾 让我们用一张图总结整篇论文：\n问题：可微凸优化层反向传播太慢 │ ▼ 原因：直接求 KKT 矩阵的逆 O(N³) │ ▼ BPQP 洞察：KKT 系统 ⟺ 等式约束 QP（定理 1，依赖 active set） │ ▼ 求解工具：OSQP（基于 ADMM） │ - 矩阵分解只做一次 │ - 利用稀疏性 │ - 可以并行 ▼ 效果：QP 加速 21×，LP 加速 13×，SOCP 加速 1.67× │ ▼ 真实价值：让大规模端到端凸优化训练真正可行 （投资组合 Sharpe 0.65 → 1.28） 7.4 论文贡献分层 理论贡献：定理 1 给出了\"可微凸优化层反向传播 = 解一个等式约束 QP\"的等价性。\n算法贡献：基于定理 1 构造了一个通用的反向传播流程，前向后向解耦，可灵活组合任意求解器。\n工程贡献：开源实现集成进 Microsoft Qlib，金融场景可直接使用。\n7.5 BPQP 的位置 显式展开法（OptNet 早期、Alt-Diff） ↓ 不展开迭代过程 隐式微分法 ├── 特化方法（OptNet 内点版、qpth）：仅 QP，紧耦合 ├── 通用方法（CvxpyLayer、Diffcp）：通用但慢 └── BPQP：通用 + 快 ←── 同时做到这两点 关键：把 KKT 求逆 → QP 求解 八、写在最后 读完这篇论文，我有几点感受：\n第一，问题的转化是核心智慧。“KKT 求逆\"和\"求解 QP\"看似是两个不同的问题，但在适当的视角下它们等价。这种\"换个角度看问题\"的能力，往往比新算法本身更有价值。\n第二，前置知识的重要性。要理解 BPQP，需要凸优化、KKT、隐函数定理、ADMM 等多个工具的协同。这也是为什么这种\"机器学习 + 优化\"的交叉论文读起来需要更多背景。对算法工程师来说，花点时间补一补凸优化基础是非常值得的——它会出现在很多看似不相关的地方（SVM、控制、运筹、金融建模、可微编程）。\n第三，端到端学习并不是万能的，但当任务本身就涉及\"在约束下做最优决策\"时（投资、调度、规划、控制），把优化问题嵌入网络架构是非常自然且强大的做法——前提是优化层得足够高效，不能成为训练瓶颈。BPQP 正是在做这件事。\n如果你也在做需要可微凸优化的工作，强烈推荐试试 microsoft/qlib 中的 BPQP 实现。\n参考资料 原论文：BPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning (NeurIPS 2024) OSQP：https://osqp.org/ CVXPY：https://www.cvxpy.org/ OptNet 论文：Differentiable Optimization as a Layer in Neural Networks (ICML 2017) Boyd \u0026 Vandenberghe, Convex Optimization（凸优化经典教材，免费在线） Markowitz, “Portfolio Selection” (1952)：MVO 的开山之作 ",
+  "wordCount" : "2242",
+  "inLanguage": "en",
+  "datePublished": "2026-06-10T00:00:00Z",
+  "dateModified": "2026-06-10T00:00:00Z",
+  "author":[{
+    "@type": "Person",
+    "name": "Coldeye"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://coldeye2020.github.io/tech/2026-06-10-bpqp/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Co'Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://coldeye2020.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://coldeye2020.github.io/" accesskey="h" title="Co&#39;Log (Alt + H)">
+                <img src="https://coldeye2020.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Co&#39;Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://coldeye2020.github.io/tech/" title="Tech">
+                    <span>Tech</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/invest/" title="Invest">
+                    <span>Invest</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/think/" title="Thought">
+                    <span>Thought</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://xkcd.com/" title="xkcd.com">
+                    <span>xkcd.com</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      BPQP：加速可微凸优化层的端到端学习框架
+    </h1>
+    <div class="post-description">
+      从投资组合优化讲起，系统梳理可微优化层、KKT 条件、隐函数定理、QP/SOCP 求解方法，并解读 NeurIPS 2024 BPQP 如何用一个巧妙的等价转化把反向传播加速一个数量级。
+    </div>
+    <div class="post-meta">Date: June 10, 2026 | Estimated Reading Time: 21 min | Author: Coldeye | Readers:&nbsp;<span id="gc-page">–</span>
+      
+    </div>
+    <script>
+    fetch('https://coldeye.goatcounter.com/counter/\/tech\/2026-06-10-bpqp.json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var el = document.getElementById('gc-page');
+        if (el && d && d.count) el.textContent = d.count;
+      }).catch(function(){});
+    </script>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一背景金融中的一个真实难题">一、背景：金融中的一个真实难题</a>
+      <ul>
+        <li><a href="#投资组合优化">投资组合优化</a></li>
+        <li><a href="#为什么是-mvo而不是直接最大化收益">为什么是 MVO，而不是直接最大化收益？</a></li>
+        <li><a href="#真正的问题mu-怎么来">真正的问题： 怎么来？</a></li>
+        <li><a href="#两阶段方法的致命缺陷">两阶段方法的致命缺陷</a></li>
+        <li><a href="#端到端学习">端到端学习</a></li>
+      </ul>
+    </li>
+    <li><a href="#二抽象成数学问题什么是可微优化层">二、抽象成数学问题：什么是可微优化层</a>
+      <ul>
+        <li><a href="#普通神经网络层">普通神经网络层</a></li>
+        <li><a href="#可微优化层">可微优化层</a></li>
+        <li><a href="#为什么不直接让网络输出-w">为什么不直接让网络输出 ？</a></li>
+        <li><a href="#前向-vs-反向">前向 vs 反向</a></li>
+      </ul>
+    </li>
+    <li><a href="#三前置知识一kkt-与隐函数定理">三、前置知识（一）：KKT 与隐函数定理</a>
+      <ul>
+        <li><a href="#31-从无约束到带约束拉格朗日的智慧">3.1 从无约束到带约束：拉格朗日的智慧</a></li>
+        <li><a href="#32-kkt-条件处理不等式约束">3.2 KKT 条件：处理不等式约束</a></li>
+        <li><a href="#33-kkt-条件的本质">3.3 KKT 条件的本质</a></li>
+        <li><a href="#34-隐函数定理从隐式关系求导">3.4 隐函数定理：从隐式关系求导</a></li>
+        <li><a href="#35-两者结合可微优化层的求导公式">3.5 两者结合：可微优化层的求导公式</a></li>
+      </ul>
+    </li>
+    <li><a href="#四现有方案与难点">四、现有方案与难点</a>
+      <ul>
+        <li><a href="#方案一显式展开法explicit-unrolling">方案一：显式展开法（Explicit Unrolling）</a></li>
+        <li><a href="#方案二隐式微分法implicit-differentiation">方案二：隐式微分法（Implicit Differentiation）</a></li>
+        <li><a href="#难点总结">难点总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#五前置知识二凸优化与求解方法">五、前置知识（二）：凸优化与求解方法</a>
+      <ul>
+        <li><a href="#51-什么是凸优化">5.1 什么是凸优化？</a></li>
+        <li><a href="#52-凸优化的层级">5.2 凸优化的层级</a></li>
+        <li><a href="#53-求解方法一内点法">5.3 求解方法（一）：内点法</a></li>
+        <li><a href="#54-求解方法二一阶法--admm">5.4 求解方法（二）：一阶法 / ADMM</a></li>
+        <li><a href="#55-内点法-vs-一阶法">5.5 内点法 vs 一阶法</a></li>
+        <li><a href="#56-现代主流求解器">5.6 现代主流求解器</a></li>
+      </ul>
+    </li>
+    <li><a href="#六bpqp-的核心方法">六、BPQP 的核心方法</a>
+      <ul>
+        <li><a href="#61-核心洞察">6.1 核心洞察</a></li>
+        <li><a href="#62-解耦bpqp-的整体架构">6.2 解耦：BPQP 的整体架构</a></li>
+        <li><a href="#63-关键转化kkt-系统--等式约束-qp">6.3 关键转化：KKT 系统 → 等式约束 QP</a></li>
+        <li><a href="#64-用-osqp-高效求解">6.4 用 OSQP 高效求解</a></li>
+        <li><a href="#65-一个简化例子验证">6.5 一个简化例子验证</a></li>
+        <li><a href="#66-完整流程">6.6 完整流程</a></li>
+      </ul>
+    </li>
+    <li><a href="#七实验与回顾">七、实验与回顾</a>
+      <ul>
+        <li><a href="#71-实验一模拟大规模优化">7.1 实验一：模拟大规模优化</a></li>
+        <li><a href="#72-实验二真实投资组合优化">7.2 实验二：真实投资组合优化</a></li>
+        <li><a href="#73-整体回顾">7.3 整体回顾</a></li>
+        <li><a href="#74-论文贡献分层">7.4 论文贡献分层</a></li>
+        <li><a href="#75-bpqp-的位置">7.5 BPQP 的位置</a></li>
+      </ul>
+    </li>
+    <li><a href="#八写在最后">八、写在最后</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>论文：<strong>BPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning</strong> (NeurIPS 2024)
+作者：Jianming Pan, Zeqi Ye, Xiao Yang, Xu Yang, Weiqing Liu, Lewen Wang, Jiang Bian
+单位：UC Berkeley, Nankai University, Microsoft Research Asia
+代码：<a href="https://github.com/microsoft/qlib">microsoft/qlib</a></p>
+</blockquote>
+<p>这篇论文是 NeurIPS 2024 上一篇关于&quot;如何让神经网络中的优化层反向传播变快&quot;的工作。读完后我觉得它的核心 idea 非常优雅——一句话概括是：</p>
+<blockquote>
+<p><strong>把反向传播中昂贵的 KKT 矩阵求逆问题，重构为一个等价的 QP 问题，用 ADMM 高效求解。</strong></p>
+</blockquote>
+<p>但要真正理解这句话，需要补充不少前置知识。本文面向<strong>对优化理论不太熟悉的算法工程师</strong>，会沿着&quot;问题 → 抽象 → 前置知识 → 现有方案 → 论文方法&quot;的路线，把整个故事讲清楚。中间会有相对详细的凸优化、KKT、隐函数定理介绍——熟悉的读者可以自行跳过。</p>
+<!-- more -->
+<hr>
+<h2 id="一背景金融中的一个真实难题">一、背景：金融中的一个真实难题<a hidden class="anchor" aria-hidden="true" href="#一背景金融中的一个真实难题">#</a></h2>
+<h3 id="投资组合优化">投资组合优化<a hidden class="anchor" aria-hidden="true" href="#投资组合优化">#</a></h3>
+<p>假设你是一个量化基金的投资经理，手上管理着 500 只股票，每天都要决定一件事：<strong>这些股票各应该配置多少比例的资金？</strong></p>
+<p>经典的解法是马科维茨的<strong>均值-方差优化（Mean-Variance Optimization, MVO）</strong>：</p>
+$$
+\max_w\ \mu^\top w - \frac{\gamma}{2} w^\top \Sigma w \quad \text{s.t.}\ \mathbf{1}^\top w = 1,\ w \geq 0
+$$<p>其中：</p>
+<ul>
+<li>$w \in \mathbb{R}^{500}$ 是每只股票的投资比例（要决策的变量）</li>
+<li>$\mu \in \mathbb{R}^{500}$ 是每只股票的<strong>预期收益率</strong></li>
+<li>$\Sigma$ 是收益率的协方差矩阵（衡量风险）</li>
+<li>$\gamma$ 是风险厌恶系数</li>
+<li>约束保证权重和为 1 且不能做空</li>
+</ul>
+<h3 id="为什么是-mvo而不是直接最大化收益">为什么是 MVO，而不是直接最大化收益？<a hidden class="anchor" aria-hidden="true" href="#为什么是-mvo而不是直接最大化收益">#</a></h3>
+<p>很多算法工程师第一次看到这个目标会困惑：<strong>为什么不直接 $\max_w\ \mu^\top w$ 把所有钱投到预期收益最高的那只股票就行了？</strong></p>
+<p>答案是：<strong>金融决策的目标不只是收益高，还要稳定</strong>。具体有几个层次的原因：</p>
+<p><strong>第一</strong>，预期收益率 $\mu$ 是<strong>预测出来的</strong>，不是真值。预测必然有噪声。如果你 all-in 一只股票，预测稍有偏差，整个组合就崩了。</p>
+<p><strong>第二</strong>，即使预测完全准确，&ldquo;预期收益最高&quot;和&quot;真实收益最高&quot;也不是一回事——预期是均值，真实结果是随机的。一只预期收益 10% 但波动 50% 的股票，和一只预期收益 8% 但波动 5% 的股票，理性投资者更可能选后者。这就是经济学里的<strong>风险厌恶</strong>。</p>
+<p><strong>第三</strong>，分散投资能降低组合风险。两只<strong>不完全相关</strong>的股票各投 50%，整体波动会小于单独持有任一只——这就是协方差矩阵 $\Sigma$ 在目标函数中起的作用。</p>
+<p>所以 MVO 的目标函数 $\mu^\top w - \frac{\gamma}{2} w^\top \Sigma w$ 同时考虑了：</p>
+<ul>
+<li><strong>收益</strong>项 $\mu^\top w$：让组合的期望收益越高越好</li>
+<li><strong>风险</strong>项 $\frac{\gamma}{2} w^\top \Sigma w$：惩罚组合的方差（波动），$\gamma$ 决定多在乎风险</li>
+</ul>
+<p>这是一个标准的凸优化问题（具体来说是 QP，后面会讲），给定 $\mu$ 和 $\Sigma$ 可以用现成求解器秒解。</p>
+<h3 id="真正的问题mu-怎么来">真正的问题：$\mu$ 怎么来？<a hidden class="anchor" aria-hidden="true" href="#真正的问题mu-怎么来">#</a></h3>
+<p>没人能直接观测到&quot;明天的收益率&rdquo;，所以工业界通常用神经网络来预测：</p>
+$$
+\text{历史价格、成交量等特征} \xrightarrow{\text{神经网络}} \hat{\mu}
+$$<p>然后把 $\hat{\mu}$ 喂给 MVO，得到投资比例 $w^*$。这就是经典的<strong>两阶段方法</strong>。</p>
+<h3 id="两阶段方法的致命缺陷">两阶段方法的致命缺陷<a hidden class="anchor" aria-hidden="true" href="#两阶段方法的致命缺陷">#</a></h3>
+<p>这种&quot;先预测、后优化&quot;的两阶段方法有一个非常隐蔽的问题：</p>
+<blockquote>
+<p><strong>预测准 ≠ 投资好。</strong></p>
+</blockquote>
+<p>举个直觉：</p>
+<ul>
+<li>股票 A 真实收益率 1.0%，股票 B 真实收益率 1.1%</li>
+<li>网络预测 A = 0.5%，B = 0.6%（绝对误差挺大）</li>
+<li>但优化器仍然会选 B（因为相对排序对了）→ 投资决策完美</li>
+</ul>
+<p>反过来：</p>
+<ul>
+<li>网络预测 A = 1.05%，B = 1.0%（绝对误差很小）</li>
+<li>优化器会选 A → 投资决策<strong>错了</strong></li>
+</ul>
+<p>也就是说，神经网络在用&quot;预测误差&quot;作为损失训练，但<strong>真正决定我们能不能赚钱的是最终的投资决策</strong>。这两个目标并不一致。</p>
+<h3 id="端到端学习">端到端学习<a hidden class="anchor" aria-hidden="true" href="#端到端学习">#</a></h3>
+<p>理想做法是：让整个流程<strong>端到端</strong>训练。</p>
+<pre tabindex="0"><code>特征 → [神经网络] → μ̂ → [MVO 优化器] → w* → 实际收益（损失函数）
+                                              │
+                                              └── 反向传播训练神经网络
+</code></pre><p>这样神经网络的训练目标直接是&quot;让最终决策赚的钱最多&quot;，而不是&quot;让 $\mu$ 预测得准&quot;。</p>
+<p>但这里有个问题：<strong>MVO 优化器这一层不是普通的神经网络层，它是一个&quot;求解优化问题&quot;的过程</strong>。怎么对它求导？怎么把损失函数的梯度从 $w^*$ 一路传回神经网络？</p>
+<p>这就是本文要解决的核心问题。</p>
+<hr>
+<h2 id="二抽象成数学问题什么是可微优化层">二、抽象成数学问题：什么是可微优化层<a hidden class="anchor" aria-hidden="true" href="#二抽象成数学问题什么是可微优化层">#</a></h2>
+<h3 id="普通神经网络层">普通神经网络层<a hidden class="anchor" aria-hidden="true" href="#普通神经网络层">#</a></h3>
+<p>我们熟悉的神经网络层都是<strong>显式函数</strong>，比如 $z = \sigma(Wy + b)$。输入 $y$，经过一系列直接的算术运算得到输出 $z$。求导很简单，PyTorch 的自动微分能直接搞定。</p>
+<h3 id="可微优化层">可微优化层<a hidden class="anchor" aria-hidden="true" href="#可微优化层">#</a></h3>
+<p>但 MVO 这一层不一样——它的输出是一个<strong>优化问题的最优解</strong>：</p>
+$$
+z^*(y) = \arg\min_z f_y(z) \quad \text{s.t.}\ h_y(z) = 0,\ g_y(z) \leq 0
+$$<p>其中 $y$ 是上一层的输出（在 MVO 例子里就是预测的收益率 $\hat\mu$），$z^*$ 是下一层的输入（最优投资比例 $w^*$）。</p>
+<p>注意&quot;下标 $y$&ldquo;的写法——意思是优化问题本身的目标函数和约束<strong>都依赖参数 $y$</strong>。也就是说，$y$ 不是被代入某个公式得到 $z$，而是<strong>用来定义一个优化问题</strong>，然后这一层的输出 $z^*$ 是这个问题的最优解。</p>
+<p><strong>核心区别</strong>：</p>
+<table>
+  <thead>
+      <tr>
+          <th>普通层</th>
+          <th>可微优化层</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>输出 = 公式直接算出来</td>
+          <td>输出 = 优化问题解出来</td>
+      </tr>
+      <tr>
+          <td>内部：一次前向运算</td>
+          <td>内部：调用优化求解器迭代</td>
+      </tr>
+      <tr>
+          <td>处理约束：困难</td>
+          <td>处理约束：天然满足</td>
+      </tr>
+      <tr>
+          <td>求导：链式法则</td>
+          <td>求导：???（这就是难点）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="为什么不直接让网络输出-w">为什么不直接让网络输出 $w$？<a hidden class="anchor" aria-hidden="true" href="#为什么不直接让网络输出-w">#</a></h3>
+<p>你可能会问：神经网络是万能逼近器，为什么不直接让它输出投资比例 $w$？</p>
+<p>理论上可以，但实际有几个大问题：</p>
+<ol>
+<li><strong>约束保证难</strong>：要保证 $\sum w_i = 1$ 且 $w_i \geq 0$ 很麻烦。Softmax 能做权重和为 1，但更复杂的约束（&ldquo;换手率不超过 20%&quot;、&ldquo;行业集中度限制&rdquo;）几乎不可能用普通网络层保证。</li>
+<li><strong>领域知识难嵌入</strong>：MVO 几十年来的金融理论积累被白白浪费。让神经网络从零学习&quot;什么是好的风险-收益权衡&quot;远比把它直接编码进 MVO 来得困难。</li>
+<li><strong>可解释性差</strong>：黑盒输出 vs &ldquo;在风险约束下的最优配置&rdquo;。后者向客户和监管机构解释起来容易得多。</li>
+</ol>
+<p>类似的场景在工程界还有很多：能源调度（在物理约束下最小化成本）、机器人轨迹规划（在动力学约束下达到目标位置）、网络资源分配，等等。<strong>只要任务本身就包含&quot;在约束下做最优决策&quot;的成分，把优化问题做成一层嵌入网络就是一个很自然的选择。</strong></p>
+<h3 id="前向-vs-反向">前向 vs 反向<a hidden class="anchor" aria-hidden="true" href="#前向-vs-反向">#</a></h3>
+<p>可微优化层的<strong>前向传播</strong>没什么神秘的——调用一个凸优化求解器解出 $z^*$ 就行。慢一些，但思路直接。</p>
+<p><strong>反向传播</strong>才是真正的难题。要做反向传播，需要计算 $\frac{\partial z^*}{\partial y}$，也就是&quot;当 $y$ 微小变化时，最优解 $z^*$ 怎么变？&ldquo;但 $z^*$ 没有显式公式——它是优化问题的解。怎么求导？</p>
+<p>这就需要一些数学工具——KKT 条件和隐函数定理。</p>
+<hr>
+<h2 id="三前置知识一kkt-与隐函数定理">三、前置知识（一）：KKT 与隐函数定理<a hidden class="anchor" aria-hidden="true" href="#三前置知识一kkt-与隐函数定理">#</a></h2>
+<blockquote>
+<p>这一节会比较慢，会用一些图像化的直觉解释。如果你已经熟悉 KKT 和隐函数定理，可以直接跳到第四节。</p>
+</blockquote>
+<h3 id="31-从无约束到带约束拉格朗日的智慧">3.1 从无约束到带约束：拉格朗日的智慧<a hidden class="anchor" aria-hidden="true" href="#31-从无约束到带约束拉格朗日的智慧">#</a></h3>
+<h4 id="无约束情况导数--0">无约束情况：导数 = 0<a hidden class="anchor" aria-hidden="true" href="#无约束情况导数--0">#</a></h4>
+<p>如果你想找一个 $x$ 让 $f(x) = (x-3)^2$ 最小，凭直觉：$x = 3$ 时 $f = 0$，最小。</p>
+<p>数学上的方法：求导让导数为零，$f'(x) = 2(x-3) = 0 \Rightarrow x = 3$。多元情况就是<strong>梯度为零</strong>：$\nabla f(x^*) = 0$。</p>
+<h4 id="加入等式约束直接求导失效">加入等式约束：直接求导失效<a hidden class="anchor" aria-hidden="true" href="#加入等式约束直接求导失效">#</a></h4>
+<p>升级一下问题：</p>
+$$
+\min_{x_1, x_2}\ x_1^2 + x_2^2 \quad \text{s.t.}\ x_1 + x_2 = 1
+$$<p>几何含义：在直线 $x_1 + x_2 = 1$ 上，找离原点最近的点。凭直觉答案是 $(0.5, 0.5)$。</p>
+<p>但如果套用&quot;梯度 = 0&rdquo;，得到 $(2x_1, 2x_2) = 0 \Rightarrow x = (0,0)$——它根本不在约束直线上！<strong>这个方法完全没用约束信息</strong>。</p>
+<h4 id="拉格朗日的天才想法">拉格朗日的天才想法<a hidden class="anchor" aria-hidden="true" href="#拉格朗日的天才想法">#</a></h4>
+<p>为什么&quot;梯度 = 0&quot;在这里失败？因为它适用于&quot;全方向无下降&quot;的情形，但带约束时，我们只需要&rdquo;<strong>在约束允许的方向上</strong>无下降&rdquo;。</p>
+<p>拉格朗日的关键洞察是几何上的：<strong>在最优点，目标函数的等高线必须与约束曲线&quot;相切&quot;</strong>。</p>
+<p>为什么？想象你在直线上走来走去，目标是让 $f$ 越小越好。每走到一个点看一眼当前的 $f$ 等高圆。如果等高圆和直线&quot;穿过&quot;（相交），你沿着直线总能继续走到一个 $f$ 更小的等高圆。<strong>只有等高圆和直线相切时</strong>，沿着约束方向再走 $f$ 不会下降——这就到了最优点。</p>
+<p>数学上&quot;相切&quot;等价于：<strong>$\nabla f$ 和 $\nabla h$（约束的梯度）平行</strong>。也就是存在一个数 $\nu$（叫<strong>拉格朗日乘子</strong>）使得：</p>
+$$
+\nabla f + \nu \nabla h = 0
+$$<p>加上&quot;约束被满足&quot;的条件 $h(x) = 0$，<strong>两个条件合起来描述了最优点</strong>。</p>
+<p>拉格朗日把这两个条件巧妙地&quot;打包&quot;成一个新函数：</p>
+$$
+L(x, \nu) = f(x) + \nu \cdot h(x)
+$$<p>然后对<strong>所有变量（包括 $\nu$）求偏导 = 0</strong>：</p>
+<ul>
+<li>$\frac{\partial L}{\partial x_i} = 0$ 给出 $\nabla f + \nu \nabla h = 0$（梯度平行条件）</li>
+<li>$\frac{\partial L}{\partial \nu} = 0$ 给出 $h(x) = 0$（约束被满足）</li>
+</ul>
+<p><strong>带约束问题 → 解一组方程组</strong>。这就是拉格朗日乘子法的精髓。</p>
+<blockquote>
+<p>顺带一提：拉格朗日乘子 $\nu$ 不是凑出来的辅助变量，它有清晰的经济学含义——<strong>约束被放松一点点，最优值能改善多少</strong>（叫&quot;影子价格&quot;）。在 MVO 里，约束 $\mathbf{1}^\top w = 1$ 的乘子就告诉你&quot;再多给一块钱预算，最优收益能多多少&quot;。</p>
+</blockquote>
+<h3 id="32-kkt-条件处理不等式约束">3.2 KKT 条件：处理不等式约束<a hidden class="anchor" aria-hidden="true" href="#32-kkt-条件处理不等式约束">#</a></h3>
+<p>再升级一次，加上不等式约束：</p>
+$$
+\min_x\ f(x) \quad \text{s.t.}\ h(x) = 0,\ g(x) \leq 0
+$$<p>不等式约束 $g(x) \leq 0$ 几何上是一堵&quot;墙&quot;——只有 $g(x) \leq 0$ 这一侧才允许。最优点要么&quot;顶在墙上&quot;（$g(x^*) = 0$），要么&quot;远离墙&quot;（$g(x^*) < 0$，约束没起作用）。</p>
+<p><strong>KKT 条件</strong>就是处理这两种情况的扩展。最优解 $x^*$ 必须满足以下四条：</p>
+<ol>
+<li>
+<p><strong>稳定性</strong>：$\nabla f + \nu \nabla h + \lambda \nabla g = 0$
+（目标函数的&quot;拉力&quot;和约束的&quot;反作用力&quot;平衡）</p>
+</li>
+<li>
+<p><strong>原始可行性</strong>：$h(x^*) = 0,\ g(x^*) \leq 0$
+（解必须在可行域内）</p>
+</li>
+<li>
+<p><strong>对偶可行性</strong>：$\lambda \geq 0$
+（不等式约束这堵&quot;墙&quot;只能往一个方向推，反作用力非负）</p>
+</li>
+<li>
+<p><strong>互补松弛</strong>：$\lambda_i \cdot g_i(x^*) = 0$
+（要么约束起作用 $g_i = 0$（顶在墙上），要么乘子为零 $\lambda_i = 0$（约束没起作用），两者必有一个为 0）</p>
+</li>
+</ol>
+<h4 id="一个具体例子">一个具体例子<a hidden class="anchor" aria-hidden="true" href="#一个具体例子">#</a></h4>
+<p>考虑 $\min (x-3)^2$ s.t. $x \leq 1$。约束是 $g(x) = x - 1 \leq 0$。</p>
+<p>凭直觉：目标想把 $x$ 拉到 3，但被墙挡在 $x = 1$，最优点是 $x^* = 1$。</p>
+<p>用 KKT 验证：</p>
+<ul>
+<li>互补松弛分两种情况：
+<ul>
+<li>$\lambda^* = 0$：稳定性给出 $2(x^* - 3) = 0 \Rightarrow x^* = 3$，但违反 $x \leq 1$ ✗</li>
+<li>$g(x^*) = 0$：$x^* = 1$，稳定性给出 $\lambda^* = 4 > 0$ ✓</li>
+</ul>
+</li>
+</ul>
+<p>最终 $x^* = 1$，$\lambda^* = 4$。</p>
+<h4 id="互补松弛与-active-set">互补松弛与 active set<a hidden class="anchor" aria-hidden="true" href="#互补松弛与-active-set">#</a></h4>
+<p>互补松弛引出一个非常重要的概念——<strong>有效集（active set）</strong>。</p>
+<p>对于多个不等式约束 $g_1(x) \leq 0, \ldots, g_n(x) \leq 0$：</p>
+<ul>
+<li>若 $g_i(x^*) = 0$（约束&quot;紧&quot;，顶到墙上）→ <strong>有效约束</strong>，此时 $\lambda_i^*$ 可能 $> 0$</li>
+<li>若 $g_i(x^*) < 0$（约束&quot;松&quot;，没顶到墙）→ <strong>无效约束</strong>，此时 $\lambda_i^* = 0$</li>
+</ul>
+<p><strong>有效集就是所有&quot;紧&quot;约束的索引集合</strong>。这个概念后面会成为 BPQP 的核心。</p>
+<h3 id="33-kkt-条件的本质">3.3 KKT 条件的本质<a hidden class="anchor" aria-hidden="true" href="#33-kkt-条件的本质">#</a></h3>
+<p>把 KKT 条件抽象一下：</p>
+<blockquote>
+<p><strong>KKT 条件把&quot;找最优解&quot;变成了&quot;解一组方程组&quot;</strong>。这组方程同时涉及原变量 $x$ 和拉格朗日乘子 $\lambda, \nu$。</p>
+</blockquote>
+<p>更重要的是，对于参数化的优化问题（参数为 $y$，最优解为 $z^*$），KKT 条件构成了一个把最优解和参数联系起来的<strong>隐式方程</strong>：</p>
+$$
+\mathcal{F}(z^*, \lambda^*, \nu^*; y) = 0
+$$<p>注意&quot;隐式&quot;两个字——$z^*$ 没有显式公式，但它和 $y$ 通过 KKT 方程组绑定。这正是隐函数定理的用武之地。</p>
+<h3 id="34-隐函数定理从隐式关系求导">3.4 隐函数定理：从隐式关系求导<a hidden class="anchor" aria-hidden="true" href="#34-隐函数定理从隐式关系求导">#</a></h3>
+<h4 id="显式-vs-隐式">显式 vs 隐式<a hidden class="anchor" aria-hidden="true" href="#显式-vs-隐式">#</a></h4>
+<p>显式函数 $z = f(y) = y^2 + 3y + 1$，求 $\frac{dz}{dy}$ 直接求导。</p>
+<p>隐式函数：$z$ 和 $y$ 不通过公式直接表达，而是满足某个方程 $F(z, y) = 0$。比如单位圆 $z^2 + y^2 - 1 = 0$。</p>
+<p>隐式情况下能不能求 $\frac{dz}{dy}$？</p>
+<h4 id="关键想法对方程两边求全导">关键想法：对方程两边求全导<a hidden class="anchor" aria-hidden="true" href="#关键想法对方程两边求全导">#</a></h4>
+<p>对 $F(z(y), y) = 0$ 两边关于 $y$ 求全导数（链式法则）：</p>
+$$
+\frac{\partial F}{\partial z} \cdot \frac{dz}{dy} + \frac{\partial F}{\partial y} = 0
+$$<p>整理得：</p>
+$$
+\frac{dz}{dy} = -\left(\frac{\partial F}{\partial z}\right)^{-1} \frac{\partial F}{\partial y}
+$$<p><strong>这就是隐函数定理</strong>。它告诉我们：即使写不出 $z$ 的显式公式，只要有方程 $F(z, y) = 0$，就能求 $\frac{dz}{dy}$。</p>
+<h4 id="用单位圆例子验证">用单位圆例子验证<a hidden class="anchor" aria-hidden="true" href="#用单位圆例子验证">#</a></h4>
+<p>$F(z, y) = z^2 + y^2 - 1$，$\frac{\partial F}{\partial z} = 2z$，$\frac{\partial F}{\partial y} = 2y$，所以 $\frac{dz}{dy} = -\frac{y}{z}$。</p>
+<p>直接从 $z = \sqrt{1-y^2}$ 求导得到的也是 $-\frac{y}{z}$——完全一致。</p>
+<h4 id="多元情形">多元情形<a hidden class="anchor" aria-hidden="true" href="#多元情形">#</a></h4>
+<p>$z, y$ 都是向量时，$z \in \mathbb{R}^d$，$y \in \mathbb{R}^p$，方程组 $F(z, y) = 0 \in \mathbb{R}^d$，公式变成：</p>
+$$
+\frac{\partial z}{\partial y} = -\left[\frac{\partial F}{\partial z}\right]^{-1} \frac{\partial F}{\partial y}
+$$<p><strong>核心思想一句话</strong>：隐函数定理把&quot;隐式关系下的求导&quot;转化成&quot;解一个线性方程组&quot;。</p>
+<h3 id="35-两者结合可微优化层的求导公式">3.5 两者结合：可微优化层的求导公式<a hidden class="anchor" aria-hidden="true" href="#35-两者结合可微优化层的求导公式">#</a></h3>
+<p>现在把两者拼起来：</p>
+<pre tabindex="0"><code>KKT 条件 → 提供了 z* 和 y 的隐式方程 F(z*, λ*, ν*; y) = 0
+隐函数定理 → 提供了从隐式方程求导的方法
+组合起来 → 反向传播的梯度可以通过解一个线性方程组得到
+</code></pre><p>具体地，对 KKT 方程组应用隐函数定理后，需要解（论文公式 3）：</p>
+$$
+\underbrace{\begin{bmatrix} P & G^\top & A^\top \\ D(\lambda^*)G & D(g(z^*)) & 0 \\ A & 0 & 0 \end{bmatrix}}_{\text{KKT 矩阵 } K} \begin{bmatrix} \tilde z \\ \tilde \lambda \\ \tilde \nu \end{bmatrix} = -\begin{bmatrix} (\partial \mathcal{L}/\partial z^*)^\top \\ 0 \\ 0 \end{bmatrix}
+$$<p>各部分定义：</p>
+<ul>
+<li>$P = \nabla_z^2 f + \sum \nu_i \nabla_z^2 h_i + \sum \lambda_i \nabla_z^2 g_i$（拉格朗日 Hessian）</li>
+<li>$G = \nabla_z g(z^*)$（不等式约束的雅可比）</li>
+<li>$A = \nabla_z h(z^*)$（等式约束的雅可比）</li>
+<li>$D(\cdot)$：把向量放在对角线的对角矩阵</li>
+</ul>
+<p><strong>关键瓶颈</strong>：直接解这个系统需要做 $K^{-1}$，复杂度 $O(N^3)$。当 $N$ 上千甚至上万时（比如 500 只股票的 MVO），慢得无法接受。</p>
+<hr>
+<h2 id="四现有方案与难点">四、现有方案与难点<a hidden class="anchor" aria-hidden="true" href="#四现有方案与难点">#</a></h2>
+<p>针对&quot;如何对优化层求导&quot;，目前主流方法分两类。</p>
+<h3 id="方案一显式展开法explicit-unrolling">方案一：显式展开法（Explicit Unrolling）<a hidden class="anchor" aria-hidden="true" href="#方案一显式展开法explicit-unrolling">#</a></h3>
+<p><strong>思路</strong>：既然 $z^*$ 是通过迭代算法（梯度下降、ADMM 等）算出来的，那就把每一步迭代记录下来，作为一个超长的显式计算图，让 PyTorch 自动微分。</p>
+<p>举例：优化算法迭代了 100 步 $z_0 \to z_1 \to \cdots \to z_{100} \approx z^*$，每一步都是 $z_{k+1} = z_k - \alpha \nabla f(z_k)$，把这 100 步全部展开成计算图，然后反向传播。</p>
+<p><strong>优点</strong>：思路简单，套用现成自动微分框架。</p>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>计算图随迭代次数线性增长，<strong>内存爆炸</strong></li>
+<li>处理约束很麻烦（要不断把解投影回可行域）</li>
+<li>每加一步迭代，反向传播也跟着变贵</li>
+</ul>
+<h3 id="方案二隐式微分法implicit-differentiation">方案二：隐式微分法（Implicit Differentiation）<a hidden class="anchor" aria-hidden="true" href="#方案二隐式微分法implicit-differentiation">#</a></h3>
+<p><strong>思路</strong>：不展开迭代过程，而是利用 KKT + 隐函数定理直接求梯度。</p>
+<p>这就是上一节讲的方法：解线性方程组 $K \tilde x = b$，其中 $K$ 是 KKT 矩阵。</p>
+<p>代表方法：<strong>OptNet</strong>、<strong>qpth</strong>、<strong>CvxpyLayer</strong>、<strong>Diffcp</strong> 等。</p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>不需要存储所有迭代历史</li>
+<li>与求解算法解耦（理论上）</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>求解 KKT 系统本身很贵</strong>（$O(N^3)$ 矩阵分解）</li>
+<li>实际中前向和后向往往<strong>紧耦合</strong>（OptNet 把内点法的状态共享给后向）</li>
+<li>大规模问题（变量数 1000+）几乎跑不动</li>
+</ul>
+<h3 id="难点总结">难点总结<a hidden class="anchor" aria-hidden="true" href="#难点总结">#</a></h3>
+<p>把现状梳理一下：</p>
+<table>
+  <thead>
+      <tr>
+          <th>方法</th>
+          <th>通用性</th>
+          <th>效率（小规模）</th>
+          <th>效率（大规模）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Unrolling</td>
+          <td>中</td>
+          <td>中</td>
+          <td>差</td>
+      </tr>
+      <tr>
+          <td>OptNet/qpth</td>
+          <td>仅 QP</td>
+          <td>好</td>
+          <td>差</td>
+      </tr>
+      <tr>
+          <td>CvxpyLayer</td>
+          <td>高</td>
+          <td>中</td>
+          <td>极差</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>核心难点</strong>：通用性和效率难以兼得，特别是在大规模场景下。</p>
+<p>而金融场景（500 只股票的投资组合优化）正好需要&quot;通用 + 大规模&quot;——这就是 BPQP 的切入点。</p>
+<hr>
+<h2 id="五前置知识二凸优化与求解方法">五、前置知识（二）：凸优化与求解方法<a hidden class="anchor" aria-hidden="true" href="#五前置知识二凸优化与求解方法">#</a></h2>
+<blockquote>
+<p>这一节介绍凸优化的常见类型和求解方法。这是理解 BPQP 为什么&quot;重构成 QP 后可以加速&quot;的基础。</p>
+</blockquote>
+<h3 id="51-什么是凸优化">5.1 什么是凸优化？<a hidden class="anchor" aria-hidden="true" href="#51-什么是凸优化">#</a></h3>
+<p>凸优化的一般形式：</p>
+$$
+\min_x f(x) \quad \text{s.t.}\ g_i(x) \leq 0,\ Ax = b
+$$<p>其中 $f$ 和所有 $g_i$ 都是<strong>凸函数</strong>。凸函数的几何含义是函数图像形如&quot;碗&quot;——任意两点的连线总在函数图像之上。</p>
+<p>为什么凸优化重要？因为它有一个非常友好的性质：</p>
+<blockquote>
+<p><strong>凸优化的局部最优解 = 全局最优解。</strong></p>
+</blockquote>
+<p>只要找到一个满足 KKT 条件的点，就找到了全局最优。这让算法设计变得简单且可靠——不像非凸优化那样需要处理&quot;陷在局部最优&quot;的麻烦。</p>
+<h3 id="52-凸优化的层级">5.2 凸优化的层级<a hidden class="anchor" aria-hidden="true" href="#52-凸优化的层级">#</a></h3>
+<p>按表达能力从弱到强，常见的凸优化问题排成一个<strong>包含层级</strong>：</p>
+$$
+\text{LP} \subset \text{QP} \subset \text{QCQP} \subset \text{SOCP} \subset \text{SDP} \subset \text{一般凸优化}
+$$<p><strong>这里的&quot;包含&quot;是指&quot;任何 A 类问题都能等价转化为 B 类问题&quot;</strong>——不一定是形式上长得像，而是表达能力上包含。每往上一层都更通用，但也更难求解。</p>
+<p>下面具体讲三种最常见的：LP、QP、SOCP。</p>
+<h4 id="lp线性规划">LP（线性规划）<a hidden class="anchor" aria-hidden="true" href="#lp线性规划">#</a></h4>
+$$
+\min_x\ c^\top x \quad \text{s.t.}\ A x = b,\ G x \leq h
+$$<p><strong>目标和约束都是线性</strong>的。几何上，线性约束围出一个<strong>多面体</strong>，目标函数是一组平行的超平面，最优解一定在多面体的顶点上。</p>
+<p>应用：运输问题、生产计划、资源分配、网络流。</p>
+<h4 id="qp二次规划">QP（二次规划）<a hidden class="anchor" aria-hidden="true" href="#qp二次规划">#</a></h4>
+$$
+\min_x\ \frac{1}{2} x^\top P x + q^\top x \quad \text{s.t.}\ A x = b,\ G x \leq h
+$$<p><strong>目标是二次的</strong>（$P \succeq 0$ 半正定保证凸），<strong>约束仍然是线性的</strong>。要注意这一点——QP 的&quot;约束&quot;不是二次的，&ldquo;约束二次&quot;的版本叫 QCQP，是另一个层级。</p>
+<p>几何上，目标函数是一个椭球面，最优解 = 在多面体内找到一个点，使它在椭球的最低层。</p>
+<p>LP 是 QP 的特例（取 $P = 0$）。</p>
+<p>应用：</p>
+<ul>
+<li><strong>投资组合优化</strong>（MVO 就是 QP！目标 $\frac{\gamma}{2}w^\top \Sigma w - \mu^\top w$ 是二次的，约束是线性的）</li>
+<li><strong>支持向量机（SVM）</strong>：$\min \frac{1}{2}\|w\|^2$ s.t. $y_i(w^\top x_i + b) \geq 1$</li>
+<li><strong>模型预测控制（MPC）</strong>：自动驾驶/机器人的实时控制</li>
+<li><strong>带约束的最小二乘问题</strong></li>
+</ul>
+<h4 id="socp二阶锥规划">SOCP（二阶锥规划）<a hidden class="anchor" aria-hidden="true" href="#socp二阶锥规划">#</a></h4>
+$$
+\min_x\ c^\top x \quad \text{s.t.}\ \|A_i x + b_i\|_2 \leq c_i^\top x + d_i
+$$<p><strong>目标线性，约束是&quot;二阶锥约束&rdquo;</strong>——即&quot;某个向量的 2-范数 $\leq$ 某个线性函数&quot;。每个约束限制点 $(A_i x + b_i, c_i^\top x + d_i)$ 必须在一个**二阶锥（冰淇淋锥）**内。</p>
+<p>SOCP 比 QP 更通用——能表达椭球（QP 也能），还能表达&quot;圆锥&quot;这种&quot;角度型&quot;约束（QP 不能）。</p>
+<p>经典应用：<strong>鲁棒线性规划</strong>。LP 假设参数 $a$ 是确定的，但实际有不确定性。如果只知道 $a$ 在某个椭球内 $\{a_0 + Pu : \|u\|_2 \leq 1\}$，&ldquo;对所有 $a$ 都满足约束&quot;会自然变成 SOCP 约束 $a_0^\top x + \|P^\top x\|_2 \leq b$。</p>
+<p>其他应用：滤波器设计、波束成形（通信/雷达）、含不确定性的最优控制。</p>
+<h4 id="三者比较">三者比较<a hidden class="anchor" aria-hidden="true" href="#三者比较">#</a></h4>
+<table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>LP</th>
+          <th>QP</th>
+          <th>SOCP</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>目标</td>
+          <td>线性</td>
+          <td>二次（凸）</td>
+          <td>线性</td>
+      </tr>
+      <tr>
+          <td>约束</td>
+          <td>线性</td>
+          <td>线性</td>
+          <td>二阶锥</td>
+      </tr>
+      <tr>
+          <td>几何</td>
+          <td>多面体</td>
+          <td>椭球 ∩ 多面体</td>
+          <td>锥体 ∩ 多面体</td>
+      </tr>
+      <tr>
+          <td>求解难度</td>
+          <td>最易</td>
+          <td>容易</td>
+          <td>较难</td>
+      </tr>
+      <tr>
+          <td>表达能力</td>
+          <td>最弱</td>
+          <td>中</td>
+          <td>强（含 LP/QP）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="53-求解方法一内点法">5.3 求解方法（一）：内点法<a hidden class="anchor" aria-hidden="true" href="#53-求解方法一内点法">#</a></h3>
+<p>要解上述问题，历史上发展出多种方法。先讲<strong>内点法</strong>（Interior Point Method, IPM）——它是商业求解器（Mosek、Gurobi、ECOS、OptNet 内核）的主力。</p>
+<h4 id="核心思想障碍函数">核心思想：障碍函数<a hidden class="anchor" aria-hidden="true" href="#核心思想障碍函数">#</a></h4>
+<p>把不等式约束 $g_i(x) \leq 0$ 改写为目标的一部分，加一个<strong>对数障碍</strong>：</p>
+$$
+\min_x\ f(x) - \mu \sum_i \log(-g_i(x))
+$$<p>直觉：当 $x$ 接近约束边界（$g_i(x) \to 0$）时，$\log(-g_i(x)) \to -\infty$，整个目标暴增到 $+\infty$——形成一道&quot;墙&rdquo;，逼着 $x$ 远离边界。参数 $\mu > 0$ 控制墙的强度。</p>
+<h4 id="路径跟踪">路径跟踪<a hidden class="anchor" aria-hidden="true" href="#路径跟踪">#</a></h4>
+<p>从一个内部点出发，先取较大的 $\mu_0$ 用牛顿法解，得到 $x_1$；逐渐减小 $\mu$（&ldquo;墙&quot;变薄），从上一步出发再用牛顿法解。这条路径叫<strong>中心路径</strong>，从内部&quot;中心&quot;逐渐逼近最优解。</p>
+<h4 id="牛顿步的代价">牛顿步的代价<a hidden class="anchor" aria-hidden="true" href="#牛顿步的代价">#</a></h4>
+<p>每次牛顿迭代要求解一个线性系统 $H \cdot \Delta x = -\nabla L$。这一步是内点法的瓶颈——需要做 $O(N^3)$ 的矩阵分解。对小到中等规模问题（变量数 $< 1000$）很快，但对大规模问题就慢了。</p>
+<h4 id="优缺点">优缺点<a hidden class="anchor" aria-hidden="true" href="#优缺点">#</a></h4>
+<ul>
+<li><strong>优点</strong>：通用（LP/QP/SOCP/SDP 都能解）；理论复杂度好；精度极高（可达 $10^{-10}$）</li>
+<li><strong>缺点</strong>：每步都要做矩阵分解，对大规模稀疏问题不够快；难以并行化</li>
+</ul>
+<h3 id="54-求解方法二一阶法--admm">5.4 求解方法（二）：一阶法 / ADMM<a hidden class="anchor" aria-hidden="true" href="#54-求解方法二一阶法--admm">#</a></h3>
+<p>近 15 年的趋势：<strong>一阶法</strong>（只用梯度信息，不用 Hessian）成为大规模凸优化的主流。代表是 <strong>ADMM（交替方向乘子法）</strong>——这正是 BPQP 用的方法。</p>
+<h4 id="核心思想拆分--交替">核心思想：拆分 + 交替<a hidden class="anchor" aria-hidden="true" href="#核心思想拆分--交替">#</a></h4>
+<p>把复杂问题拆分成几个简单子问题，交替求解。考虑：</p>
+$$
+\min_{x, z}\ f(x) + g(z) \quad \text{s.t.}\ Ax + Bz = c
+$$<p>构造<strong>增广拉格朗日函数</strong>：</p>
+$$
+L_\rho(x, z, \nu) = f(x) + g(z) + \nu^\top(Ax + Bz - c) + \frac{\rho}{2}\|Ax + Bz - c\|^2
+$$<p>ADMM 迭代：</p>
+<ol>
+<li>固定 $z, \nu$，对 $x$ 求最小：$x_{k+1} = \arg\min_x L_\rho(x, z_k, \nu_k)$</li>
+<li>固定 $x, \nu$，对 $z$ 求最小：$z_{k+1} = \arg\min_z L_\rho(x_{k+1}, z, \nu_k)$</li>
+<li>更新乘子：$\nu_{k+1} = \nu_k + \rho (A x_{k+1} + B z_{k+1} - c)$</li>
+</ol>
+<h4 id="为什么-admm-适合-qp">为什么 ADMM 适合 QP？<a hidden class="anchor" aria-hidden="true" href="#为什么-admm-适合-qp">#</a></h4>
+<p>对 QP 问题，ADMM 的 $x$ 子问题简化为求解一个<strong>简单线性系统</strong>（矩阵正定），而<strong>这个矩阵在迭代中不变</strong>——所以可以<strong>预先做一次分解，后续每次迭代只要做矩阵-向量乘法</strong>！</p>
+<p><strong>OSQP</strong> 就是利用了这一点：把 QP 的求解变成&quot;一次分解 + 多次廉价迭代&rdquo;，对大规模稀疏 QP 极为高效。BPQP 默认就用 OSQP。</p>
+<h4 id="优缺点-1">优缺点<a hidden class="anchor" aria-hidden="true" href="#优缺点-1">#</a></h4>
+<ul>
+<li><strong>优点</strong>：每步迭代廉价（只要矩阵-向量乘法）；天然适合稀疏问题；容易并行；对中低精度需求非常快</li>
+<li><strong>缺点</strong>：收敛速度是线性的（不像 IPM 是超线性），高精度需要的迭代次数较多</li>
+</ul>
+<h3 id="55-内点法-vs-一阶法">5.5 内点法 vs 一阶法<a hidden class="anchor" aria-hidden="true" href="#55-内点法-vs-一阶法">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>内点法</th>
+          <th>一阶法（ADMM）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>每步成本</td>
+          <td>高（$O(N^3)$ 矩阵分解）</td>
+          <td>低（$O(N^2)$ 或更低）</td>
+      </tr>
+      <tr>
+          <td>迭代次数</td>
+          <td>少（10-50 次）</td>
+          <td>多（100-1000 次）</td>
+      </tr>
+      <tr>
+          <td>总体快慢</td>
+          <td>中小规模快</td>
+          <td>大规模快</td>
+      </tr>
+      <tr>
+          <td>精度</td>
+          <td>极高</td>
+          <td>中等</td>
+      </tr>
+      <tr>
+          <td>并行化</td>
+          <td>难</td>
+          <td>易</td>
+      </tr>
+      <tr>
+          <td>利用稀疏性</td>
+          <td>部分</td>
+          <td>充分</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>经验法则</strong>：变量数 $< 1000$ 用内点法；$> 10000$ 用一阶法；中间地带看具体问题。</p>
+<blockquote>
+<p>这里有一个值得记住的关键点：<strong>反向传播只需要中等精度</strong>（梯度有 $10^{-4}$ 精度就够训练了），所以一阶法的&quot;精度差&quot;对训练神经网络几乎不是问题；而它的&quot;大规模快&quot;恰恰是 BPQP 想要的。这就是 BPQP 选择 ADMM 而不是内点法的根本原因。</p>
+</blockquote>
+<h3 id="56-现代主流求解器">5.6 现代主流求解器<a hidden class="anchor" aria-hidden="true" href="#56-现代主流求解器">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>求解器</th>
+          <th>算法</th>
+          <th>适用</th>
+          <th>特点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Mosek</td>
+          <td>内点法</td>
+          <td>LP/QP/SOCP/SDP</td>
+          <td>商业，工业级精度</td>
+      </tr>
+      <tr>
+          <td>Gurobi</td>
+          <td>单纯形+内点法</td>
+          <td>LP/QP（含整数）</td>
+          <td>商业，最快的整数规划</td>
+      </tr>
+      <tr>
+          <td>ECOS</td>
+          <td>内点法</td>
+          <td>LP/SOCP</td>
+          <td>开源</td>
+      </tr>
+      <tr>
+          <td><strong>OSQP</strong></td>
+          <td><strong>ADMM</strong></td>
+          <td><strong>QP</strong></td>
+          <td><strong>开源，BPQP 用这个</strong></td>
+      </tr>
+      <tr>
+          <td>SCS</td>
+          <td>ADMM</td>
+          <td>LP/QP/SOCP/SDP</td>
+          <td>开源，CVXPY 默认</td>
+      </tr>
+      <tr>
+          <td>Clarabel</td>
+          <td>内点法</td>
+          <td>LP/QP/SOCP/SDP</td>
+          <td>开源新秀（Rust）</td>
+      </tr>
+  </tbody>
+</table>
+<p>CVXPY 是一个 Python 库，可以用统一的语法描述凸优化问题，自动调用上述任一求解器。</p>
+<hr>
+<h2 id="六bpqp-的核心方法">六、BPQP 的核心方法<a hidden class="anchor" aria-hidden="true" href="#六bpqp-的核心方法">#</a></h2>
+<p>现在所有前置知识都准备好了，可以来看 BPQP 怎么巧妙解决问题。</p>
+<h3 id="61-核心洞察">6.1 核心洞察<a hidden class="anchor" aria-hidden="true" href="#61-核心洞察">#</a></h3>
+<p>BPQP 的核心 idea 一句话：</p>
+<blockquote>
+<p><strong>反向传播中要解的 KKT 线性系统，可以等价地重构为一个新的 QP 问题。</strong></p>
+</blockquote>
+<p>为什么这样做有意义？</p>
+<ol>
+<li>QP 有非常成熟的高效求解器（OSQP）</li>
+<li>求解 QP 用 ADMM，避开了 $O(N^3)$ 的矩阵分解</li>
+<li>前向和反向<strong>完全解耦</strong>——前向用任意求解器，反向用 OSQP，互不影响</li>
+</ol>
+<h3 id="62-解耦bpqp-的整体架构">6.2 解耦：BPQP 的整体架构<a hidden class="anchor" aria-hidden="true" href="#62-解耦bpqp-的整体架构">#</a></h3>
+<pre tabindex="0"><code>┌──────────────────────────────────────────────┐
+│                   前向传播                     │
+│  y → [凸优化问题 + 任意求解器] → z*            │
+│                                                │
+│         ⋮ ─── 解耦 ─── ⋮                      │
+│                                                │
+│                   反向传播                     │
+│  ∂L/∂y ← [OSQP 解 QP] ← [KKT→QP 重构] ← ∂L/∂z*│
+└──────────────────────────────────────────────┘
+</code></pre><p>之前的方法（OptNet 等）前向后向是<strong>紧耦合</strong>的——前向用什么算法决定了反向只能用配套方法。BPQP 把它们彻底解耦：前向爱用什么求解器都行，反向统一走 QP 路线。</p>
+<h3 id="63-关键转化kkt-系统--等式约束-qp">6.3 关键转化：KKT 系统 → 等式约束 QP<a hidden class="anchor" aria-hidden="true" href="#63-关键转化kkt-系统--等式约束-qp">#</a></h3>
+<p>这是论文的<strong>定理 1</strong>，也是最精彩的部分。我们一步步推。</p>
+<h4 id="步骤-1观察-kkt-系统的结构">步骤 1：观察 KKT 系统的结构<a hidden class="anchor" aria-hidden="true" href="#步骤-1观察-kkt-系统的结构">#</a></h4>
+<p>回顾反向传播要解的系统：</p>
+$$
+\begin{bmatrix} P & G^\top & A^\top \\ D(\lambda^*)G & D(g(z^*)) & 0 \\ A & 0 & 0 \end{bmatrix} \begin{bmatrix} \tilde z \\ \tilde \lambda \\ \tilde \nu \end{bmatrix} = -\begin{bmatrix} (\partial \mathcal{L}/\partial z^*)^\top \\ 0 \\ 0 \end{bmatrix}
+$$<p>直接解需要矩阵求逆，慢。</p>
+<h4 id="步骤-2写出一个等式约束-qp-的-kkt-系统">步骤 2：写出一个等式约束 QP 的 KKT 系统<a hidden class="anchor" aria-hidden="true" href="#步骤-2写出一个等式约束-qp-的-kkt-系统">#</a></h4>
+<p>考虑<strong>新构造</strong>的一个 QP：</p>
+$$
+\min_{\tilde z}\ \frac{1}{2}\tilde z^\top P' \tilde z + q'^\top \tilde z \quad \text{s.t.}\ A' \tilde z = b',\ G' \tilde z = c'
+$$<p>它对应的 KKT 系统是：</p>
+$$
+\begin{bmatrix} P' & G'^\top & A'^\top \\ G' & 0 & 0 \\ A' & 0 & 0 \end{bmatrix} \begin{bmatrix} \tilde z \\ \bar \lambda \\ \bar \nu \end{bmatrix} = \begin{bmatrix} -q' \\ c' \\ b' \end{bmatrix}
+$$<p><strong>对比两个系统</strong>——结构非常像，但中间一行不同：原 KKT 是 $D(\lambda^*)G$ 和 $D(g(z^*))$，新 QP 是 $G'$ 和 $0$。</p>
+<h4 id="步骤-3用-active-set-化简中间一行">步骤 3：用 active set 化简中间一行<a hidden class="anchor" aria-hidden="true" href="#步骤-3用-active-set-化简中间一行">#</a></h4>
+<p>回忆 KKT 的<strong>互补松弛</strong>：$\lambda_i^* g_i(z^*) = 0$。</p>
+<p>定义<strong>有效集</strong>：$\mathcal{A} = \{i : g_i(z^*) = 0\}$（约束紧的索引集合）。</p>
+<p>对原系统的中间行 $\lambda_i^* G_i \tilde z + g_i(z^*) \tilde \lambda_i = 0$ 分情况讨论：</p>
+<ul>
+<li>
+<p><strong>不在 $\mathcal A$ 中</strong>（约束松，$g_i < 0$，$\lambda_i^* = 0$）：
+$0 + g_i \tilde\lambda_i = 0 \Rightarrow \tilde\lambda_i = 0$
+→ <strong>这些约束对反向传播没贡献，直接丢弃</strong></p>
+</li>
+<li>
+<p><strong>在 $\mathcal A$ 中</strong>（约束紧，$g_i = 0$，$\lambda_i^* \geq 0$）：
+$\lambda_i^* G_i \tilde z + 0 = 0 \Rightarrow G_i \tilde z = 0$
+→ <strong>变成关于 $\tilde z$ 的等式约束</strong></p>
+</li>
+</ul>
+<p>经过这步处理，原 KKT 系统中&quot;复杂的不等式行&quot;被压缩成&quot;针对有效集的等式约束&quot;。</p>
+<h4 id="步骤-4化简后的系统正好是等式约束-qp-的-kkt">步骤 4：化简后的系统正好是等式约束 QP 的 KKT<a hidden class="anchor" aria-hidden="true" href="#步骤-4化简后的系统正好是等式约束-qp-的-kkt">#</a></h4>
+<p>去除无效约束、把有效约束转为等式后：</p>
+$$
+\begin{bmatrix} P & G_+^\top & A^\top \\ G_+ & 0 & 0 \\ A & 0 & 0 \end{bmatrix} \begin{bmatrix} \tilde z \\ \tilde \lambda_+ \\ \tilde \nu \end{bmatrix} = -\begin{bmatrix} (\partial \mathcal{L}/\partial z^*)^\top \\ 0 \\ 0 \end{bmatrix}
+$$<p>这正是以下<strong>等式约束 QP</strong> 的 KKT 系统：</p>
+$$
+\min_{\tilde z}\ \frac{1}{2}\tilde z^\top P' \tilde z + q'^\top \tilde z \quad \text{s.t.}\ A' \tilde z = 0,\ G_+' \tilde z = 0
+$$<p>其中：</p>
+<ul>
+<li>$P' = P(z^*, \nu^*, \lambda^*)$（原问题的拉格朗日 Hessian）</li>
+<li>$A' = A(z^*),\ G_+' = G_+(z^*)$（只保留有效集）</li>
+<li>$q' = \partial \mathcal{L}/\partial z^*$（来自上游梯度）</li>
+</ul>
+<p><strong>这就是定理 1</strong>：反向传播的梯度可以通过解这个 QP 得到。</p>
+<h3 id="64-用-osqp-高效求解">6.4 用 OSQP 高效求解<a hidden class="anchor" aria-hidden="true" href="#64-用-osqp-高效求解">#</a></h3>
+<p>得到 QP 后，用 OSQP（基于 ADMM）求解。OSQP 每次迭代需要解：</p>
+$$
+\begin{bmatrix} P + \sigma I & A^\top \\ A & -\text{diag}(\rho)^{-1} \end{bmatrix} \begin{bmatrix} z^{(k+1)} \\ v^{(k+1)} \end{bmatrix} = \begin{bmatrix} \sigma z^{(k)} - q \\ \lambda^{(k)} - \text{diag}(\rho)^{-1} \nu^{(k)} \end{bmatrix}
+$$<p><strong>关键</strong>：左边的矩阵不依赖迭代步 $k$——<strong>只需分解一次</strong>，后续每次迭代只是矩阵-向量乘法。这就是 BPQP 速度优势的根源。</p>
+<h3 id="65-一个简化例子验证">6.5 一个简化例子验证<a hidden class="anchor" aria-hidden="true" href="#65-一个简化例子验证">#</a></h3>
+<p>考虑 $\min_z\ \frac{1}{2} z^2 - yz$ s.t. $z \leq 1$，可以直接解出：</p>
+$$
+z^*(y) = \begin{cases} y & y \leq 1 \\ 1 & y > 1 \end{cases},\quad \frac{\partial z^*}{\partial y} = \begin{cases} 1 & y \leq 1 \\ 0 & y > 1 \end{cases}
+$$<p><strong>用 BPQP 流程验证</strong>（情形 $y > 1$）：</p>
+<ol>
+<li>前向得 $z^* = 1$，$\lambda^* = y - 1 > 0$</li>
+<li>有效集 $\mathcal A = \{1\}$，转为等式约束 $\tilde z = 0$</li>
+<li>BPQP 构造 QP：$\min_{\tilde z}\ \frac{1}{2}\tilde z^2 + \tilde z$ s.t. $\tilde z = 0$</li>
+<li>解：$\tilde z = 0$</li>
+<li>链式法则：$\partial \mathcal L/\partial y = (-1) \cdot 0 = 0$ ✓</li>
+</ol>
+<p>完美对应。</p>
+<h3 id="66-完整流程">6.6 完整流程<a hidden class="anchor" aria-hidden="true" href="#66-完整流程">#</a></h3>
+<pre tabindex="0"><code>输入: 原问题最优解 z*, λ*, ν*（前向已得）
+      上游梯度 ∂L/∂z*
+
+步骤 1: 检测有效集 A = {i : g_i(z*) = 0}
+步骤 2: 利用互补松弛去掉无效约束
+步骤 3: 把有效不等式约束转为等式
+步骤 4: 构造等式约束 QP（定理 1）
+步骤 5: 用 OSQP 解这个 QP
+步骤 6: 链式法则得到 ∂L/∂y
+
+输出: ∂L/∂y
+</code></pre><hr>
+<h2 id="七实验与回顾">七、实验与回顾<a hidden class="anchor" aria-hidden="true" href="#七实验与回顾">#</a></h2>
+<h3 id="71-实验一模拟大规模优化">7.1 实验一：模拟大规模优化<a hidden class="anchor" aria-hidden="true" href="#71-实验一模拟大规模优化">#</a></h3>
+<p>随机生成 LP、QP、SOCP 三类问题，对比 BPQP 与 CVXPY、qpth/OptNet、Alt-Diff、JAXOpt。</p>
+<p><strong>结果</strong>（100×20 规模，总时间 = 前向 + 反向）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>问题类型</th>
+          <th>BPQP 加速比</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>QP</td>
+          <td><strong>21.02×</strong></td>
+      </tr>
+      <tr>
+          <td>LP</td>
+          <td><strong>13.54×</strong></td>
+      </tr>
+      <tr>
+          <td>SOCP</td>
+          <td><strong>1.67×</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>为什么 SOCP 加速比小？因为 CVXPY 处理 SOCP 时不需要做&quot;重构成 cone program&quot;这一步，基线本来就快。</p>
+<p><strong>大规模场景</strong>（5000×2000）：CVXPY、qpth/OptNet 等方法直接失败或极慢，<strong>BPQP 仍能正常运行</strong>——这正是它的核心价值。</p>
+<h3 id="72-实验二真实投资组合优化">7.2 实验二：真实投资组合优化<a hidden class="anchor" aria-hidden="true" href="#72-实验二真实投资组合优化">#</a></h3>
+<p>回到开头的金融场景：500 只股票的端到端 MVO。</p>
+<table>
+  <thead>
+      <tr>
+          <th>方法</th>
+          <th>年化收益</th>
+          <th>Sharpe</th>
+          <th>训练时间/epoch</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>两阶段（先预测后优化）</td>
+          <td>9.28%</td>
+          <td>0.65</td>
+          <td>0.11 min</td>
+      </tr>
+      <tr>
+          <td>qpth/OptNet（端到端）</td>
+          <td>16.54%</td>
+          <td>1.25</td>
+          <td>21.2 min</td>
+      </tr>
+      <tr>
+          <td><strong>BPQP</strong>（端到端）</td>
+          <td><strong>17.67%</strong></td>
+          <td><strong>1.28</strong></td>
+          <td><strong>7.7 min</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>两个核心结论：</p>
+<ol>
+<li><strong>端到端确实更好</strong>：Sharpe 从 0.65 提升到 1.28，几乎翻倍</li>
+<li><strong>BPQP 比 OptNet 快 2.75×</strong>，且决策质量略好</li>
+</ol>
+<h3 id="73-整体回顾">7.3 整体回顾<a hidden class="anchor" aria-hidden="true" href="#73-整体回顾">#</a></h3>
+<p>让我们用一张图总结整篇论文：</p>
+<pre tabindex="0"><code>问题：可微凸优化层反向传播太慢
+   │
+   ▼
+原因：直接求 KKT 矩阵的逆 O(N³)
+   │
+   ▼
+BPQP 洞察：KKT 系统 ⟺ 等式约束 QP（定理 1，依赖 active set）
+   │
+   ▼
+求解工具：OSQP（基于 ADMM）
+   │   - 矩阵分解只做一次
+   │   - 利用稀疏性
+   │   - 可以并行
+   ▼
+效果：QP 加速 21×，LP 加速 13×，SOCP 加速 1.67×
+   │
+   ▼
+真实价值：让大规模端到端凸优化训练真正可行
+         （投资组合 Sharpe 0.65 → 1.28）
+</code></pre><h3 id="74-论文贡献分层">7.4 论文贡献分层<a hidden class="anchor" aria-hidden="true" href="#74-论文贡献分层">#</a></h3>
+<p><strong>理论贡献</strong>：定理 1 给出了&quot;可微凸优化层反向传播 = 解一个等式约束 QP&quot;的等价性。</p>
+<p><strong>算法贡献</strong>：基于定理 1 构造了一个通用的反向传播流程，前向后向解耦，可灵活组合任意求解器。</p>
+<p><strong>工程贡献</strong>：开源实现集成进 <a href="https://github.com/microsoft/qlib">Microsoft Qlib</a>，金融场景可直接使用。</p>
+<h3 id="75-bpqp-的位置">7.5 BPQP 的位置<a hidden class="anchor" aria-hidden="true" href="#75-bpqp-的位置">#</a></h3>
+<pre tabindex="0"><code>显式展开法（OptNet 早期、Alt-Diff）
+    ↓ 不展开迭代过程
+隐式微分法
+    ├── 特化方法（OptNet 内点版、qpth）：仅 QP，紧耦合
+    ├── 通用方法（CvxpyLayer、Diffcp）：通用但慢
+    └── BPQP：通用 + 快  ←── 同时做到这两点
+        关键：把 KKT 求逆 → QP 求解
+</code></pre><hr>
+<h2 id="八写在最后">八、写在最后<a hidden class="anchor" aria-hidden="true" href="#八写在最后">#</a></h2>
+<p>读完这篇论文，我有几点感受：</p>
+<p><strong>第一</strong>，<strong>问题的转化是核心智慧</strong>。&ldquo;KKT 求逆&quot;和&quot;求解 QP&quot;看似是两个不同的问题，但在适当的视角下它们等价。这种&quot;换个角度看问题&quot;的能力，往往比新算法本身更有价值。</p>
+<p><strong>第二</strong>，<strong>前置知识的重要性</strong>。要理解 BPQP，需要凸优化、KKT、隐函数定理、ADMM 等多个工具的协同。这也是为什么这种&quot;机器学习 + 优化&quot;的交叉论文读起来需要更多背景。对算法工程师来说，花点时间补一补凸优化基础是非常值得的——它会出现在很多看似不相关的地方（SVM、控制、运筹、金融建模、可微编程）。</p>
+<p><strong>第三</strong>，<strong>端到端学习并不是万能的，但当任务本身就涉及&quot;在约束下做最优决策&quot;时</strong>（投资、调度、规划、控制），把优化问题嵌入网络架构是非常自然且强大的做法——前提是优化层得足够高效，不能成为训练瓶颈。BPQP 正是在做这件事。</p>
+<p>如果你也在做需要可微凸优化的工作，强烈推荐试试 <a href="https://github.com/microsoft/qlib">microsoft/qlib</a> 中的 BPQP 实现。</p>
+<hr>
+<h2 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h2>
+<ul>
+<li>原论文：BPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning (NeurIPS 2024)</li>
+<li>OSQP：<a href="https://osqp.org/">https://osqp.org/</a></li>
+<li>CVXPY：<a href="https://www.cvxpy.org/">https://www.cvxpy.org/</a></li>
+<li>OptNet 论文：Differentiable Optimization as a Layer in Neural Networks (ICML 2017)</li>
+<li>Boyd &amp; Vandenberghe, <em>Convex Optimization</em>（凸优化经典教材，免费在线）</li>
+<li>Markowitz, &ldquo;Portfolio Selection&rdquo; (1952)：MVO 的开山之作</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://coldeye2020.github.io/tags/%E5%87%B8%E4%BC%98%E5%8C%96/">凸优化</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/%E9%87%8F%E5%8C%96%E9%87%91%E8%9E%8D/">量化金融</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/%E6%8A%95%E8%B5%84%E7%BB%84%E5%90%88%E4%BC%98%E5%8C%96/">投资组合优化</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://coldeye2020.github.io/tech/2026-04-19-python-gil/">
+    <span class="title">Next »</span>
+    <br>
+    <span>深入理解 Python GIL：从原理到实践</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on x"
+            href="https://x.com/intent/tweet/?text=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6&amp;url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f&amp;hashtags=%e5%87%b8%e4%bc%98%e5%8c%96%2c%e9%87%8f%e5%8c%96%e9%87%91%e8%9e%8d%2c%e6%8a%95%e8%b5%84%e7%bb%84%e5%90%88%e4%bc%98%e5%8c%96%2c%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f&amp;title=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6&amp;summary=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6&amp;source=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f&title=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on whatsapp"
+            href="https://api.whatsapp.com/send?text=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6%20-%20https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on telegram"
+            href="https://telegram.me/share/url?text=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6&amp;url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share BPQP：加速可微凸优化层的端到端学习框架 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=BPQP%ef%bc%9a%e5%8a%a0%e9%80%9f%e5%8f%af%e5%be%ae%e5%87%b8%e4%bc%98%e5%8c%96%e5%b1%82%e7%9a%84%e7%ab%af%e5%88%b0%e7%ab%af%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6&u=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-06-10-bpqp%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer><script src="https://giscus.app/client.js"
+        data-repo="coldeye2020/coldeye2020.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzNTMyMDAxOTM="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOFQ1oQc4C6t8Q"
+        data-mapping="pathname"
+        data-strict="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+(function () {
+  function getGiscusTheme() {
+    var theme = document.documentElement.getAttribute('data-theme');
+    return theme === 'dark' ? 'dark' : 'light';
+  }
+
+  function sendGiscusTheme(theme) {
+    var iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  var observer = new MutationObserver(function () {
+    sendGiscusTheme(getGiscusTheme());
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+
+  
+  window.addEventListener('message', function handler(e) {
+    if (e.origin !== 'https://giscus.app') return;
+    if (e.data && e.data.giscus && e.data.giscus.discussion !== undefined) {
+      sendGiscusTheme(getGiscusTheme());
+      window.removeEventListener('message', handler);
+    }
+  });
+})();
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://coldeye2020.github.io/">Co&#39;Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

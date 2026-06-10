@@ -203,7 +203,7 @@
 用代码验证引用计数 import sys a = [] print(sys.getrefcount(a)) # 输出 2：a 本身持有 1 个引用，getrefcount 调用时临时持有 1 个 b = a print(sys.getrefcount(a)) # 输出 3：b 也引用了同一个列表 del b print(sys.getrefcount(a)) # 输出 2：b 被删除，引用数减 1 sys.getrefcount() 让我们直接观察引用计数的变化。正是这个机制的存在，让 GIL 成为 CPython 的&#34;必要之恶&#34;。
 ...</p>
   </div>
-  <footer class="entry-footer">Date: April 19, 2026 | Estimated Reading Time: 27 min | Author: Coldeye</footer>
+  <footer class="entry-footer">Date: April 19, 2026 | Estimated Reading Time: 28 min | Author: Coldeye</footer>
   <a class="entry-link" aria-label="post link to 深入理解 Python GIL：从原理到实践" href="https://coldeye2020.github.io/tech/2026-04-19-python-gil/"></a>
 </article>
     </main>

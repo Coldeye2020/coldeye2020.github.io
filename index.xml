@@ -6,8 +6,15 @@
     <description>Recent content on Co&#39;Log</description>
     <generator>Hugo -- 0.139.4</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 19 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://coldeye2020.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BPQP：加速可微凸优化层的端到端学习框架</title>
+      <link>https://coldeye2020.github.io/tech/2026-06-10-bpqp/</link>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://coldeye2020.github.io/tech/2026-06-10-bpqp/</guid>
+      <description>从投资组合优化讲起，系统梳理可微优化层、KKT 条件、隐函数定理、QP/SOCP 求解方法，并解读 NeurIPS 2024 BPQP 如何用一个巧妙的等价转化把反向传播加速一个数量级。</description>
+    </item>
     <item>
       <title>深入理解 Python GIL：从原理到实践</title>
       <link>https://coldeye2020.github.io/tech/2026-04-19-python-gil/</link>

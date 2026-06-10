@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head>
+	<meta name="generator" content="Hugo 0.139.4"><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Python | Co&#39;Log</title>
-<meta name="keywords" content="">
+<title>Co&#39;Log</title>
+<meta name="keywords" content="Blog, Technology, Investment, Ideas, Coldeye, OuhaoTen">
 <meta name="description" content="Hi, this is Coldeye and OuhaoTen. We share thoughts on technology, investment, and ideas.">
 <meta name="author" content="Coldeye, OuhaoTen">
-<link rel="canonical" href="https://coldeye2020.github.io/tags/python/">
+<link rel="canonical" href="https://coldeye2020.github.io/">
 <meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.2c4eb3ec8979dfce07c26b0e4675477cac9a100dd4bf7e0bee049d71a59089f1.css" integrity="sha256-LE6z7Il5384HwmsORnVHfKyaEA3Uv34L7gSdcaWQifE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://coldeye2020.github.io/favicon.ico">
@@ -19,8 +20,9 @@
 <link rel="mask-icon" href="https://coldeye2020.github.io/favicon-32x32.png">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://coldeye2020.github.io/tags/python/index.xml">
-<link rel="alternate" hreflang="en" href="https://coldeye2020.github.io/tags/python/">
+<link rel="alternate" type="application/rss+xml" href="https://coldeye2020.github.io/index.xml">
+<link rel="alternate" type="application/json" href="https://coldeye2020.github.io/index.json">
+<link rel="alternate" hreflang="en" href="https://coldeye2020.github.io/">
 <noscript>
     <style>
         #theme-toggle,
@@ -83,16 +85,29 @@
           gtag('js', new Date());
           gtag('config', 'G-8HN6RSNM2B');
         }
-      </script><meta property="og:url" content="https://coldeye2020.github.io/tags/python/">
+      </script><meta property="og:url" content="https://coldeye2020.github.io/">
   <meta property="og:site_name" content="Co&#39;Log">
-  <meta property="og:title" content="Python">
+  <meta property="og:title" content="Co&#39;Log">
   <meta property="og:description" content="Hi, this is Coldeye and OuhaoTen. We share thoughts on technology, investment, and ideas.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python">
+<meta name="twitter:title" content="Co&#39;Log">
 <meta name="twitter:description" content="Hi, this is Coldeye and OuhaoTen. We share thoughts on technology, investment, and ideas.">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Co'Log",
+  "url": "https://coldeye2020.github.io/",
+  "description": "Hi, this is Coldeye and OuhaoTen. We share thoughts on technology, investment, and ideas.",
+  "image": "https://coldeye2020.github.io/favicon.ico",
+  "sameAs": [
+      "https://github.com/Coldeye2020", "mailto:948283368.coldeye@gmail.com"
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -172,40 +187,25 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header">
-  <h1>
-    Python
-    <a href="/tags/python/index.xml" title="RSS" aria-label="RSS">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" height="23">
-        <path d="M4 11a9 9 0 0 1 9 9" />
-        <path d="M4 4a16 16 0 0 1 16 16" />
-        <circle cx="5" cy="19" r="1" />
-      </svg>
-    </a>
-  </h1>
-</header>
 
-<article class="post-entry tag-entry"> 
+<article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">深入理解 Python GIL：从原理到实践
+    <h2 class="entry-hint-parent">The begining
     </h2>
   </header>
   <div class="entry-content">
-    <p>写 Python 写了几年，你或许曾遇到过这样的困惑：明明给数据处理加了多线程，CPU 占用率飙上去了，速度却几乎没变。这不是你的代码有 bug，而是 GIL 在起作用。
-本文从原理出发，用实验数据说话，帮你彻底搞清楚 GIL 的边界——以及在机器学习、深度学习、量化金融场景下如何系统性地绕开它。
-实验环境：Apple M3 Pro，Python 3.11.13，numpy 2.2.3，pandas 2.3.3，torch 2.11.0
-实验代码：https://github.com/Coldeye2020/gil_experiments
-一、GIL 是什么，为什么存在？ 一句话定义：GIL（Global Interpreter Lock，全局解释器锁）是 CPython 中的一把互斥锁，保证同一时刻只有一个线程在执行 Python 字节码。
-从引用计数说起 CPython 用引用计数（reference counting）管理内存。每个 Python 对象都维护一个 ob_refcnt 字段，记录当前有多少个引用指向它；当计数归零时，对象被立即释放。
-这个机制简洁高效，但存在一个问题：如果多个线程同时对同一个对象的引用计数做 &#43;1 或 -1，就会产生竞态条件（race condition）——两个线程同时读到旧值 n，各自写回 n&#43;1，结果只加了一次而不是两次。这会导致内存泄漏，甚至在错误时机释放仍在使用的对象，引发崩溃。
-理论上可以给每个对象的引用计数加一把细粒度锁，但这意味着几乎每次对象访问都要加锁解锁，开销极大。CPython 的设计者 Guido van Rossum 在 1990 年代初选择了一个更简单的方案：加一把大锁，锁住整个解释器。这把锁就是 GIL。
-用代码验证引用计数 import sys a = [] print(sys.getrefcount(a)) # 输出 2：a 本身持有 1 个引用，getrefcount 调用时临时持有 1 个 b = a print(sys.getrefcount(a)) # 输出 3：b 也引用了同一个列表 del b print(sys.getrefcount(a)) # 输出 2：b 被删除，引用数减 1 sys.getrefcount() 让我们直接观察引用计数的变化。正是这个机制的存在，让 GIL 成为 CPython 的&#34;必要之恶&#34;。
-...</p>
+    <p>作为这个blog 的开始...</p>
   </div>
-  <footer class="entry-footer">Date: April 19, 2026 | Estimated Reading Time: 28 min | Author: Coldeye</footer>
-  <a class="entry-link" aria-label="post link to 深入理解 Python GIL：从原理到实践" href="https://coldeye2020.github.io/tech/2026-04-19-python-gil/"></a>
+  <footer class="entry-footer">Date: December 15, 2024 | Estimated Reading Time: 1 min | Author: OuhaoTen</footer>
+  <a class="entry-link" aria-label="post link to The begining" href="https://coldeye2020.github.io/think/2024-12-15-introduction/"></a>
 </article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://coldeye2020.github.io/">
+      «&nbsp;Prev&nbsp;
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">
@@ -215,7 +215,8 @@
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
         <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    </span> · 
+    <span>Visitors: <span id="gc-total">–</span></span>
 
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
@@ -223,6 +224,14 @@
         <path d="M12 6H0l6-6z" />
     </svg>
 </a>
+<script>
+fetch('https://coldeye.goatcounter.com/counter//.json')
+  .then(r => r.json())
+  .then(d => {
+    var el = document.getElementById('gc-total');
+    if (el && d && d.count) el.textContent = d.count;
+  }).catch(function(){});
+</script>
 
 
 <script>
