@@ -6,8 +6,15 @@
     <description>Recent content on Co&#39;Log</description>
     <generator>Hugo -- 0.139.4</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://coldeye2020.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>coldeye的归档</title>
+      <link>https://coldeye2020.github.io/tech/2026-09-18-archives-projects/</link>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 +0000</pubDate>
+      <guid>https://coldeye2020.github.io/tech/2026-09-18-archives-projects/</guid>
+      <description>收录一些不便直接发布为博客正文的归档项目，例如演讲稿、Slides 等，通过链接跳转查看。</description>
+    </item>
     <item>
       <title>BPQP：加速可微凸优化层的端到端学习框架</title>
       <link>https://coldeye2020.github.io/tech/2026-06-10-bpqp/</link>
