@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>从 PPTP 到 AnyTLS：VPN 协议三十年进化史 | Co&#39;Log</title>
+<meta name="keywords" content="网络, VPN, TLS, WireGuard, Trojan, VLESS, Hysteria, AnyTLS, QUIC">
+<meta name="description" content="从 PPTP 到 AnyTLS，三十年 VPN 协议演进只围绕四件事：加密、性能、被动伪装、主动探测伪装。本文用一套贯穿全文的快递比喻，讲透 SS/Trojan/VLESS&#43;Vision&#43;REALITY/Hysteria/AnyTLS 五大里程碑协议各自的突破与代价，并横向对比它们背后的技术。">
+<meta name="author" content="Coldeye">
+<link rel="canonical" href="https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/">
+<meta name="msvalidate.01" content="0A53450D60EE95103C2117D5737EA0C7">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2c4eb3ec8979dfce07c26b0e4675477cac9a100dd4bf7e0bee049d71a59089f1.css" integrity="sha256-LE6z7Il5384HwmsORnVHfKyaEA3Uv34L7gSdcaWQifE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://coldeye2020.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://coldeye2020.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://coldeye2020.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://coldeye2020.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://coldeye2020.github.io/favicon-32x32.png">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><script data-goatcounter="https://coldeye.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+    });"></script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HN6RSNM2B"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-8HN6RSNM2B');
+        }
+      </script><meta property="og:url" content="https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/">
+  <meta property="og:site_name" content="Co&#39;Log">
+  <meta property="og:title" content="从 PPTP 到 AnyTLS：VPN 协议三十年进化史">
+  <meta property="og:description" content="从 PPTP 到 AnyTLS，三十年 VPN 协议演进只围绕四件事：加密、性能、被动伪装、主动探测伪装。本文用一套贯穿全文的快递比喻，讲透 SS/Trojan/VLESS&#43;Vision&#43;REALITY/Hysteria/AnyTLS 五大里程碑协议各自的突破与代价，并横向对比它们背后的技术。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="tech">
+    <meta property="article:published_time" content="2026-10-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-20T00:00:00+00:00">
+    <meta property="article:tag" content="网络">
+    <meta property="article:tag" content="VPN">
+    <meta property="article:tag" content="TLS">
+    <meta property="article:tag" content="WireGuard">
+    <meta property="article:tag" content="Trojan">
+    <meta property="article:tag" content="VLESS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 PPTP 到 AnyTLS：VPN 协议三十年进化史">
+<meta name="twitter:description" content="从 PPTP 到 AnyTLS，三十年 VPN 协议演进只围绕四件事：加密、性能、被动伪装、主动探测伪装。本文用一套贯穿全文的快递比喻，讲透 SS/Trojan/VLESS&#43;Vision&#43;REALITY/Hysteria/AnyTLS 五大里程碑协议各自的突破与代价，并横向对比它们背后的技术。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "https://coldeye2020.github.io/tech/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "从 PPTP 到 AnyTLS：VPN 协议三十年进化史",
+      "item": "https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "从 PPTP 到 AnyTLS：VPN 协议三十年进化史",
+  "name": "从 PPTP 到 AnyTLS：VPN 协议三十年进化史",
+  "description": "从 PPTP 到 AnyTLS，三十年 VPN 协议演进只围绕四件事：加密、性能、被动伪装、主动探测伪装。本文用一套贯穿全文的快递比喻，讲透 SS/Trojan/VLESS+Vision+REALITY/Hysteria/AnyTLS 五大里程碑协议各自的突破与代价，并横向对比它们背后的技术。",
+  "keywords": [
+    "网络", "VPN", "TLS", "WireGuard", "Trojan", "VLESS", "Hysteria", "AnyTLS", "QUIC"
+  ],
+  "articleBody": "每天点开那个小飞机图标的时候，你大概不会想到，背后是一场持续了三十年的军备竞赛。\n这篇文章回答一个问题：VPN 协议到底在解决什么问题，它们又是怎么一代代被逼着进化的。你会看到每一代方案如何解决上一代的痛点，又如何引入新的痛点——像一部剧情环环相扣的连续剧。\n全文用一套贯穿始终的比喻，先立好：\nTCP = 快递公司：保证送到、按序重装、丢了补发 TLS = 带锁的箱子：防偷看、防冒充（HTTPS 里的 S 就是它） HTTP = 箱子里的信：你实际想说的内容 防火墙 / DPI（深度包检测） = 海关：不仅看箱子外观，还有 X 光和磅秤 核心论点：三十年只围绕四件事——加密、性能、被动伪装（防 DPI 统计）、主动探测伪装（防扫描）。矛盾的焦点逐代转移：先把锁做结实，再把车做快，最后拼命让箱子长得不像 VPN。每一个\"解决\"，都精确地成为下一代的\"问题\"。\n年代 协议 一句话定位 1999 PPTP 纸箱 + 儿童锁 1999–2000 L2TP/IPsec 标准装甲集装箱，过关排六趟队 2001 OpenVPN 民间自建物流，车牌随便换 2005 IKEv2/IPsec 官方物流的常旅客通道 2007 SSTP 伪装成普通 HTTPS 快递 2015/2020 WireGuard 4000 个零件的极简超跑 2012 SS / SSR 无标签黑箱 2019 Trojan 真开店 2020–2023 VLESS + Vision + REALITY 拆箱直发 + 挂靠真店铺 2022–2023 Hysteria2 QUIC 上的暴力超车手 2025 AnyTLS 专治箱中箱指纹 一、预备知识：五个必须先懂的概念 不铺垫这五个概念，后面每一章都会绊倒你。已熟悉的读者可以跳到第二节。\n1.1 分层模型：每层只认识相邻的层 你在浏览器输入 https://github.com，数据从上往下层层包装：\n┌─────────────────────────────┐ │ HTTP 请求 │ ← 信：\"GET /首页\"（说什么） ├─────────────────────────────┤ │ TLS 加密 │ ← 装进带锁的箱子（防偷看、防冒充） ├─────────────────────────────┤ │ TCP │ ← 快递公司：编号、补发、按序重装（保证送到） ├─────────────────────────────┤ │ IP │ ← 邮编和路网：逐跳转发（找到路） └─────────────────────────────┘ 接收方反过来一层层拆。关键纪律：每层只认识相邻的层，不关心更里面装的是什么——快递员不拆锁，锁不读信，信不管走哪条路。记住这条纪律，后面所有\"伪装\"原理都建立在它之上。\n1.2 TCP 与 UDP：快递公司 vs 明信片 互联网底层（IP）是\"尽力而为\"的——包会丢、会乱序。TCP 在这上面建一条可靠管道：\n先建立连接（三次握手）：发货前双方通电话，确认双向都活着 每个包编号，丢件补发、按序重装 淑女式拥塞控制：发现网络堵了主动减速（一丢包速率砍半再慢慢爬） 只认字节，不认含义 它的孪生兄弟 UDP 是寄明信片：写完扔进邮筒就走，不等回执、丢了不补。快、省事、不可靠。DNS 查询、视频通话、游戏、QUIC 都走 UDP。\n这条分野贯穿全文：海关能一眼区分\"货车（TCP 长连接）“和\"明信片流（UDP）\"；TCP-in-TCP 会连环追尾；QUIC 与 Hysteria 的整个故事都建立在 UDP 上。\n1.3 TLS：带锁的箱子 + 营业执照 明文的 TCP 管道上，沿途任何路由器都能读到你信里的每个字。TLS 做两件事：\n握手：双方公开协商出只有彼此知道的会话密钥（数学上保证旁听者算不出来），同时用证书验证对方身份——证书就是营业执照，由权威 CA 签发，防止有人冒充 github.com 加密传输：之后所有字节变成乱码 三个要点：\nTLS 不是网站专用——它是通用安全层，邮件、聊天、数据库连接都能套，你的代理隧道也靠它。这正是伪装的原理：TLS 箱子外观全一样，海关分不清里面是 HTTP 还是隧道货 TLS 站在 TCP 肩上（握手经不起丢包乱序；UDP 上的替代品是 QUIC，第六章讲） 前身叫 SSL，改名两代了，老人还习惯叫 SSL HTTPS = HTTP over TLS over TCP，名字里的 S 就是 TLS，端口号从 80 换到 443，仅此而已。\n1.4 RTT：所有性能讨论的计量单位 RTT（Round-Trip Time，往返时延）= 一个包从发出到收到回音的完整一圈。北京到美国一圈约 150–250ms，其中大头是物理传播——光跑距离要的时间，协议再好也压缩不掉。\n为什么它是命根：握手是\"回合制\"的，每问一句等一圈。打开一个网页约 3–4 个来回，跨国线上光手续就 800ms。所以后面一切提速技术，本质上只有两条思路：少问几句（砍 RTT 次数），或一次多装点（加大窗口/带宽）。\n1.5 用户态与内核态：书房 vs 物业机房 操作系统把内存划成两个世界：\n┌────────────────────────────────┐ │ 用户态（你家书房，隔离、安全） │ │ 浏览器 · Clash · 游戏客户端 │ └──────────────┬─────────────────┘ │ 系统调用（递申请） ┌──────────────▼─────────────────┐ │ 内核态（小区物业机房，特权） │ │ TCP/IP 协议栈 · 网卡驱动 │ └────────────────────────────────┘ TCP 在内核态——全系统共享、性能最优，但改 TCP = 改操作系统 = 等全世界升级。这为后面 QUIC 的\"用户态革命\"埋下伏笔：任何想快速进化的协议，都得搬出机房。\n二、正统 VPN 时代：从能用到好用（1999–2020） 这一章的主角解决的是前两件事：把锁做结实，把车做快。它们的设计目标是\"安全地连接远方的内网”——没人想过要躲谁。这个天真，正是它们后来集体阵亡的原因。\n2.1 PPTP（1999）：纸箱 + 儿童锁 技术：GRE 协议做隧道，MPPE（RC4）做加密，MS-CHAPv2 做认证。\n引入了什么：第一个\"人人可用\"的 VPN——Windows 95/98 内置，点几下鼠标连公司内网。\n怎么死的：RC4 加密早被密码学界判死刑；2012 年研究员 Moxie Marlinspike 用一台普通电脑暴力破解了 MS-CHAPv2。更糟的是 GRE 协议极其显眼，海关一眼识别。现状：安全界公认\"视为已破解\"，任何现代系统都不该启用。\n2.2 L2TP/IPsec（1999–2000）：装甲集装箱，过关排六趟队 技术：L2TP 只管装箱不管上锁（自身无加密），必须捆绑 IPsec 提供加密和认证——你说的\"L2TP/IPsec\"其实是两辆挂在一起的车。\n引入了什么：AES 军规加密（锁终于结实了）、证书认证（签字伪造不了了）。解决了 PPTP 的致命问题。\n新的问题：双重封装每个包裹白白多背几十字节；IKEv1 握手要来回六七趟，高延迟网络下连接等一两秒；固定走 UDP 500/4500 端口，防火墙按图索骥。\n2.3 OpenVPN（2001）：车牌随便换 技术：基于 SSL/TLS 协商密钥，可跑在 UDP 或 TCP、任意端口上。\n引入了什么：开源可审计；车牌随便换（端口任意，还能走 TCP 443 混进 HTTPS 车流——伪装思路的雏形）；跨平台 + NAT 穿透。\n新的问题：数据在内核和用户态之间来回搬运，性能有天花板；十几万行代码，攻击面大，配置项多到能出一本书。\n2.4 IKEv2/IPsec（2005）：常旅客通道 技术：把繁琐的 IKEv1 推倒重写成 IKEv2，握手从六七趟砍到四趟；加上 MOBIKE 扩展。\n引入了什么：MOBIKE 漫游（手机从 WiFi 切 4G，IP 变了连接自动跟着走，不断线）+ 内核态实现（性能直逼硬件极限）。以前的协议每次换网络都要重新排队过海关，IKEv2 给你办了张常旅客卡。这也是它至今仍是 iOS/Android/Windows 原生内置、移动端体验最好的原因。\n遗留问题：UDP 固定端口特征明显；配置复杂度堪比报税。\n2.5 SSTP（2007）：伪装成 HTTPS 的代价 技术：把 VPN 流量整个塞进一条 TLS 通道，走 TCP 443。\n引入了什么：完全的端口伪装——443 是互联网命脉，海关不可能封整个 443，否则银行购物搜索全灭。\n新的问题——TCP-over-TCP 雪崩：隧道本身是 TCP，里面的流量往往也是 TCP。丢一个包，里外两层都重传、都降速，互相以为对方堵了，恶性循环。形象地说：里层司机看到堵车踩刹车，外层司机看到里层刹车以为更堵，跟着踩，最后一起趴窝。\n2.6 WireGuard（2015/2020）：4000 个零件的超跑 技术：约 4000 行代码（OpenVPN 十几万、IPsec 几十万），密码学套件固定且现代（Curve25519 + ChaCha20-Poly1305 + BLAKE2s），内核态运行。\n引入了什么：\n极简 = 安全：一个下午能审计完；套件固定，杜绝降级攻击 1-RTT 握手：一个来回就出发 内核态 + 无连接设计：吞吐拉满，切网无缝续接 静默模式：不认识的人敲门，直接装聋——端口扫描器看到一堵墙 配置极简：十几行搞定，IPsec 用户看了会哭 遗留问题：纯 UDP 无得选；跑得再快，长流 UDP 的形态依然显眼——海关撬不开箱子，但能看出\"这车天天定时跑同一条不寻常的线路\"。\n正统 VPN 小结：这一时代解决了\"锁结实\"和\"车够快\"，但所有协议都有一个共同点——箱子外观一眼就是 VPN。2012 年前后，防火墙对 IPsec/OpenVPN 的握手特征已能精准识别，正统 VPN 在对抗场景下集体阵亡。矛盾焦点随即转移：长得不像 VPN，比什么都重要。\n三、Shadowsocks 与 SSR：第一个专为翻墙而生的协议（2012） 3.1 历史性的转变：设计目标换了 Shadowsocks 诞生的意义，不在某个具体技术，而在一次目标切换：此前所有 VPN 协议（PPTP 到 IKEv2）的设计目标是\"安全地连接远方内网\"，从没想过要躲谁；SS 是第一个以对抗海关为核心设计目标的代理协议。作者 clowwindy 在 2012 年用 Python 写出第一版，从此\"VPN\"这个词的重心，从虚拟专用网滑向了翻墙工具。\n3.2 技术：一个没有任何标签的黑箱 架构极简：本地跑一个 SOCKS5 代理，流量用预共享密码加密后发给服务器中转。关键设计：\n无握手：没有协议协商过程，第一个包就是数据 无特征字符串：不出现任何可搜索的协议标识 加密演进：早期用流密码（后来证明弱），社区版随后统一到 AEAD（chacha20-ietf-poly1305 / aes-256-gcm） 形象地说：SS 发出的流量是一个没有任何标签的纯黑箱子——X 光照进去也是一片雪花噪声。相比之下，OpenVPN 的握手像在海关面前报户口。\n3.3 死穴与 SSR 的加戏 海关的反击分两手：\n被动统计：“看不懂\"本身就是嫌疑——一个路口每天有几百个纯黑无标签的箱子经过，迟早立规矩：黑箱子一律扣 主动探测：向可疑服务器直接发 SS 协议包，看响应方式是否符合协议特征——符合就标记 2015 年，clowwindy 被约谈，项目从 GitHub 删除。社区随即分裂出 ShadowsocksR（SSR），核心卖点是两个插件：\n混淆插件（obfs）：在密文外再套一层伪装头，让流量看起来像普通 HTTP/TLS 协议插件（protocol）：改写认证流程，防主动探测、防重放 但 SSR 的路子有个内在悖论：加戏越多，特征越多——自创的混淆格式本身就是一种新指纹，海关收集样本后照样能训练出分类器。SSR 也因作者停更而衰落。\nSS 正统生态后来走了条更聪明的路：SIP003 插件体系（simple-obfs，以及后来的 v2ray-plugin——把 SS 流量整个包进 WebSocket + TLS）。这等于承认了一件事：光靠黑箱不够，得穿上 TLS 的衣服——而这条路走到头，就是下一章的 Trojan。\n本章小结：SS 确立了\"密文 + 无特征\"的 baseline，也暴露了两个此后十年的主战场——被动统计和主动探测。后面每一代协议，都是在回答这两个问题。\n四、Trojan：第一个应对主动探测——真开店（2019） 4.1 先搞懂：主动探测是什么 前三代协议面对的海关是被动的——站在路边看你过。主动探测是海关主动敲门：向一台可疑服务器发一个试探包（一个正常的 HTTP 请求、一个伪造的协议握手），看你怎么回应：\n回应符合代理协议特征 → 标记，封 干脆不回应 → “一台没有任何服务的服务器却有大流量\"也可疑 → 标记，封 SS 的黑箱在这套打法面前很脆弱。如何回应探针，成了新的生死线。\n4.2 技术：老老实实跑一个真的 HTTPS 网站 Trojan 的思路极端而聪明——不发明任何新东西：\n服务器上就是一个标准的 HTTPS 服务：真域名、真证书、真网站内容 客户端流量混在正常 HTTPS 里，靠密码哈希认证 任何不带正确密码的连接，全部 fallback 给反代的真实网站——探针发 HTTP 请求，得到的是一个货真价实的网页 形象地说：前几代是\"把车伪装成送快递的”，Trojan 是真的开了一家快递公司——海关来查，看到的确实是营业执照齐全、正在营业的店铺。你没有\"伪装被识破\"的时刻，因为你不是在伪装，你就在正常营业。\n4.3 遗留的两个缺口 被动伪装缺课（致命）：Trojan 只管外层像 HTTPS，隧道里面怎么装货它完全不管——而这恰恰藏着一个致命的统计指纹（TLS-in-TLS），下一章详述 证书透明度反查：你买了域名、申请了证书，但这个域名没有历史流量、没有解析记录、没有网站内容——CT 日志里一张\"没有店铺的执照”，主动探测者反查时还是可疑 Trojan 解决了\"回应探针\"的问题，REALITY（第五章）解决\"执照\"的问题。而中间那个 TLS-in-TLS，是比主动探测更深的一层考题。\n五、VLESS + Vision + REALITY：第一个解决被动伪装（2020–2023） 这三个名字经常连在一起，但它们各占一层、互不冲突：\n┌──────────────────────────────────────┐ │ 你的流量（浏览器的 TLS 箱中箱） │ ├──────────────────────────────────────┤ │ VLESS 协议层：UUID 面单，怎么写地址 │ │ + Vision 流控：怎么装车 │ ├──────────────────────────────────────┤ │ REALITY 传输层：借真网站的证书做外层TLS │ ├──────────────────────────────────────┤ │ TCP / IP │ └──────────────────────────────────────┘ 5.1 VLESS：极简面单 先说清 VLESS 是什么。V2Ray 的 VMess（2016）是\"带火漆封、密码暗号、还得对表\"的老式面单——协议自带一整套加密和协商（还有时间戳校验，时钟不同步就断连），在裸 TCP 年代是必要的自保。VLESS（2020）发现如今所有货都走 TLS 集装箱了，协议层再手写一套密码本纯属脱裤子放屁，于是把面单简化成一张明文密码条：UUID + 目标地址，无加密、无握手、无状态，安全性完全外包给外层 TLS。\nVMess（2016） VLESS（2020） 自带加密 有（AEAD 一整套） 无，外包给外层 握手开销 有，多一次往返 无，首包即数据 出过的事故 加密套件有过破解风波 简单到没什么可破 这个\"减法\"埋了一个漂亮的伏笔：VLESS 不加密 → Xray 能直接看到流经的原始字节 → 才能识别内层是 TLS → 才有下一节的 Vision。当初为减负砍掉的加密，三年后成了 Vision 落地的地基。\n5.2 被动伪装的终极考题：TLS-in-TLS 这是本章的技术核心，值得慢讲——它解释了\"为什么外层已经是无懈可击的 TLS，还是会被看出来\"。\n你用代理访问 https://github.com 时，实际存在两条独立的 TLS 连接：\n浏览器 ──内层TLS──\u003e github.com （你要访问的网站） │ └─\u003e 代理客户端 ══外层TLS隧道══\u003e 代理服务器 ──\u003e github.com （海关只能看到这一段） 内层的全部字节——包括那次握手的每个包——都要从外层隧道里过一遍。关键背景：TLS 加密几乎不改变长度（内容变乱码 + 固定的几十字节开销），所以：\n外层密文记录的长度 ≈ 内层明文的长度 + 常数\n海关的磅秤于是读出了这套鼓点：\n时刻 真实发生的事 海关看到 T1 浏览器发出 ClientHello（约 300–500 字节） 一条约 400B 的密文记录，C→S T2 github 返回证书链（2–5 KB） 一坨 3–5KB 的密文突发，S→C T4 下载大文件 16KB 整齐周期的密文（TLS 记录上限 2¹⁴） 判决逻辑：每条 HTTPS 连接的握手都应该明文可见（正常直连时海关直接读到 ClientHello）；这条连接的密文段里却藏着一套统计学上精确复刻\"TLS 握手长相\"的节奏——该明文出现的鼓点出现在了密文里。不需要解密任何一个字节，只需记录长度、方向、时间做统计分类——成本极低，精度极高。\n快递版：你把一个上锁的箱子原封不动塞进另一个上锁的箱子，外层箱子虽然看不到内容，但内箱的棱角把外箱撑出了同样的轮廓——X 光一照，“箱中箱\"一目了然。\n5.3 Vision：拆箱直发 病根在\"多包一层”，Vision（全名 xtls-rprx-vision，2022）的药方就是\"别包\"：\n识别：Xray 逐连接解析，发现内层流的是 TLS（TLS 记录头是明文结构，类型/长度可读） 握手期：走协议分帧 + 随机填充——握手的长度鼓点太独特，塞泡沫搅乱 数据期：直拷贝——内层箱子本身已上锁（浏览器到 github 的端到端 TLS），代理只把这串密文原样搬进外层连接，不再重复封装。外层 TLS 按自己的 16KB 节奏切分记录，记录边界与内层脱钩，长度镜像消失；附带红利是省掉一整层加解密运算，大流量时 CPU 占用更低 一个容易搞混的点：直拷贝 ≠ 不加密。两个阶段全程都有外层 TLS 加密——ClientHello、UUID、目标地址、HTTP 内容，海关一个都看不到。Vision 消灭的是第二层封装造成的\"记录边界一一镜像\"这个统计特征，从来不管加锁——锁是外层 TLS 的事，且从未缺岗。（VLESS 严禁裸跑、必须套 TLS，就是这条纪律的反面教材。）\n历史插曲：2020 年的初代 XTLS 直切模式是这思路的粗糙版，但模式切换那一刻长度规律会突变，“切换动作本身\"成了新指纹被抓过；2022 年的 Vision 是重写版——握手全程填充、过渡无痕。\n5.4 REALITY：连执照都是真的 Trojan 的 fallback 解决了\"探针来了给真网页”，但没解决\"你的域名没有历史、证书来路可疑\"。REALITY（2023）把这条路走到头：\n不需要自己的域名和证书。客户端握手时，服务器临时\"借用\"一个真实知名网站（比如某大公司官网）的证书来完成 TLS 握手 探测者看到的是一次和真网站别无二致的、密码学上无可挑剔的 TLS 会话 探测者去核对：“这家店\"确实存在、执照是真的、网站内容也能访问——只是这一切本来就属于别人。CT 日志反查也失效了，因为那张证书本来就有海量正常流量 形象地说：Trojan 是真开了一家店；REALITY 是把你的货车挂靠在沃尔玛名下，用沃尔玛的真执照、真发票跑运输。海关查一万遍，文件全部真实有效。\n至此，三件套集齐：VLESS 管面单，Vision 管装车（治被动伪装的箱中箱指纹），REALITY 管外衣（治主动探测）。这是伪装阵营的第一个\"全家桶”。\n六、Hysteria：搭上 UDP 便车（2022–2023） 前面所有协议都在 TCP 443 上卷伪装，Hysteria 换了条赛道——它的故事要从一辆\"便车\"讲起。\n6.1 便车从哪来：QUIC 与 HTTP/3 TCP 改不动了：它在操作系统内核里，升级等于等全世界换系统；更死的是三十年来路上每台防火墙都按老规矩解析 TCP，任何\"改良版 TCP 包\"会被中间设备当怪物扔掉（协议僵化）。于是谷歌在 UDP 这个\"几乎空白的信封\"上，把「可靠传输 + TLS 加密 + 多路复用」整套在用户态重写了一遍——这就是 QUIC（用户态意味着随浏览器/App 更新，迭代以周计而不是以年计）。HTTP/3（2022 年标准化）就是跑在 QUIC 上的 HTTP。\nQUIC 白送四样东西：握手合并（TCP+TLS 串行 2–3 个 RTT 合成 1-RTT）、流间无队头阻塞（丢包只堵自己那条流）、连接迁移（认 Connection ID 不认 IP，WiFi 切 5G 不断线）、加密默认内置。\n连锁反应是：HTTP/3 普及 → UDP 443 成了互联网新命脉 → 海关不敢全网封 UDP → UDP 上突然有了大量\"正常车流\"可以混。便车来了。\n6.2 Hysteria 协议栈：伪装成 HTTP/3 网站 Hysteria（2022 出第一版，2023 年 Hysteria2 大幅简化）基于 QUIC，核心三件：\n你的 TCP 流 → QUIC stream （流间无队头阻塞，免疫 TCP-in-TCP 追尾） 你的 UDP 流 → QUIC datagram （明信片原生直通，游戏友好） 伪装外衣 → 长得就是一台 HTTP/3 服务器（443/UDP） 先纠正一个常见误会：Hysteria2 从顶到底没有一粒 TCP。“它伪装成网站\"没错，但 HTTP/3 网站本身就跑在 UDP 上——“网站 = TCP\"这个等式在 HTTP/3 这代已经作废。伪装成 HTTP/3，恰恰意味着必须是 UDP。\n6.3 速度核心：Brutal 拥塞控制 回顾老病根：传统 TCP 把每次丢包都当堵车，速率砍半再慢慢爬（锯齿形）。跨国线路的丢包十有八九是 QoS 限速或线路噪声，不是真堵车——礼貌协议在白白挨刹。\nBrutal 的逻辑：你报一个带宽值 R，就恒定按 R 发；接收端周期回执\"实际到手多少”，发端算出真实丢包率 p 后，把发送率提到 R/(1−p)——丢了就多补发，保证到手速率钉死在你报的数上。救护车霸座，烂线路上吞吐碾压一切礼貌协议。\n代价也写在名字里：线路真拥塞时它就是流氓，饿死旁边所有排队的车。嫌粗鲁可选 bbr 模式（礼貌版，收益打折）。\n6.4 端口跳跃：治 UDP QoS UDP 便车的代价是 UDP 会被单独针对（按协议号限速、按端口 QoS）。Hysteria2 的对策：服务端用 iptables 把一整段端口都转进同一个口，客户端定时换着端口发——海关按端口限速，它就打一枪换一个门。\n本章定位：Hysteria 代表的路线不跟 TCP 443 上的伪装军备竞赛卷，而是押注 UDP 的未来——HTTP/3 的命脉地位撑起它的生存空间。风险也在此：UDP 被收紧的时段和地区，它最先阵亡，需要回落到 TCP 类协议。\n七、AnyTLS：最新的答案（2025） 7.1 定位：把 Vision 的思路做成协议中立版 Vision 证明了\"治箱中箱指纹\"可行，但它绑定 Xray 生态（只配 VLESS）。AnyTLS（2025）用另一套思路独立解了同一道题，作为独立协议进入 sing-box/mihomo 原生支持——不识别、不区分内层是什么，全部流量一视同仁。\n7.2 技术：泡沫加混装 Padding（填充）——往箱中箱的缝隙塞随机泡沫：每帧按可配置策略（如 100–1000 字节随机）附加填充。外层密文块的大小不再贴合内层记录结构——内箱的棱角被泡沫淹没，X 光只能看到一团均匀的噪声。\n多路复用（mux）——混装整车，打碎一一对应：多条代理流共用一条 TLS 连接。传统 Trojan 是\"一单一车”，装载序列就是单个客户内箱的镜像；AnyTLS 把几十个客户的箱子交错混装进同一辆卡车，海关看到的装载序列是所有客户流量的模糊叠加——想在合唱里单独听出一个人的呼吸，统计上不可能。\n附带红利：客户端预建若干空闲会话（min_idle_session），新请求直接装车、免握手，首包延迟显著更低——开网页的爽感主要来自这里（代价是要靠定时心跳维持空闲连接，防止 NAT 网关把久未使用的映射悄悄掐掉）。\n7.3 与 Vision 一句话对比 Vision 消除特征（识别内层是 TLS，数据期不再制造第二层结构），AnyTLS 淹没特征（不识别，全部加噪声）。一个做减法、一个加噪声，殊途同归——完整的横向对比见第九章。\n7.4 局限 只跑 TCP（UDP 靠 UDP-over-TCP 承载）：继承了 TCP 在高丢包线路上的队头阻塞——它优先隐蔽，不优先速度，烂线路请找 Hysteria2 mux 的结构性代价：几十条流挤一根 TCP 管道，丢一个包全体排队——开网页爽、大下载未必赢 需要真域名 + 真证书（这点不如 REALITY 省事） 八、插曲：提速的三个战场 五大协议讲完了，把散落各章的提速知识收拢一下——因为\"快\"其实是三种不同的快感，病根和药方各不相同。\n8.1 病根诊断 病根 机理 快递版 高 RTT 吞吐上限 = 窗口 ÷ RTT；旧 TCP 窗口 64KB × 200ms ≈ 2.6Mbps 封顶 车队规模有限，路越长运力越低 丢包 × TCP 礼貌 一丢包速率砍半慢慢爬回；1% 丢包 + 200ms RTT 下千兆线路只剩不到 1Mbps 司机一遇颠簸刹车减半，十公里颠一下全程爬行 协议开销 用户态拷贝、双重加解密、逐连接握手 每件货人工搬进搬出仓库；每车重办全套手续 8.2 延迟战：少问几句 N-RTT 数的是\"握手要跑几个来回\"——数据最早能搭上第几波，就决定总耗时几个 RTT。TLS 1.2 是四波（2 RTT）且砍不动：钥匙必须用证书公钥锁着送（没证书交不了）、Finished 必须用新密钥加密验锁（没钥匙验不了），因果链是串行的。TLS 1.3 砍到 1-RTT 的办法是赌：套件精简后客户端第一波就把密钥材料押上，服务器一收一发双方密钥即齐，数据搭第二波出发。\n总账单（打开网页到首字节，跨国 200ms/圈）：\n方案 握手圈数 请求 合计 耗时 TCP + TLS 1.2 1+2 1 4 RTT ~800ms TCP + TLS 1.3 1+1 1 3 RTT ~600ms QUIC（传输+加密合并握手） 1 1 2 RTT ~400ms QUIC 0-RTT 0 1 1 RTT ~200ms 两个易混的技术再辨一次：0-RTT 会话恢复保管的是票根（上次连接发的密钥材料记忆），连接本身仍要新建，第一波捎上数据；mux 预热连接（AnyTLS）保管的是现役车辆——连接活着、密钥热着、拥塞窗口不冷启动，压根不存在\"新建\"这个动作。一个是\"重办手续不用排队\"，一个是\"手续根本不用办\"。两者分层可叠加：mux 负责尽量不重连，0-RTT 负责真要重连时也快。（0-RTT 的代价：early data 可被重放，严格实现只对幂等请求放行。）\n8.3 吞吐战：一次多装点 技术 出处 干了什么 内核态运行 WireGuard、IPsec 传送带直连，不再人工搬运 直拷贝 XTLS Vision 数据期省掉一整层加解密 BBR Google 摸清路况定巡航速度，丢包当噪声，不再见颠簸就刹车 Brutal Hysteria2 按报的带宽硬发，丢了就补发（详见第六章） 8.4 物理战：算法治不了的病 协议再快也快不过烂路由。跨国默认路由常绕地球一圈，于是有了中转架构（家→国内中转机→境外落地，入境段走 CN2/9929 优化线路）和专线 IPLC/IEPL（不过海关的专属货运铁路，按 Mbps 卖、贵）。游戏加速器（UU、雷神）就是物理战的产品化：专线 + 机房旁出口 + 只运游戏流量，把 200ms 押到 30–80ms 靠的不是协议魔法，是花钱买路。\n实战经验：线路档次对速度的影响通常大于协议选择——WireGuard 走垃圾线路照样输给 Trojan 走 IPLC。\n九、五家对比：协议与背后的技术 9.1 协议总表 协议 年代 载体 核心贡献 遗留问题 SS / SSR 2012/2015 TCP/UDP 第一个以对抗审查为目标；无特征密文 形态本身可疑；SSR 加戏越多特征越多 Trojan 2019 TCP 443 真开店，系统应对主动探测 TLS-in-TLS 指纹；证书反查 VLESS + Vision + REALITY 2020–2023 TCP 443 拆箱直发治箱中箱；借证书治探测 绑定 Xray 生态 Hysteria2 2022–2023 UDP (QUIC) 伪装 HTTP/3 + Brutal 抢带宽 UDP 被收紧时最先阵亡 AnyTLS 2025 TCP 443 padding + mux 根治箱中箱，协议中立 TCP 队头阻塞；需域名证书 9.2 加密：所有人的答案都一样 先看一个反直觉的事实——线路密文从来不是这些协议自己提供的：\n协议 线路加密由谁保证 SS 自带 AEAD（例外：它诞生时默认裸 TCP） Trojan / VLESS / AnyTLS 外层 TLS Hysteria2 QUIC 内置 TLS TLS 成熟之后，“加密\"这门主课就全班交卷了，协议层的全部精力转向后两件事。这也解释了 VLESS 敢做成明文面单、Vision 数据期敢直拷贝——锁一直是外层的，从没缺过岗。\n9.3 主动探测伪装：从黑箱到挂靠 协议 对策 效果 SS 无（SSR 协议插件是补丁） 探针一测一个准 Trojan 真开店 + fallback 反代真网站 探针看到真网站；但证书来路可疑 REALITY 借真站证书完成握手 密码学上无可挑剔，CT 反查失效 Hysteria2 伪装 HTTP/3 服务器 有效，但 UDP 特征是另一个维度的问题 AnyTLS 同 Trojan 待遇（真站 + 证书） 有效，执照问题仍在 9.4 被动伪装：Trojan / Vision / AnyTLS 逐阶段对照 被动伪装的核心考题只有一个——TLS-in-TLS 指纹。三家答卷：\n阶段 线路密文由谁保证 Trojan Vision AnyTLS 握手期 外层 TLS（从未缺岗） 无处理【死穴】 +随机填充 +随机填充 数据期 外层 TLS（同样在岗） 无处理 直拷贝，零干预 继续逐帧填充 连接模型 —— 一流一连接 一流一连接 多流复用 + 预热 Trojan Vision AnyTLS 海关磅秤看到 密文段里一段\"第二次握手\"的鼓点 → 教科书 TLS-in-TLS 填充噪声 → 16KB 均匀流，与正常 HTTPS 下载无法区分 任意时刻都是多流交错的随机大小帧，单流特征被淹没 带宽/CPU 开销 无 数据期几乎为零 每帧都付填充税 首包延迟 每条新流新建连接 同左 mux 预热，新流秒上车【优势】 丢包行为 各流独立 各流独立 一条管道多流复用，队头阻塞 三种哲学收口：Trojan 原样搬运，赌海关不细看；Vision 是外科医生，先看内箱是什么再决定动不动刀（数据期零开销，但绑定 Xray 生态）；AnyTLS 是粉碎机，不管什么箱全部拆成随机包裹塞泡沫混装（任何流量一律有效，代价是全程付填充税）。\n9.5 TCP 路线 vs UDP 路线 最后一条分野是赛道选择：\nTCP 443 路线（Trojan/VLESS/AnyTLS）：命脉端口哪都不封，生存能力最强；代价是 TCP 的礼貌（丢包减速）和 mux 的队头阻塞 UDP/QUIC 路线（Hysteria2）：握手快、流间无阻塞、拥塞控制自主（Brutal/bbr 随便换）；代价是 UDP 可被单独针对，命脉地位依附于 HTTP/3 的普及进程 没有赢家，只有取舍——这也是为什么成熟的翻墙客户端都支持多协议自动切换。\n十、总结：三十年在争什么 三代矛盾的接力 阶段 年代 主要矛盾 谁解决了它 第一阶段：锁不够结实 1999–2005 加密被破解、认证被伪造 L2TP/IPsec、OpenVPN、IKEv2 第二阶段：车不够快 2005–2020 性能瓶颈、握手慢、配置地狱 IKEv2、WireGuard、QUIC 第三阶段：长得像 VPN 2012–至今 被动统计 + 主动探测 SS → Trojan → Vision/REALITY → AnyTLS 选型决策树 你的需求是什么？ │ ├── 纯隐私/自建内网穿透，不怕被识别 │ └── WireGuard（最简单、最快、最省心） │ ├── 过海关 + 追求极致伪装和性能 │ └── VLESS + Vision + REALITY │ ├── 过海关 + 客户端在 sing-box/mihomo 生态 + 要低延迟开网页 │ └── AnyTLS（mux 预热连接的首包优势） │ ├── 烂线路抢带宽，且 UDP 可用 │ └── Hysteria2（UDP 被限时回落 TCP 类协议） │ └── 打游戏（要 UDP 直通与低抖动） ├── 自建 → WireGuard 或 Hysteria2，节点开启 UDP 转发 └── 国内联机卡 → 游戏加速器（买的是线路，不是协议） 三十年的故事讲完了。每一代的\"解决\"都精确地成了下一代的\"问题”：锁结实了才发现车慢，车快了才发现长得像 VPN，长得不像 VPN 了才发现箱中箱的轮廓，箱中箱治好了又开始押注 UDP 的未来。这场军备竞赛没有终局——海关的磅秤和协议设计师的泡沫，都还在进化。\n参考资料 WireGuard 官方文档 TLS 1.3 规范 (RFC 8446) QUIC (RFC 9000) Shadowsocks 项目 Trojan-GFW 项目 XTLS 与 Xray-core 项目 anytls-go 项目 Hysteria2 官方文档 sing-box 文档（AnyTLS outbound） ",
+  "wordCount" : "1335",
+  "inLanguage": "en",
+  "datePublished": "2026-10-20T00:00:00Z",
+  "dateModified": "2026-10-20T00:00:00Z",
+  "author":[{
+    "@type": "Person",
+    "name": "Coldeye"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Co'Log",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://coldeye2020.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://coldeye2020.github.io/" accesskey="h" title="Co&#39;Log (Alt + H)">
+                <img src="https://coldeye2020.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Co&#39;Log</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://coldeye2020.github.io/tech/" title="Tech">
+                    <span>Tech</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/invest/" title="Invest">
+                    <span>Invest</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/think/" title="Thought">
+                    <span>Thought</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://coldeye2020.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://xkcd.com/" title="xkcd.com">
+                    <span>xkcd.com</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      从 PPTP 到 AnyTLS：VPN 协议三十年进化史
+    </h1>
+    <div class="post-description">
+      从 PPTP 到 AnyTLS，三十年 VPN 协议演进只围绕四件事：加密、性能、被动伪装、主动探测伪装。本文用一套贯穿全文的快递比喻，讲透 SS/Trojan/VLESS&#43;Vision&#43;REALITY/Hysteria/AnyTLS 五大里程碑协议各自的突破与代价，并横向对比它们背后的技术。
+    </div>
+    <div class="post-meta">Date: October 20, 2026 | Estimated Reading Time: 19 min | Author: Coldeye | Readers:&nbsp;<span id="gc-page">–</span>
+      
+    </div>
+    <script>
+    fetch('https://coldeye.goatcounter.com/counter/\/tech\/2026-10-20-vpn-protocols.json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var el = document.getElementById('gc-page');
+        if (el && d && d.count) el.textContent = d.count;
+      }).catch(function(){});
+    </script>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一预备知识五个必须先懂的概念">一、预备知识：五个必须先懂的概念</a>
+      <ul>
+        <li><a href="#11-分层模型每层只认识相邻的层">1.1 分层模型：每层只认识相邻的层</a></li>
+        <li><a href="#12-tcp-与-udp快递公司-vs-明信片">1.2 TCP 与 UDP：快递公司 vs 明信片</a></li>
+        <li><a href="#13-tls带锁的箱子--营业执照">1.3 TLS：带锁的箱子 + 营业执照</a></li>
+        <li><a href="#14-rtt所有性能讨论的计量单位">1.4 RTT：所有性能讨论的计量单位</a></li>
+        <li><a href="#15-用户态与内核态书房-vs-物业机房">1.5 用户态与内核态：书房 vs 物业机房</a></li>
+      </ul>
+    </li>
+    <li><a href="#二正统-vpn-时代从能用到好用19992020">二、正统 VPN 时代：从能用到好用（1999–2020）</a>
+      <ul>
+        <li><a href="#21-pptp1999纸箱--儿童锁">2.1 PPTP（1999）：纸箱 + 儿童锁</a></li>
+        <li><a href="#22-l2tpipsec19992000装甲集装箱过关排六趟队">2.2 L2TP/IPsec（1999–2000）：装甲集装箱，过关排六趟队</a></li>
+        <li><a href="#23-openvpn2001车牌随便换">2.3 OpenVPN（2001）：车牌随便换</a></li>
+        <li><a href="#24-ikev2ipsec2005常旅客通道">2.4 IKEv2/IPsec（2005）：常旅客通道</a></li>
+        <li><a href="#25-sstp2007伪装成-https-的代价">2.5 SSTP（2007）：伪装成 HTTPS 的代价</a></li>
+        <li><a href="#26-wireguard201520204000-个零件的超跑">2.6 WireGuard（2015/2020）：4000 个零件的超跑</a></li>
+      </ul>
+    </li>
+    <li><a href="#三shadowsocks-与-ssr第一个专为翻墙而生的协议2012">三、Shadowsocks 与 SSR：第一个专为翻墙而生的协议（2012）</a>
+      <ul>
+        <li><a href="#31-历史性的转变设计目标换了">3.1 历史性的转变：设计目标换了</a></li>
+        <li><a href="#32-技术一个没有任何标签的黑箱">3.2 技术：一个没有任何标签的黑箱</a></li>
+        <li><a href="#33-死穴与-ssr-的加戏">3.3 死穴与 SSR 的加戏</a></li>
+      </ul>
+    </li>
+    <li><a href="#四trojan第一个应对主动探测真开店2019">四、Trojan：第一个应对主动探测——真开店（2019）</a>
+      <ul>
+        <li><a href="#41-先搞懂主动探测是什么">4.1 先搞懂：主动探测是什么</a></li>
+        <li><a href="#42-技术老老实实跑一个真的-https-网站">4.2 技术：老老实实跑一个真的 HTTPS 网站</a></li>
+        <li><a href="#43-遗留的两个缺口">4.3 遗留的两个缺口</a></li>
+      </ul>
+    </li>
+    <li><a href="#五vless--vision--reality第一个解决被动伪装20202023">五、VLESS + Vision + REALITY：第一个解决被动伪装（2020–2023）</a>
+      <ul>
+        <li><a href="#51-vless极简面单">5.1 VLESS：极简面单</a></li>
+        <li><a href="#52-被动伪装的终极考题tls-in-tls">5.2 被动伪装的终极考题：TLS-in-TLS</a></li>
+        <li><a href="#53-vision拆箱直发">5.3 Vision：拆箱直发</a></li>
+        <li><a href="#54-reality连执照都是真的">5.4 REALITY：连执照都是真的</a></li>
+      </ul>
+    </li>
+    <li><a href="#六hysteria搭上-udp-便车20222023">六、Hysteria：搭上 UDP 便车（2022–2023）</a>
+      <ul>
+        <li><a href="#61-便车从哪来quic-与-http3">6.1 便车从哪来：QUIC 与 HTTP/3</a></li>
+        <li><a href="#62-hysteria-协议栈伪装成-http3-网站">6.2 Hysteria 协议栈：伪装成 HTTP/3 网站</a></li>
+        <li><a href="#63-速度核心brutal-拥塞控制">6.3 速度核心：Brutal 拥塞控制</a></li>
+        <li><a href="#64-端口跳跃治-udp-qos">6.4 端口跳跃：治 UDP QoS</a></li>
+      </ul>
+    </li>
+    <li><a href="#七anytls最新的答案2025">七、AnyTLS：最新的答案（2025）</a>
+      <ul>
+        <li><a href="#71-定位把-vision-的思路做成协议中立版">7.1 定位：把 Vision 的思路做成协议中立版</a></li>
+        <li><a href="#72-技术泡沫加混装">7.2 技术：泡沫加混装</a></li>
+        <li><a href="#73-与-vision-一句话对比">7.3 与 Vision 一句话对比</a></li>
+        <li><a href="#74-局限">7.4 局限</a></li>
+      </ul>
+    </li>
+    <li><a href="#八插曲提速的三个战场">八、插曲：提速的三个战场</a>
+      <ul>
+        <li><a href="#81-病根诊断">8.1 病根诊断</a></li>
+        <li><a href="#82-延迟战少问几句">8.2 延迟战：少问几句</a></li>
+        <li><a href="#83-吞吐战一次多装点">8.3 吞吐战：一次多装点</a></li>
+        <li><a href="#84-物理战算法治不了的病">8.4 物理战：算法治不了的病</a></li>
+      </ul>
+    </li>
+    <li><a href="#九五家对比协议与背后的技术">九、五家对比：协议与背后的技术</a>
+      <ul>
+        <li><a href="#91-协议总表">9.1 协议总表</a></li>
+        <li><a href="#92-加密所有人的答案都一样">9.2 加密：所有人的答案都一样</a></li>
+        <li><a href="#93-主动探测伪装从黑箱到挂靠">9.3 主动探测伪装：从黑箱到挂靠</a></li>
+        <li><a href="#94-被动伪装trojan--vision--anytls-逐阶段对照">9.4 被动伪装：Trojan / Vision / AnyTLS 逐阶段对照</a></li>
+        <li><a href="#95-tcp-路线-vs-udp-路线">9.5 TCP 路线 vs UDP 路线</a></li>
+      </ul>
+    </li>
+    <li><a href="#十总结三十年在争什么">十、总结：三十年在争什么</a>
+      <ul>
+        <li><a href="#三代矛盾的接力">三代矛盾的接力</a></li>
+        <li><a href="#选型决策树">选型决策树</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>每天点开那个小飞机图标的时候，你大概不会想到，背后是一场持续了三十年的军备竞赛。</p>
+<p>这篇文章回答一个问题：<strong>VPN 协议到底在解决什么问题，它们又是怎么一代代被逼着进化的</strong>。你会看到每一代方案如何解决上一代的痛点，又如何引入新的痛点——像一部剧情环环相扣的连续剧。</p>
+<p>全文用一套贯穿始终的比喻，先立好：</p>
+<ul>
+<li><strong>TCP</strong> = 快递公司：保证送到、按序重装、丢了补发</li>
+<li><strong>TLS</strong> = 带锁的箱子：防偷看、防冒充（HTTPS 里的 S 就是它）</li>
+<li><strong>HTTP</strong> = 箱子里的信：你实际想说的内容</li>
+<li><strong>防火墙 / DPI（深度包检测）</strong> = 海关：不仅看箱子外观，还有 X 光和磅秤</li>
+</ul>
+<p><strong>核心论点</strong>：三十年只围绕四件事——<strong>加密、性能、被动伪装（防 DPI 统计）、主动探测伪装（防扫描）</strong>。矛盾的焦点逐代转移：先把锁做结实，再把车做快，最后拼命让箱子长得不像 VPN。每一个&quot;解决&quot;，都精确地成为下一代的&quot;问题&quot;。</p>
+<table>
+  <thead>
+      <tr>
+          <th>年代</th>
+          <th>协议</th>
+          <th>一句话定位</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1999</td>
+          <td>PPTP</td>
+          <td>纸箱 + 儿童锁</td>
+      </tr>
+      <tr>
+          <td>1999–2000</td>
+          <td>L2TP/IPsec</td>
+          <td>标准装甲集装箱，过关排六趟队</td>
+      </tr>
+      <tr>
+          <td>2001</td>
+          <td>OpenVPN</td>
+          <td>民间自建物流，车牌随便换</td>
+      </tr>
+      <tr>
+          <td>2005</td>
+          <td>IKEv2/IPsec</td>
+          <td>官方物流的常旅客通道</td>
+      </tr>
+      <tr>
+          <td>2007</td>
+          <td>SSTP</td>
+          <td>伪装成普通 HTTPS 快递</td>
+      </tr>
+      <tr>
+          <td>2015/2020</td>
+          <td>WireGuard</td>
+          <td>4000 个零件的极简超跑</td>
+      </tr>
+      <tr>
+          <td>2012</td>
+          <td>SS / SSR</td>
+          <td>无标签黑箱</td>
+      </tr>
+      <tr>
+          <td>2019</td>
+          <td>Trojan</td>
+          <td>真开店</td>
+      </tr>
+      <tr>
+          <td>2020–2023</td>
+          <td>VLESS + Vision + REALITY</td>
+          <td>拆箱直发 + 挂靠真店铺</td>
+      </tr>
+      <tr>
+          <td>2022–2023</td>
+          <td>Hysteria2</td>
+          <td>QUIC 上的暴力超车手</td>
+      </tr>
+      <tr>
+          <td>2025</td>
+          <td>AnyTLS</td>
+          <td>专治箱中箱指纹</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="一预备知识五个必须先懂的概念">一、预备知识：五个必须先懂的概念<a hidden class="anchor" aria-hidden="true" href="#一预备知识五个必须先懂的概念">#</a></h2>
+<p>不铺垫这五个概念，后面每一章都会绊倒你。已熟悉的读者可以跳到第二节。</p>
+<h3 id="11-分层模型每层只认识相邻的层">1.1 分层模型：每层只认识相邻的层<a hidden class="anchor" aria-hidden="true" href="#11-分层模型每层只认识相邻的层">#</a></h3>
+<p>你在浏览器输入 <code>https://github.com</code>，数据从上往下层层包装：</p>
+<pre tabindex="0"><code>┌─────────────────────────────┐
+│  HTTP 请求                    │  ← 信：&#34;GET /首页&#34;（说什么）
+├─────────────────────────────┤
+│  TLS 加密                     │  ← 装进带锁的箱子（防偷看、防冒充）
+├─────────────────────────────┤
+│  TCP                          │  ← 快递公司：编号、补发、按序重装（保证送到）
+├─────────────────────────────┤
+│  IP                           │  ← 邮编和路网：逐跳转发（找到路）
+└─────────────────────────────┘
+</code></pre><p>接收方反过来一层层拆。关键纪律：<strong>每层只认识相邻的层，不关心更里面装的是什么</strong>——快递员不拆锁，锁不读信，信不管走哪条路。记住这条纪律，后面所有&quot;伪装&quot;原理都建立在它之上。</p>
+<h3 id="12-tcp-与-udp快递公司-vs-明信片">1.2 TCP 与 UDP：快递公司 vs 明信片<a hidden class="anchor" aria-hidden="true" href="#12-tcp-与-udp快递公司-vs-明信片">#</a></h3>
+<p>互联网底层（IP）是&quot;尽力而为&quot;的——包会丢、会乱序。TCP 在这上面建一条可靠管道：</p>
+<ul>
+<li><strong>先建立连接（三次握手）</strong>：发货前双方通电话，确认双向都活着</li>
+<li><strong>每个包编号，丢件补发、按序重装</strong></li>
+<li><strong>淑女式拥塞控制</strong>：发现网络堵了主动减速（一丢包速率砍半再慢慢爬）</li>
+<li><strong>只认字节，不认含义</strong></li>
+</ul>
+<p>它的孪生兄弟 <strong>UDP</strong> 是寄明信片：写完扔进邮筒就走，不等回执、丢了不补。快、省事、不可靠。DNS 查询、视频通话、游戏、QUIC 都走 UDP。</p>
+<p><strong>这条分野贯穿全文</strong>：海关能一眼区分&quot;货车（TCP 长连接）&ldquo;和&quot;明信片流（UDP）&quot;；TCP-in-TCP 会连环追尾；QUIC 与 Hysteria 的整个故事都建立在 UDP 上。</p>
+<h3 id="13-tls带锁的箱子--营业执照">1.3 TLS：带锁的箱子 + 营业执照<a hidden class="anchor" aria-hidden="true" href="#13-tls带锁的箱子--营业执照">#</a></h3>
+<p>明文的 TCP 管道上，沿途任何路由器都能读到你信里的每个字。TLS 做两件事：</p>
+<ol>
+<li><strong>握手</strong>：双方公开协商出只有彼此知道的会话密钥（数学上保证旁听者算不出来），同时用<strong>证书</strong>验证对方身份——证书就是营业执照，由权威 CA 签发，防止有人冒充 github.com</li>
+<li><strong>加密传输</strong>：之后所有字节变成乱码</li>
+</ol>
+<p>三个要点：</p>
+<ul>
+<li><strong>TLS 不是网站专用</strong>——它是通用安全层，邮件、聊天、数据库连接都能套，你的代理隧道也靠它。这正是伪装的原理：TLS 箱子外观全一样，海关分不清里面是 HTTP 还是隧道货</li>
+<li><strong>TLS 站在 TCP 肩上</strong>（握手经不起丢包乱序；UDP 上的替代品是 QUIC，第六章讲）</li>
+<li>前身叫 SSL，改名两代了，老人还习惯叫 SSL</li>
+</ul>
+<p><code>HTTPS = HTTP over TLS over TCP</code>，名字里的 S 就是 TLS，端口号从 80 换到 443，仅此而已。</p>
+<h3 id="14-rtt所有性能讨论的计量单位">1.4 RTT：所有性能讨论的计量单位<a hidden class="anchor" aria-hidden="true" href="#14-rtt所有性能讨论的计量单位">#</a></h3>
+<p><strong>RTT（Round-Trip Time，往返时延）</strong>= 一个包从发出到收到回音的完整一圈。北京到美国一圈约 150–250ms，其中大头是物理传播——光跑距离要的时间，<strong>协议再好也压缩不掉</strong>。</p>
+<p>为什么它是命根：握手是&quot;回合制&quot;的，每问一句等一圈。打开一个网页约 3–4 个来回，跨国线上光手续就 800ms。所以后面一切提速技术，本质上只有两条思路：<strong>少问几句（砍 RTT 次数），或一次多装点（加大窗口/带宽）</strong>。</p>
+<h3 id="15-用户态与内核态书房-vs-物业机房">1.5 用户态与内核态：书房 vs 物业机房<a hidden class="anchor" aria-hidden="true" href="#15-用户态与内核态书房-vs-物业机房">#</a></h3>
+<p>操作系统把内存划成两个世界：</p>
+<pre tabindex="0"><code>┌────────────────────────────────┐
+│ 用户态（你家书房，隔离、安全）        │
+│   浏览器 · Clash · 游戏客户端       │
+└──────────────┬─────────────────┘
+               │ 系统调用（递申请）
+┌──────────────▼─────────────────┐
+│ 内核态（小区物业机房，特权）          │
+│   TCP/IP 协议栈 · 网卡驱动         │
+└────────────────────────────────┘
+</code></pre><p>TCP 在内核态——全系统共享、性能最优，但<strong>改 TCP = 改操作系统 = 等全世界升级</strong>。这为后面 QUIC 的&quot;用户态革命&quot;埋下伏笔：任何想快速进化的协议，都得搬出机房。</p>
+<hr>
+<h2 id="二正统-vpn-时代从能用到好用19992020">二、正统 VPN 时代：从能用到好用（1999–2020）<a hidden class="anchor" aria-hidden="true" href="#二正统-vpn-时代从能用到好用19992020">#</a></h2>
+<p>这一章的主角解决的是前两件事：<strong>把锁做结实，把车做快</strong>。它们的设计目标是&quot;安全地连接远方的内网&rdquo;——没人想过要躲谁。这个天真，正是它们后来集体阵亡的原因。</p>
+<h3 id="21-pptp1999纸箱--儿童锁">2.1 PPTP（1999）：纸箱 + 儿童锁<a hidden class="anchor" aria-hidden="true" href="#21-pptp1999纸箱--儿童锁">#</a></h3>
+<p><strong>技术</strong>：GRE 协议做隧道，MPPE（RC4）做加密，MS-CHAPv2 做认证。</p>
+<p><strong>引入了什么</strong>：第一个&quot;人人可用&quot;的 VPN——Windows 95/98 内置，点几下鼠标连公司内网。</p>
+<p><strong>怎么死的</strong>：RC4 加密早被密码学界判死刑；2012 年研究员 Moxie Marlinspike 用一台普通电脑暴力破解了 MS-CHAPv2。更糟的是 GRE 协议极其显眼，海关一眼识别。现状：安全界公认&quot;视为已破解&quot;，任何现代系统都不该启用。</p>
+<h3 id="22-l2tpipsec19992000装甲集装箱过关排六趟队">2.2 L2TP/IPsec（1999–2000）：装甲集装箱，过关排六趟队<a hidden class="anchor" aria-hidden="true" href="#22-l2tpipsec19992000装甲集装箱过关排六趟队">#</a></h3>
+<p><strong>技术</strong>：L2TP 只管装箱不管上锁（自身无加密），必须捆绑 IPsec 提供加密和认证——你说的&quot;L2TP/IPsec&quot;其实是两辆挂在一起的车。</p>
+<p><strong>引入了什么</strong>：AES 军规加密（锁终于结实了）、证书认证（签字伪造不了了）。解决了 PPTP 的致命问题。</p>
+<p><strong>新的问题</strong>：双重封装每个包裹白白多背几十字节；IKEv1 握手要来回六七趟，高延迟网络下连接等一两秒；固定走 UDP 500/4500 端口，防火墙按图索骥。</p>
+<h3 id="23-openvpn2001车牌随便换">2.3 OpenVPN（2001）：车牌随便换<a hidden class="anchor" aria-hidden="true" href="#23-openvpn2001车牌随便换">#</a></h3>
+<p><strong>技术</strong>：基于 SSL/TLS 协商密钥，可跑在 UDP 或 TCP、<strong>任意端口</strong>上。</p>
+<p><strong>引入了什么</strong>：开源可审计；<strong>车牌随便换</strong>（端口任意，还能走 TCP 443 混进 HTTPS 车流——伪装思路的雏形）；跨平台 + NAT 穿透。</p>
+<p><strong>新的问题</strong>：数据在内核和用户态之间来回搬运，性能有天花板；十几万行代码，攻击面大，配置项多到能出一本书。</p>
+<h3 id="24-ikev2ipsec2005常旅客通道">2.4 IKEv2/IPsec（2005）：常旅客通道<a hidden class="anchor" aria-hidden="true" href="#24-ikev2ipsec2005常旅客通道">#</a></h3>
+<p><strong>技术</strong>：把繁琐的 IKEv1 推倒重写成 IKEv2，握手从六七趟砍到四趟；加上 MOBIKE 扩展。</p>
+<p><strong>引入了什么</strong>：<strong>MOBIKE 漫游</strong>（手机从 WiFi 切 4G，IP 变了连接自动跟着走，不断线）+ 内核态实现（性能直逼硬件极限）。以前的协议每次换网络都要重新排队过海关，IKEv2 给你办了张常旅客卡。这也是它至今仍是 iOS/Android/Windows <strong>原生内置</strong>、移动端体验最好的原因。</p>
+<p><strong>遗留问题</strong>：UDP 固定端口特征明显；配置复杂度堪比报税。</p>
+<h3 id="25-sstp2007伪装成-https-的代价">2.5 SSTP（2007）：伪装成 HTTPS 的代价<a hidden class="anchor" aria-hidden="true" href="#25-sstp2007伪装成-https-的代价">#</a></h3>
+<p><strong>技术</strong>：把 VPN 流量整个塞进一条 TLS 通道，走 TCP 443。</p>
+<p><strong>引入了什么</strong>：完全的端口伪装——443 是互联网命脉，海关不可能封整个 443，否则银行购物搜索全灭。</p>
+<p><strong>新的问题——TCP-over-TCP 雪崩</strong>：隧道本身是 TCP，里面的流量往往也是 TCP。丢一个包，里外两层都重传、都降速，互相以为对方堵了，恶性循环。形象地说：里层司机看到堵车踩刹车，外层司机看到里层刹车以为更堵，跟着踩，最后一起趴窝。</p>
+<h3 id="26-wireguard201520204000-个零件的超跑">2.6 WireGuard（2015/2020）：4000 个零件的超跑<a hidden class="anchor" aria-hidden="true" href="#26-wireguard201520204000-个零件的超跑">#</a></h3>
+<p><strong>技术</strong>：约 <strong>4000 行代码</strong>（OpenVPN 十几万、IPsec 几十万），密码学套件固定且现代（Curve25519 + ChaCha20-Poly1305 + BLAKE2s），内核态运行。</p>
+<p><strong>引入了什么</strong>：</p>
+<ul>
+<li><strong>极简 = 安全</strong>：一个下午能审计完；套件固定，杜绝降级攻击</li>
+<li><strong>1-RTT 握手</strong>：一个来回就出发</li>
+<li><strong>内核态 + 无连接设计</strong>：吞吐拉满，切网无缝续接</li>
+<li><strong>静默模式</strong>：不认识的人敲门，直接装聋——端口扫描器看到一堵墙</li>
+<li><strong>配置极简</strong>：十几行搞定，IPsec 用户看了会哭</li>
+</ul>
+<p><strong>遗留问题</strong>：纯 UDP 无得选；跑得再快，<strong>长流 UDP 的形态依然显眼</strong>——海关撬不开箱子，但能看出&quot;这车天天定时跑同一条不寻常的线路&quot;。</p>
+<p><strong>正统 VPN 小结</strong>：这一时代解决了&quot;锁结实&quot;和&quot;车够快&quot;，但所有协议都有一个共同点——<strong>箱子外观一眼就是 VPN</strong>。2012 年前后，防火墙对 IPsec/OpenVPN 的握手特征已能精准识别，正统 VPN 在对抗场景下集体阵亡。矛盾焦点随即转移：<strong>长得不像 VPN，比什么都重要</strong>。</p>
+<hr>
+<h2 id="三shadowsocks-与-ssr第一个专为翻墙而生的协议2012">三、Shadowsocks 与 SSR：第一个专为翻墙而生的协议（2012）<a hidden class="anchor" aria-hidden="true" href="#三shadowsocks-与-ssr第一个专为翻墙而生的协议2012">#</a></h2>
+<h3 id="31-历史性的转变设计目标换了">3.1 历史性的转变：设计目标换了<a hidden class="anchor" aria-hidden="true" href="#31-历史性的转变设计目标换了">#</a></h3>
+<p>Shadowsocks 诞生的意义，不在某个具体技术，而在一次目标切换：此前所有 VPN 协议（PPTP 到 IKEv2）的设计目标是&quot;<strong>安全地连接远方内网</strong>&quot;，从没想过要躲谁；SS 是第一个<strong>以对抗海关为核心设计目标</strong>的代理协议。作者 clowwindy 在 2012 年用 Python 写出第一版，从此&quot;VPN&quot;这个词的重心，从虚拟专用网滑向了翻墙工具。</p>
+<h3 id="32-技术一个没有任何标签的黑箱">3.2 技术：一个没有任何标签的黑箱<a hidden class="anchor" aria-hidden="true" href="#32-技术一个没有任何标签的黑箱">#</a></h3>
+<p>架构极简：本地跑一个 SOCKS5 代理，流量用预共享密码加密后发给服务器中转。关键设计：</p>
+<ul>
+<li><strong>无握手</strong>：没有协议协商过程，第一个包就是数据</li>
+<li><strong>无特征字符串</strong>：不出现任何可搜索的协议标识</li>
+<li><strong>加密演进</strong>：早期用流密码（后来证明弱），社区版随后统一到 AEAD（chacha20-ietf-poly1305 / aes-256-gcm）</li>
+</ul>
+<p><strong>形象地说</strong>：SS 发出的流量是一个<strong>没有任何标签的纯黑箱子</strong>——X 光照进去也是一片雪花噪声。相比之下，OpenVPN 的握手像在海关面前报户口。</p>
+<h3 id="33-死穴与-ssr-的加戏">3.3 死穴与 SSR 的加戏<a hidden class="anchor" aria-hidden="true" href="#33-死穴与-ssr-的加戏">#</a></h3>
+<p>海关的反击分两手：</p>
+<ul>
+<li><strong>被动统计</strong>：&ldquo;看不懂&quot;本身就是嫌疑——一个路口每天有几百个纯黑无标签的箱子经过，迟早立规矩：黑箱子一律扣</li>
+<li><strong>主动探测</strong>：向可疑服务器直接发 SS 协议包，看响应方式是否符合协议特征——符合就标记</li>
+</ul>
+<p>2015 年，clowwindy 被约谈，项目从 GitHub 删除。社区随即分裂出 <strong>ShadowsocksR（SSR）</strong>，核心卖点是两个插件：</p>
+<ul>
+<li><strong>混淆插件（obfs）</strong>：在密文外再套一层伪装头，让流量看起来像普通 HTTP/TLS</li>
+<li><strong>协议插件（protocol）</strong>：改写认证流程，防主动探测、防重放</li>
+</ul>
+<p>但 SSR 的路子有个内在悖论：<strong>加戏越多，特征越多</strong>——自创的混淆格式本身就是一种新指纹，海关收集样本后照样能训练出分类器。SSR 也因作者停更而衰落。</p>
+<p>SS 正统生态后来走了条更聪明的路：SIP003 插件体系（simple-obfs，以及后来的 v2ray-plugin——把 SS 流量整个包进 WebSocket + TLS）。这等于承认了一件事：<strong>光靠黑箱不够，得穿上 TLS 的衣服</strong>——而这条路走到头，就是下一章的 Trojan。</p>
+<p><strong>本章小结</strong>：SS 确立了&quot;密文 + 无特征&quot;的 baseline，也暴露了两个此后十年的主战场——被动统计和主动探测。后面每一代协议，都是在回答这两个问题。</p>
+<hr>
+<h2 id="四trojan第一个应对主动探测真开店2019">四、Trojan：第一个应对主动探测——真开店（2019）<a hidden class="anchor" aria-hidden="true" href="#四trojan第一个应对主动探测真开店2019">#</a></h2>
+<h3 id="41-先搞懂主动探测是什么">4.1 先搞懂：主动探测是什么<a hidden class="anchor" aria-hidden="true" href="#41-先搞懂主动探测是什么">#</a></h3>
+<p>前三代协议面对的海关是被动的——站在路边看你过。主动探测是海关<strong>主动敲门</strong>：向一台可疑服务器发一个试探包（一个正常的 HTTP 请求、一个伪造的协议握手），看你怎么回应：</p>
+<ul>
+<li>回应符合代理协议特征 → 标记，封</li>
+<li>干脆不回应 → &ldquo;一台没有任何服务的服务器却有大流量&quot;也可疑 → 标记，封</li>
+</ul>
+<p>SS 的黑箱在这套打法面前很脆弱。<strong>如何回应探针，成了新的生死线。</strong></p>
+<h3 id="42-技术老老实实跑一个真的-https-网站">4.2 技术：老老实实跑一个真的 HTTPS 网站<a hidden class="anchor" aria-hidden="true" href="#42-技术老老实实跑一个真的-https-网站">#</a></h3>
+<p>Trojan 的思路极端而聪明——不发明任何新东西：</p>
+<ul>
+<li>服务器上<strong>就是一个标准的 HTTPS 服务</strong>：真域名、真证书、真网站内容</li>
+<li>客户端流量混在正常 HTTPS 里，靠密码哈希认证</li>
+<li><strong>任何不带正确密码的连接，全部 fallback 给反代的真实网站</strong>——探针发 HTTP 请求，得到的是一个货真价实的网页</li>
+</ul>
+<p><strong>形象地说</strong>：前几代是&quot;把车伪装成送快递的&rdquo;，Trojan 是<strong>真的开了一家快递公司</strong>——海关来查，看到的确实是营业执照齐全、正在营业的店铺。你没有&quot;伪装被识破&quot;的时刻，因为你不是在伪装，你就在正常营业。</p>
+<h3 id="43-遗留的两个缺口">4.3 遗留的两个缺口<a hidden class="anchor" aria-hidden="true" href="#43-遗留的两个缺口">#</a></h3>
+<ol>
+<li><strong>被动伪装缺课（致命）</strong>：Trojan 只管外层像 HTTPS，隧道<strong>里面</strong>怎么装货它完全不管——而这恰恰藏着一个致命的统计指纹（TLS-in-TLS），下一章详述</li>
+<li><strong>证书透明度反查</strong>：你买了域名、申请了证书，但这个域名没有历史流量、没有解析记录、没有网站内容——CT 日志里一张&quot;没有店铺的执照&rdquo;，主动探测者反查时还是可疑</li>
+</ol>
+<p>Trojan 解决了&quot;回应探针&quot;的问题，REALITY（第五章）解决&quot;执照&quot;的问题。而中间那个 TLS-in-TLS，是比主动探测更深的一层考题。</p>
+<hr>
+<h2 id="五vless--vision--reality第一个解决被动伪装20202023">五、VLESS + Vision + REALITY：第一个解决被动伪装（2020–2023）<a hidden class="anchor" aria-hidden="true" href="#五vless--vision--reality第一个解决被动伪装20202023">#</a></h2>
+<p>这三个名字经常连在一起，但它们<strong>各占一层、互不冲突</strong>：</p>
+<pre tabindex="0"><code>┌──────────────────────────────────────┐
+│ 你的流量（浏览器的 TLS 箱中箱）          │
+├──────────────────────────────────────┤
+│ VLESS    协议层：UUID 面单，怎么写地址  │
+│          + Vision 流控：怎么装车        │
+├──────────────────────────────────────┤
+│ REALITY  传输层：借真网站的证书做外层TLS │
+├──────────────────────────────────────┤
+│ TCP / IP                              │
+└──────────────────────────────────────┘
+</code></pre><h3 id="51-vless极简面单">5.1 VLESS：极简面单<a hidden class="anchor" aria-hidden="true" href="#51-vless极简面单">#</a></h3>
+<p>先说清 VLESS 是什么。V2Ray 的 VMess（2016）是&quot;带火漆封、密码暗号、还得对表&quot;的老式面单——协议自带一整套加密和协商（还有时间戳校验，时钟不同步就断连），在裸 TCP 年代是必要的自保。VLESS（2020）发现如今所有货都走 TLS 集装箱了，协议层再手写一套密码本纯属脱裤子放屁，于是把面单简化成一张<strong>明文密码条</strong>：UUID + 目标地址，无加密、无握手、无状态，安全性完全外包给外层 TLS。</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>VMess（2016）</th>
+          <th>VLESS（2020）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>自带加密</td>
+          <td>有（AEAD 一整套）</td>
+          <td><strong>无</strong>，外包给外层</td>
+      </tr>
+      <tr>
+          <td>握手开销</td>
+          <td>有，多一次往返</td>
+          <td>无，首包即数据</td>
+      </tr>
+      <tr>
+          <td>出过的事故</td>
+          <td>加密套件有过破解风波</td>
+          <td>简单到没什么可破</td>
+      </tr>
+  </tbody>
+</table>
+<p>这个&quot;减法&quot;埋了一个漂亮的伏笔：<strong>VLESS 不加密 → Xray 能直接看到流经的原始字节 → 才能识别内层是 TLS → 才有下一节的 Vision</strong>。当初为减负砍掉的加密，三年后成了 Vision 落地的地基。</p>
+<h3 id="52-被动伪装的终极考题tls-in-tls">5.2 被动伪装的终极考题：TLS-in-TLS<a hidden class="anchor" aria-hidden="true" href="#52-被动伪装的终极考题tls-in-tls">#</a></h3>
+<p>这是本章的技术核心，值得慢讲——它解释了&quot;为什么外层已经是无懈可击的 TLS，还是会被看出来&quot;。</p>
+<p>你用代理访问 <code>https://github.com</code> 时，实际存在<strong>两条独立的 TLS 连接</strong>：</p>
+<pre tabindex="0"><code>浏览器 ──内层TLS──&gt; github.com        （你要访问的网站）
+   │
+   └─&gt; 代理客户端 ══外层TLS隧道══&gt; 代理服务器 ──&gt; github.com
+                    （海关只能看到这一段）
+</code></pre><p>内层的全部字节——包括那次握手的每个包——都要从外层隧道里过一遍。关键背景：<strong>TLS 加密几乎不改变长度</strong>（内容变乱码 + 固定的几十字节开销），所以：</p>
+<blockquote>
+<p><strong>外层密文记录的长度 ≈ 内层明文的长度 + 常数</strong></p>
+</blockquote>
+<p>海关的磅秤于是读出了这套鼓点：</p>
+<table>
+  <thead>
+      <tr>
+          <th>时刻</th>
+          <th>真实发生的事</th>
+          <th>海关看到</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>T1</td>
+          <td>浏览器发出 ClientHello（约 300–500 字节）</td>
+          <td>一条约 400B 的密文记录，C→S</td>
+      </tr>
+      <tr>
+          <td>T2</td>
+          <td>github 返回证书链（2–5 KB）</td>
+          <td>一坨 3–5KB 的密文突发，S→C</td>
+      </tr>
+      <tr>
+          <td>T4</td>
+          <td>下载大文件</td>
+          <td>16KB 整齐周期的密文（TLS 记录上限 2¹⁴）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>判决逻辑</strong>：每条 HTTPS 连接的握手都应该明文可见（正常直连时海关直接读到 ClientHello）；这条连接的<strong>密文段</strong>里却藏着一套统计学上精确复刻&quot;TLS 握手长相&quot;的节奏——该明文出现的鼓点出现在了密文里。不需要解密任何一个字节，只需记录长度、方向、时间做统计分类——成本极低，精度极高。</p>
+<p><strong>快递版</strong>：你把一个上锁的箱子原封不动塞进另一个上锁的箱子，外层箱子虽然看不到内容，但内箱的棱角把外箱撑出了同样的轮廓——X 光一照，&ldquo;箱中箱&quot;一目了然。</p>
+<h3 id="53-vision拆箱直发">5.3 Vision：拆箱直发<a hidden class="anchor" aria-hidden="true" href="#53-vision拆箱直发">#</a></h3>
+<p>病根在&quot;多包一层&rdquo;，Vision（全名 xtls-rprx-vision，2022）的药方就是&quot;别包&quot;：</p>
+<ul>
+<li><strong>识别</strong>：Xray 逐连接解析，发现内层流的是 TLS（TLS 记录头是明文结构，类型/长度可读）</li>
+<li><strong>握手期</strong>：走协议分帧 + <strong>随机填充</strong>——握手的长度鼓点太独特，塞泡沫搅乱</li>
+<li><strong>数据期</strong>：<strong>直拷贝</strong>——内层箱子本身已上锁（浏览器到 github 的端到端 TLS），代理只把这串密文原样搬进外层连接，不再重复封装。外层 TLS 按自己的 16KB 节奏切分记录，记录边界与内层<strong>脱钩</strong>，长度镜像消失；附带红利是省掉一整层加解密运算，大流量时 CPU 占用更低</li>
+</ul>
+<p>一个容易搞混的点：<strong>直拷贝 ≠ 不加密</strong>。两个阶段全程都有外层 TLS 加密——ClientHello、UUID、目标地址、HTTP 内容，海关一个都看不到。Vision 消灭的是第二层封装造成的&quot;记录边界一一镜像&quot;这个<strong>统计特征</strong>，从来不管加锁——锁是外层 TLS 的事，且从未缺岗。（VLESS 严禁裸跑、必须套 TLS，就是这条纪律的反面教材。）</p>
+<p>历史插曲：2020 年的初代 XTLS 直切模式是这思路的粗糙版，但模式切换那一刻长度规律会突变，&ldquo;切换动作本身&quot;成了新指纹被抓过；2022 年的 Vision 是重写版——握手全程填充、过渡无痕。</p>
+<h3 id="54-reality连执照都是真的">5.4 REALITY：连执照都是真的<a hidden class="anchor" aria-hidden="true" href="#54-reality连执照都是真的">#</a></h3>
+<p>Trojan 的 fallback 解决了&quot;探针来了给真网页&rdquo;，但没解决&quot;你的域名没有历史、证书来路可疑&quot;。REALITY（2023）把这条路走到头：</p>
+<ul>
+<li><strong>不需要自己的域名和证书</strong>。客户端握手时，服务器<strong>临时&quot;借用&quot;一个真实知名网站</strong>（比如某大公司官网）的证书来完成 TLS 握手</li>
+<li>探测者看到的是一次和真网站别无二致的、密码学上无可挑剔的 TLS 会话</li>
+<li>探测者去核对：&ldquo;这家店&quot;确实存在、执照是真的、网站内容也能访问——只是这一切本来就属于别人。CT 日志反查也失效了，因为那张证书本来就有海量正常流量</li>
+</ul>
+<p><strong>形象地说</strong>：Trojan 是真开了一家店；REALITY 是<strong>把你的货车挂靠在沃尔玛名下，用沃尔玛的真执照、真发票跑运输</strong>。海关查一万遍，文件全部真实有效。</p>
+<p>至此，三件套集齐：VLESS 管面单，Vision 管装车（治被动伪装的箱中箱指纹），REALITY 管外衣（治主动探测）。这是伪装阵营的第一个&quot;全家桶&rdquo;。</p>
+<hr>
+<h2 id="六hysteria搭上-udp-便车20222023">六、Hysteria：搭上 UDP 便车（2022–2023）<a hidden class="anchor" aria-hidden="true" href="#六hysteria搭上-udp-便车20222023">#</a></h2>
+<p>前面所有协议都在 TCP 443 上卷伪装，Hysteria 换了条赛道——它的故事要从一辆&quot;便车&quot;讲起。</p>
+<h3 id="61-便车从哪来quic-与-http3">6.1 便车从哪来：QUIC 与 HTTP/3<a hidden class="anchor" aria-hidden="true" href="#61-便车从哪来quic-与-http3">#</a></h3>
+<p><strong>TCP 改不动了</strong>：它在操作系统内核里，升级等于等全世界换系统；更死的是三十年来路上每台防火墙都按老规矩解析 TCP，任何&quot;改良版 TCP 包&quot;会被中间设备当怪物扔掉（<strong>协议僵化</strong>）。于是谷歌在 UDP 这个&quot;几乎空白的信封&quot;上，把「可靠传输 + TLS 加密 + 多路复用」整套在<strong>用户态</strong>重写了一遍——这就是 <strong>QUIC</strong>（用户态意味着随浏览器/App 更新，迭代以周计而不是以年计）。HTTP/3（2022 年标准化）就是跑在 QUIC 上的 HTTP。</p>
+<p>QUIC 白送四样东西：<strong>握手合并</strong>（TCP+TLS 串行 2–3 个 RTT 合成 1-RTT）、<strong>流间无队头阻塞</strong>（丢包只堵自己那条流）、<strong>连接迁移</strong>（认 Connection ID 不认 IP，WiFi 切 5G 不断线）、<strong>加密默认内置</strong>。</p>
+<p>连锁反应是：HTTP/3 普及 → <strong>UDP 443 成了互联网新命脉</strong> → 海关不敢全网封 UDP → UDP 上突然有了大量&quot;正常车流&quot;可以混。便车来了。</p>
+<h3 id="62-hysteria-协议栈伪装成-http3-网站">6.2 Hysteria 协议栈：伪装成 HTTP/3 网站<a hidden class="anchor" aria-hidden="true" href="#62-hysteria-协议栈伪装成-http3-网站">#</a></h3>
+<p>Hysteria（2022 出第一版，2023 年 Hysteria2 大幅简化）基于 QUIC，核心三件：</p>
+<pre tabindex="0"><code>你的 TCP 流   → QUIC stream     （流间无队头阻塞，免疫 TCP-in-TCP 追尾）
+你的 UDP 流   → QUIC datagram   （明信片原生直通，游戏友好）
+伪装外衣      → 长得就是一台 HTTP/3 服务器（443/UDP）
+</code></pre><p>先纠正一个常见误会：Hysteria2 从顶到底没有一粒 TCP。&ldquo;它伪装成网站&quot;没错，但 HTTP/3 网站本身就跑在 UDP 上——&ldquo;网站 = TCP&quot;这个等式在 HTTP/3 这代已经作废。<strong>伪装成 HTTP/3，恰恰意味着必须是 UDP。</strong></p>
+<h3 id="63-速度核心brutal-拥塞控制">6.3 速度核心：Brutal 拥塞控制<a hidden class="anchor" aria-hidden="true" href="#63-速度核心brutal-拥塞控制">#</a></h3>
+<p>回顾老病根：传统 TCP 把每次丢包都当堵车，速率砍半再慢慢爬（锯齿形）。跨国线路的丢包十有八九是 QoS 限速或线路噪声，<strong>不是真堵车</strong>——礼貌协议在白白挨刹。</p>
+<p>Brutal 的逻辑：<strong>你报一个带宽值 R，就恒定按 R 发</strong>；接收端周期回执&quot;实际到手多少&rdquo;，发端算出真实丢包率 p 后，把发送率提到 <strong>R/(1−p)</strong>——丢了就多补发，保证到手速率钉死在你报的数上。救护车霸座，烂线路上吞吐碾压一切礼貌协议。</p>
+<p>代价也写在名字里：线路<strong>真</strong>拥塞时它就是流氓，饿死旁边所有排队的车。嫌粗鲁可选 bbr 模式（礼貌版，收益打折）。</p>
+<h3 id="64-端口跳跃治-udp-qos">6.4 端口跳跃：治 UDP QoS<a hidden class="anchor" aria-hidden="true" href="#64-端口跳跃治-udp-qos">#</a></h3>
+<p>UDP 便车的代价是 UDP 会被单独针对（按协议号限速、按端口 QoS）。Hysteria2 的对策：服务端用 iptables 把<strong>一整段端口</strong>都转进同一个口，客户端定时换着端口发——海关按端口限速，它就打一枪换一个门。</p>
+<p><strong>本章定位</strong>：Hysteria 代表的路线不跟 TCP 443 上的伪装军备竞赛卷，而是<strong>押注 UDP 的未来</strong>——HTTP/3 的命脉地位撑起它的生存空间。风险也在此：UDP 被收紧的时段和地区，它最先阵亡，需要回落到 TCP 类协议。</p>
+<hr>
+<h2 id="七anytls最新的答案2025">七、AnyTLS：最新的答案（2025）<a hidden class="anchor" aria-hidden="true" href="#七anytls最新的答案2025">#</a></h2>
+<h3 id="71-定位把-vision-的思路做成协议中立版">7.1 定位：把 Vision 的思路做成协议中立版<a hidden class="anchor" aria-hidden="true" href="#71-定位把-vision-的思路做成协议中立版">#</a></h3>
+<p>Vision 证明了&quot;治箱中箱指纹&quot;可行，但它绑定 Xray 生态（只配 VLESS）。AnyTLS（2025）用另一套思路独立解了同一道题，作为独立协议进入 sing-box/mihomo 原生支持——不识别、不区分内层是什么，<strong>全部流量一视同仁</strong>。</p>
+<h3 id="72-技术泡沫加混装">7.2 技术：泡沫加混装<a hidden class="anchor" aria-hidden="true" href="#72-技术泡沫加混装">#</a></h3>
+<p><strong>Padding（填充）——往箱中箱的缝隙塞随机泡沫</strong>：每帧按可配置策略（如 100–1000 字节随机）附加填充。外层密文块的大小不再贴合内层记录结构——内箱的棱角被泡沫淹没，X 光只能看到一团均匀的噪声。</p>
+<p><strong>多路复用（mux）——混装整车，打碎一一对应</strong>：多条代理流共用一条 TLS 连接。传统 Trojan 是&quot;一单一车&rdquo;，装载序列就是单个客户内箱的镜像；AnyTLS 把几十个客户的箱子<strong>交错混装进同一辆卡车</strong>，海关看到的装载序列是所有客户流量的模糊叠加——想在合唱里单独听出一个人的呼吸，统计上不可能。</p>
+<p>附带红利：客户端预建若干空闲会话（<code>min_idle_session</code>），新请求直接装车、免握手，<strong>首包延迟显著更低</strong>——开网页的爽感主要来自这里（代价是要靠定时心跳维持空闲连接，防止 NAT 网关把久未使用的映射悄悄掐掉）。</p>
+<h3 id="73-与-vision-一句话对比">7.3 与 Vision 一句话对比<a hidden class="anchor" aria-hidden="true" href="#73-与-vision-一句话对比">#</a></h3>
+<p>Vision <strong>消除</strong>特征（识别内层是 TLS，数据期不再制造第二层结构），AnyTLS <strong>淹没</strong>特征（不识别，全部加噪声）。一个做减法、一个加噪声，殊途同归——完整的横向对比见第九章。</p>
+<h3 id="74-局限">7.4 局限<a hidden class="anchor" aria-hidden="true" href="#74-局限">#</a></h3>
+<ul>
+<li><strong>只跑 TCP</strong>（UDP 靠 UDP-over-TCP 承载）：继承了 TCP 在高丢包线路上的队头阻塞——它优先隐蔽，不优先速度，烂线路请找 Hysteria2</li>
+<li>mux 的结构性代价：几十条流挤一根 TCP 管道，丢一个包全体排队——开网页爽、大下载未必赢</li>
+<li>需要真域名 + 真证书（这点不如 REALITY 省事）</li>
+</ul>
+<hr>
+<h2 id="八插曲提速的三个战场">八、插曲：提速的三个战场<a hidden class="anchor" aria-hidden="true" href="#八插曲提速的三个战场">#</a></h2>
+<p>五大协议讲完了，把散落各章的提速知识收拢一下——因为&quot;快&quot;其实是三种不同的快感，病根和药方各不相同。</p>
+<h3 id="81-病根诊断">8.1 病根诊断<a hidden class="anchor" aria-hidden="true" href="#81-病根诊断">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>病根</th>
+          <th>机理</th>
+          <th>快递版</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>高 RTT</strong></td>
+          <td>吞吐上限 = 窗口 ÷ RTT；旧 TCP 窗口 64KB × 200ms ≈ 2.6Mbps 封顶</td>
+          <td>车队规模有限，路越长运力越低</td>
+      </tr>
+      <tr>
+          <td><strong>丢包 × TCP 礼貌</strong></td>
+          <td>一丢包速率砍半慢慢爬回；1% 丢包 + 200ms RTT 下千兆线路只剩不到 1Mbps</td>
+          <td>司机一遇颠簸刹车减半，十公里颠一下全程爬行</td>
+      </tr>
+      <tr>
+          <td><strong>协议开销</strong></td>
+          <td>用户态拷贝、双重加解密、逐连接握手</td>
+          <td>每件货人工搬进搬出仓库；每车重办全套手续</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="82-延迟战少问几句">8.2 延迟战：少问几句<a hidden class="anchor" aria-hidden="true" href="#82-延迟战少问几句">#</a></h3>
+<p>N-RTT 数的是&quot;握手要跑几个来回&quot;——<strong>数据最早能搭上第几波，就决定总耗时几个 RTT</strong>。TLS 1.2 是四波（2 RTT）且砍不动：钥匙必须用证书公钥锁着送（没证书交不了）、Finished 必须用新密钥加密验锁（没钥匙验不了），因果链是串行的。TLS 1.3 砍到 1-RTT 的办法是<strong>赌</strong>：套件精简后客户端第一波就把密钥材料押上，服务器一收一发双方密钥即齐，数据搭第二波出发。</p>
+<p><strong>总账单</strong>（打开网页到首字节，跨国 200ms/圈）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>方案</th>
+          <th>握手圈数</th>
+          <th>请求</th>
+          <th>合计</th>
+          <th>耗时</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TCP + TLS 1.2</td>
+          <td>1+2</td>
+          <td>1</td>
+          <td>4 RTT</td>
+          <td>~800ms</td>
+      </tr>
+      <tr>
+          <td>TCP + TLS 1.3</td>
+          <td>1+1</td>
+          <td>1</td>
+          <td>3 RTT</td>
+          <td>~600ms</td>
+      </tr>
+      <tr>
+          <td>QUIC（传输+加密合并握手）</td>
+          <td><strong>1</strong></td>
+          <td>1</td>
+          <td>2 RTT</td>
+          <td>~400ms</td>
+      </tr>
+      <tr>
+          <td>QUIC 0-RTT</td>
+          <td><strong>0</strong></td>
+          <td>1</td>
+          <td><strong>1 RTT</strong></td>
+          <td>~200ms</td>
+      </tr>
+  </tbody>
+</table>
+<p>两个易混的技术再辨一次：<strong>0-RTT 会话恢复</strong>保管的是<strong>票根</strong>（上次连接发的密钥材料记忆），连接本身仍要新建，第一波捎上数据；<strong>mux 预热连接</strong>（AnyTLS）保管的是<strong>现役车辆</strong>——连接活着、密钥热着、拥塞窗口不冷启动，压根不存在&quot;新建&quot;这个动作。一个是&quot;重办手续不用排队&quot;，一个是&quot;手续根本不用办&quot;。两者分层可叠加：mux 负责尽量不重连，0-RTT 负责真要重连时也快。（0-RTT 的代价：early data 可被重放，严格实现只对幂等请求放行。）</p>
+<h3 id="83-吞吐战一次多装点">8.3 吞吐战：一次多装点<a hidden class="anchor" aria-hidden="true" href="#83-吞吐战一次多装点">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>技术</th>
+          <th>出处</th>
+          <th>干了什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>内核态运行</td>
+          <td>WireGuard、IPsec</td>
+          <td>传送带直连，不再人工搬运</td>
+      </tr>
+      <tr>
+          <td>直拷贝</td>
+          <td>XTLS Vision</td>
+          <td>数据期省掉一整层加解密</td>
+      </tr>
+      <tr>
+          <td><strong>BBR</strong></td>
+          <td>Google</td>
+          <td>摸清路况定巡航速度，丢包当噪声，不再见颠簸就刹车</td>
+      </tr>
+      <tr>
+          <td><strong>Brutal</strong></td>
+          <td>Hysteria2</td>
+          <td>按报的带宽硬发，丢了就补发（详见第六章）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="84-物理战算法治不了的病">8.4 物理战：算法治不了的病<a hidden class="anchor" aria-hidden="true" href="#84-物理战算法治不了的病">#</a></h3>
+<p>协议再快也快不过烂路由。跨国默认路由常绕地球一圈，于是有了<strong>中转架构</strong>（家→国内中转机→境外落地，入境段走 CN2/9929 优化线路）和<strong>专线 IPLC/IEPL</strong>（不过海关的专属货运铁路，按 Mbps 卖、贵）。游戏加速器（UU、雷神）就是物理战的产品化：专线 + 机房旁出口 + 只运游戏流量，把 200ms 押到 30–80ms 靠的不是协议魔法，是花钱买路。</p>
+<p>实战经验：<strong>线路档次对速度的影响通常大于协议选择</strong>——WireGuard 走垃圾线路照样输给 Trojan 走 IPLC。</p>
+<hr>
+<h2 id="九五家对比协议与背后的技术">九、五家对比：协议与背后的技术<a hidden class="anchor" aria-hidden="true" href="#九五家对比协议与背后的技术">#</a></h2>
+<h3 id="91-协议总表">9.1 协议总表<a hidden class="anchor" aria-hidden="true" href="#91-协议总表">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>协议</th>
+          <th>年代</th>
+          <th>载体</th>
+          <th>核心贡献</th>
+          <th>遗留问题</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>SS / SSR</td>
+          <td>2012/2015</td>
+          <td>TCP/UDP</td>
+          <td>第一个以对抗审查为目标；无特征密文</td>
+          <td>形态本身可疑；SSR 加戏越多特征越多</td>
+      </tr>
+      <tr>
+          <td>Trojan</td>
+          <td>2019</td>
+          <td>TCP 443</td>
+          <td>真开店，系统应对主动探测</td>
+          <td>TLS-in-TLS 指纹；证书反查</td>
+      </tr>
+      <tr>
+          <td>VLESS + Vision + REALITY</td>
+          <td>2020–2023</td>
+          <td>TCP 443</td>
+          <td>拆箱直发治箱中箱；借证书治探测</td>
+          <td>绑定 Xray 生态</td>
+      </tr>
+      <tr>
+          <td>Hysteria2</td>
+          <td>2022–2023</td>
+          <td>UDP (QUIC)</td>
+          <td>伪装 HTTP/3 + Brutal 抢带宽</td>
+          <td>UDP 被收紧时最先阵亡</td>
+      </tr>
+      <tr>
+          <td>AnyTLS</td>
+          <td>2025</td>
+          <td>TCP 443</td>
+          <td>padding + mux 根治箱中箱，协议中立</td>
+          <td>TCP 队头阻塞；需域名证书</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="92-加密所有人的答案都一样">9.2 加密：所有人的答案都一样<a hidden class="anchor" aria-hidden="true" href="#92-加密所有人的答案都一样">#</a></h3>
+<p>先看一个反直觉的事实——<strong>线路密文从来不是这些协议自己提供的</strong>：</p>
+<table>
+  <thead>
+      <tr>
+          <th>协议</th>
+          <th>线路加密由谁保证</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>SS</td>
+          <td>自带 AEAD（例外：它诞生时默认裸 TCP）</td>
+      </tr>
+      <tr>
+          <td>Trojan / VLESS / AnyTLS</td>
+          <td>外层 TLS</td>
+      </tr>
+      <tr>
+          <td>Hysteria2</td>
+          <td>QUIC 内置 TLS</td>
+      </tr>
+  </tbody>
+</table>
+<p>TLS 成熟之后，&ldquo;加密&quot;这门主课就全班交卷了，协议层的全部精力转向后两件事。这也解释了 VLESS 敢做成明文面单、Vision 数据期敢直拷贝——<strong>锁一直是外层的，从没缺过岗</strong>。</p>
+<h3 id="93-主动探测伪装从黑箱到挂靠">9.3 主动探测伪装：从黑箱到挂靠<a hidden class="anchor" aria-hidden="true" href="#93-主动探测伪装从黑箱到挂靠">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>协议</th>
+          <th>对策</th>
+          <th>效果</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>SS</td>
+          <td>无（SSR 协议插件是补丁）</td>
+          <td>探针一测一个准</td>
+      </tr>
+      <tr>
+          <td>Trojan</td>
+          <td>真开店 + fallback 反代真网站</td>
+          <td>探针看到真网站；但证书来路可疑</td>
+      </tr>
+      <tr>
+          <td>REALITY</td>
+          <td>借真站证书完成握手</td>
+          <td>密码学上无可挑剔，CT 反查失效</td>
+      </tr>
+      <tr>
+          <td>Hysteria2</td>
+          <td>伪装 HTTP/3 服务器</td>
+          <td>有效，但 UDP 特征是另一个维度的问题</td>
+      </tr>
+      <tr>
+          <td>AnyTLS</td>
+          <td>同 Trojan 待遇（真站 + 证书）</td>
+          <td>有效，执照问题仍在</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="94-被动伪装trojan--vision--anytls-逐阶段对照">9.4 被动伪装：Trojan / Vision / AnyTLS 逐阶段对照<a hidden class="anchor" aria-hidden="true" href="#94-被动伪装trojan--vision--anytls-逐阶段对照">#</a></h3>
+<p>被动伪装的核心考题只有一个——TLS-in-TLS 指纹。三家答卷：</p>
+<table>
+  <thead>
+      <tr>
+          <th>阶段</th>
+          <th>线路密文由谁保证</th>
+          <th>Trojan</th>
+          <th>Vision</th>
+          <th>AnyTLS</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>握手期</td>
+          <td>外层 TLS（从未缺岗）</td>
+          <td>无处理【死穴】</td>
+          <td>+随机填充</td>
+          <td>+随机填充</td>
+      </tr>
+      <tr>
+          <td>数据期</td>
+          <td>外层 TLS（同样在岗）</td>
+          <td>无处理</td>
+          <td>直拷贝，零干预</td>
+          <td>继续逐帧填充</td>
+      </tr>
+      <tr>
+          <td>连接模型</td>
+          <td>——</td>
+          <td>一流一连接</td>
+          <td>一流一连接</td>
+          <td>多流复用 + 预热</td>
+      </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>Trojan</th>
+          <th>Vision</th>
+          <th>AnyTLS</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>海关磅秤看到</td>
+          <td>密文段里一段&quot;第二次握手&quot;的鼓点 → 教科书 TLS-in-TLS</td>
+          <td>填充噪声 → 16KB 均匀流，与正常 HTTPS 下载无法区分</td>
+          <td>任意时刻都是多流交错的随机大小帧，单流特征被淹没</td>
+      </tr>
+      <tr>
+          <td>带宽/CPU 开销</td>
+          <td>无</td>
+          <td>数据期几乎为零</td>
+          <td>每帧都付填充税</td>
+      </tr>
+      <tr>
+          <td>首包延迟</td>
+          <td>每条新流新建连接</td>
+          <td>同左</td>
+          <td>mux 预热，新流秒上车【优势】</td>
+      </tr>
+      <tr>
+          <td>丢包行为</td>
+          <td>各流独立</td>
+          <td>各流独立</td>
+          <td>一条管道多流复用，队头阻塞</td>
+      </tr>
+  </tbody>
+</table>
+<p>三种哲学收口：<strong>Trojan 原样搬运，赌海关不细看；Vision 是外科医生，先看内箱是什么再决定动不动刀（数据期零开销，但绑定 Xray 生态）；AnyTLS 是粉碎机，不管什么箱全部拆成随机包裹塞泡沫混装（任何流量一律有效，代价是全程付填充税）</strong>。</p>
+<h3 id="95-tcp-路线-vs-udp-路线">9.5 TCP 路线 vs UDP 路线<a hidden class="anchor" aria-hidden="true" href="#95-tcp-路线-vs-udp-路线">#</a></h3>
+<p>最后一条分野是赛道选择：</p>
+<ul>
+<li><strong>TCP 443 路线</strong>（Trojan/VLESS/AnyTLS）：命脉端口哪都不封，生存能力最强；代价是 TCP 的礼貌（丢包减速）和 mux 的队头阻塞</li>
+<li><strong>UDP/QUIC 路线</strong>（Hysteria2）：握手快、流间无阻塞、拥塞控制自主（Brutal/bbr 随便换）；代价是 UDP 可被单独针对，命脉地位依附于 HTTP/3 的普及进程</li>
+</ul>
+<p>没有赢家，只有取舍——这也是为什么成熟的翻墙客户端都支持多协议自动切换。</p>
+<hr>
+<h2 id="十总结三十年在争什么">十、总结：三十年在争什么<a hidden class="anchor" aria-hidden="true" href="#十总结三十年在争什么">#</a></h2>
+<h3 id="三代矛盾的接力">三代矛盾的接力<a hidden class="anchor" aria-hidden="true" href="#三代矛盾的接力">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>阶段</th>
+          <th>年代</th>
+          <th>主要矛盾</th>
+          <th>谁解决了它</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>第一阶段：<strong>锁不够结实</strong></td>
+          <td>1999–2005</td>
+          <td>加密被破解、认证被伪造</td>
+          <td>L2TP/IPsec、OpenVPN、IKEv2</td>
+      </tr>
+      <tr>
+          <td>第二阶段：<strong>车不够快</strong></td>
+          <td>2005–2020</td>
+          <td>性能瓶颈、握手慢、配置地狱</td>
+          <td>IKEv2、WireGuard、QUIC</td>
+      </tr>
+      <tr>
+          <td>第三阶段：<strong>长得像 VPN</strong></td>
+          <td>2012–至今</td>
+          <td>被动统计 + 主动探测</td>
+          <td>SS → Trojan → Vision/REALITY → AnyTLS</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="选型决策树">选型决策树<a hidden class="anchor" aria-hidden="true" href="#选型决策树">#</a></h3>
+<pre tabindex="0"><code>你的需求是什么？
+│
+├── 纯隐私/自建内网穿透，不怕被识别
+│   └── WireGuard（最简单、最快、最省心）
+│
+├── 过海关 + 追求极致伪装和性能
+│   └── VLESS + Vision + REALITY
+│
+├── 过海关 + 客户端在 sing-box/mihomo 生态 + 要低延迟开网页
+│   └── AnyTLS（mux 预热连接的首包优势）
+│
+├── 烂线路抢带宽，且 UDP 可用
+│   └── Hysteria2（UDP 被限时回落 TCP 类协议）
+│
+└── 打游戏（要 UDP 直通与低抖动）
+    ├── 自建 → WireGuard 或 Hysteria2，节点开启 UDP 转发
+    └── 国内联机卡 → 游戏加速器（买的是线路，不是协议）
+</code></pre><p>三十年的故事讲完了。每一代的&quot;解决&quot;都精确地成了下一代的&quot;问题&rdquo;：锁结实了才发现车慢，车快了才发现长得像 VPN，长得不像 VPN 了才发现箱中箱的轮廓，箱中箱治好了又开始押注 UDP 的未来。这场军备竞赛没有终局——海关的磅秤和协议设计师的泡沫，都还在进化。</p>
+<hr>
+<h2 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h2>
+<ul>
+<li><a href="https://www.wireguard.com/">WireGuard 官方文档</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc8446">TLS 1.3 规范 (RFC 8446)</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc9000">QUIC (RFC 9000)</a></li>
+<li><a href="https://shadowsocks.org/">Shadowsocks 项目</a></li>
+<li><a href="https://github.com/trojan-gfw/trojan">Trojan-GFW 项目</a></li>
+<li><a href="https://github.com/XTLS/Xray-core">XTLS 与 Xray-core 项目</a></li>
+<li><a href="https://github.com/anytls/anytls-go">anytls-go 项目</a></li>
+<li><a href="https://v2.hysteria.network/">Hysteria2 官方文档</a></li>
+<li><a href="https://sing-box.sagernet.org/configuration/outbound/anytls/">sing-box 文档（AnyTLS outbound）</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://coldeye2020.github.io/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/vpn/">VPN</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/tls/">TLS</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/wireguard/">WireGuard</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/trojan/">Trojan</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/vless/">VLESS</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/hysteria/">Hysteria</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/anytls/">AnyTLS</a></li>
+      <li><a href="https://coldeye2020.github.io/tags/quic/">QUIC</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://coldeye2020.github.io/tech/2026-09-18-archives-projects/">
+    <span class="title">Next »</span>
+    <br>
+    <span>coldeye的归档</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on x"
+            href="https://x.com/intent/tweet/?text=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2&amp;url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f&amp;hashtags=%e7%bd%91%e7%bb%9c%2cVPN%2cTLS%2cWireGuard%2cTrojan%2cVLESS%2cHysteria%2cAnyTLS%2cQUIC">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f&amp;title=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2&amp;summary=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2&amp;source=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f&title=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on whatsapp"
+            href="https://api.whatsapp.com/send?text=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2%20-%20https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on telegram"
+            href="https://telegram.me/share/url?text=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2&amp;url=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 从 PPTP 到 AnyTLS：VPN 协议三十年进化史 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=%e4%bb%8e%20PPTP%20%e5%88%b0%20AnyTLS%ef%bc%9aVPN%20%e5%8d%8f%e8%ae%ae%e4%b8%89%e5%8d%81%e5%b9%b4%e8%bf%9b%e5%8c%96%e5%8f%b2&u=https%3a%2f%2fcoldeye2020.github.io%2ftech%2f2026-10-20-vpn-protocols%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer><script src="https://giscus.app/client.js"
+        data-repo="coldeye2020/coldeye2020.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzNTMyMDAxOTM="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOFQ1oQc4C6t8Q"
+        data-mapping="pathname"
+        data-strict="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+(function () {
+  function getGiscusTheme() {
+    var theme = document.documentElement.getAttribute('data-theme');
+    return theme === 'dark' ? 'dark' : 'light';
+  }
+
+  function sendGiscusTheme(theme) {
+    var iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  var observer = new MutationObserver(function () {
+    sendGiscusTheme(getGiscusTheme());
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+
+  
+  window.addEventListener('message', function handler(e) {
+    if (e.origin !== 'https://giscus.app') return;
+    if (e.data && e.data.giscus && e.data.giscus.discussion !== undefined) {
+      sendGiscusTheme(getGiscusTheme());
+      window.removeEventListener('message', handler);
+    }
+  });
+})();
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://coldeye2020.github.io/">Co&#39;Log</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

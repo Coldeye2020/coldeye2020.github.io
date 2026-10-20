@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>TLS on Co&#39;Log</title>
+    <link>https://coldeye2020.github.io/tags/tls/</link>
+    <description>Recent content in TLS on Co&#39;Log</description>
+    <generator>Hugo -- 0.139.4</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 20 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://coldeye2020.github.io/tags/tls/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从 PPTP 到 AnyTLS：VPN 协议三十年进化史</title>
+      <link>https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/</link>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>https://coldeye2020.github.io/tech/2026-10-20-vpn-protocols/</guid>
+      <description>从 PPTP 到 AnyTLS，三十年 VPN 协议演进只围绕四件事：加密、性能、被动伪装、主动探测伪装。本文用一套贯穿全文的快递比喻，讲透 SS/Trojan/VLESS&#43;Vision&#43;REALITY/Hysteria/AnyTLS 五大里程碑协议各自的突破与代价，并横向对比它们背后的技术。</description>
+    </item>
+  </channel>
+</rss>
